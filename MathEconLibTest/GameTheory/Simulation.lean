@@ -441,6 +441,16 @@ def recoding : GameSimulation target vectorTarget :=
   .ofExactLifts id (fun _ ↦ ()) vectorRecoding (fun _ _ ↦ rfl)
     (fun _ _ t _ ↦ ⟨t, trivial, rfl⟩) (fun _ _ ↦ trivial)
 
+/-- Reflection works across value spaces even when the compiler omits a target state. -/
+theorem cross_value_equilibrium_iff (b : Bool) :
+    vectorTarget.IsEquilibrium (compile b) ↔ source.IsEquilibrium b := by
+  apply (recoding.comp domination).isEquilibrium_iff_of_deviation_comparisons
+    (fun _ ↦ false) (fun _ ↦ trivial)
+  intro i b' _
+  refine ⟨compile b', trivial, fun hle ↦ ?_⟩
+  have hscalar := (add_le_add_iff_right (7 : ℝ)).mp hle.2
+  exact (reflection.value_eq () b').ge.trans (hscalar.trans (reflection.value_eq () b).le)
+
 def firstCoordinate : (ℝ × ℝ) →o ℝ :=
   ⟨fun v ↦ v.1 + 11, fun _ _ h ↦ add_le_add_left h.1 11⟩
 
@@ -506,7 +516,7 @@ def contextualTarget : EquilibriumProblem (Bool × Bool) Unit ℝ :=
 /-- Offsets constant along legal deviations need no global function of source values. -/
 theorem contextual_transport {s : Bool × Bool} (h : contextualSource.IsEquilibrium s) :
     contextualTarget.IsEquilibrium s := by
-  apply h.of_comparisons id trivial
+  apply h.of_deviation_comparisons id trivial
   intro i t ht
   refine ⟨t, ht, fun hle ↦ ?_⟩
   change t.2 = s.2 at ht
@@ -574,7 +584,7 @@ example {S I T J V W : Type*} [LE V] [LE W]
     (h : P.IsEquilibrium s) (g : J → I) (hvalid : Q.valid t)
     (hdev : ∀ j t', Q.deviation j t t' → ∃ s', P.deviation (g j) s s' ∧
       (P.value (g j) s' ≤ P.value (g j) s → Q.value j t' ≤ Q.value j t)) :
-    Q.IsEquilibrium t := h.of_comparisons g hvalid hdev
+    Q.IsEquilibrium t := h.of_deviation_comparisons g hvalid hdev
 
 /-- Standard order embeddings preserve and reflect equilibrium without being onto. -/
 example {S I V W : Type*} [LE V] [LE W] (P : EquilibriumProblem S I V)

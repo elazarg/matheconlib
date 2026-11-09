@@ -62,7 +62,7 @@ theorem IsDeviationOptimal.of_dominated_deviations {s : S} {t : T}
     (hdev : ∀ j t', Q.deviation j t t' →
       ∃ s', P.deviation (g j) s s' ∧ Q.value j t' ≤ φ j (P.value (g j) s')) :
     Q.IsDeviationOptimal t := by
-  apply h.of_comparisons g
+  apply h.of_deviation_comparisons g
   intro j t' ht'
   obtain ⟨s', hs', hbound⟩ := hdev j t' ht'
   exact ⟨s', hs', fun hle ↦ hbound.trans (((φ j).monotone hle).trans (hbase j))⟩
@@ -165,6 +165,16 @@ def ofExactLifts (f : S → T) (g : J → I) (φ : J → V →o W)
     obtain ⟨s', hs', rfl⟩ := hlift j s t ht
     exact ⟨s', hs', (hvalue j s').le⟩
   valid_preserves := hvalid
+
+/-- A simulation gives an iff at an incumbent if validity and source deviation comparisons
+reflect there. This allows different value spaces and requires no numerical value equality. -/
+theorem isEquilibrium_iff_of_deviation_comparisons (f : GameSimulation P Q) {s : S}
+    (g : I → J) (hvalid : Q.valid (f.toFun s) → P.valid s)
+    (hdev : ∀ i s', P.deviation i s s' →
+      ∃ t, Q.deviation (g i) (f.toFun s) t ∧
+        (Q.value (g i) t ≤ Q.value (g i) (f.toFun s) → P.value i s' ≤ P.value i s)) :
+    Q.IsEquilibrium (f.toFun s) ↔ P.IsEquilibrium s :=
+  ⟨fun h ↦ h.of_deviation_comparisons g (hvalid h.valid) hdev, f.transport⟩
 
 /-- A separate reward-preserving reflection contract on the same state map gives an iff. -/
 theorem isEquilibrium_iff {Q : EquilibriumProblem T J V}

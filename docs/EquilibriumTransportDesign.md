@@ -84,11 +84,14 @@ function composition, `u ∘ g`; `reindex_payoff` connects the two representatio
 | `MixtureSimulation` | Honest laws agree; every covered target deviation law is a probability mixture of legal source deviation laws |
 | `ComparisonMixture` | One probability kernel mixes both laws of each source comparison to reproduce the target comparison |
 
-`IsDeviationOptimal.of_comparisons` is the pointwise transport core. For every
+`IsDeviationOptimal.of_deviation_comparisons` is the pointwise transport core. For every
 admitted target deviation, it asks for a legal source deviation whose
 nonimprovement implies target nonimprovement. The two problems may have different
 value spaces equipped only with `LE`; no order laws or numerical recoding are
-needed. Exact morphism and comorphism transport use this core.
+needed. Exact morphism and comorphism transport use this core. These are value
+comparisons along admissible deviations. `ComparisonMixture` instead packages a
+shared mixture of pairs of outcome laws; its evaluation theorem supplies value
+comparisons after a utility is chosen.
 
 `GameSimulation` is a stronger, numerical certificate. It supplies a Mathlib
 order homomorphism `valueMap j : V →o W` for each target deviator. Its argument is
@@ -107,9 +110,13 @@ composes the order homomorphisms. Identity uses identity value maps.
 `ofExactLifts` combines exact deviation lifts with recoded value equality;
 exact reward-preserving morphisms convert using identity value maps.
 
-A comorphism with the same state map supplies independent reflection, giving
-an equilibrium iff at image states. This does not assert that every target
-equilibrium has a source preimage.
+`GameSimulation.isEquilibrium_iff_of_deviation_comparisons` supplies reflection
+across different value spaces: each legal source deviation must have a target
+comparison whose nonimprovement implies source nonimprovement. Validity must also
+reflect. Both conditions are pointwise at the incumbent. The shorter
+`GameSimulation.isEquilibrium_iff` uses an equal-reward comorphism and therefore
+requires the same value type. Neither theorem asserts that every target equilibrium
+has a source preimage.
 
 ## Value coordinates and additive errors
 
@@ -117,7 +124,8 @@ equilibrium has a source preimage.
 leaving deviations and validity unchanged. Construction needs no order; identity
 and successive recodings satisfy identity and composition laws. Monotone maps
 preserve optimality and equilibrium. Maps preserving and reflecting comparisons,
-such as order embeddings, give an iff without needing to be surjective. A
+such as order embeddings, give an iff across value spaces through
+`isEquilibrium_mapValues_iff`, without needing to be surjective. A
 monotone constant map can create equilibria, so monotonicity alone gives no
 reflection.
 
@@ -211,12 +219,19 @@ expected Nash problem of a stochastic outcome game on the original pure
 profiles. The canonical mixed outcome game is automatically measurable;
 no global payoff measurability assumption is introduced.
 
-Value recoding after expectation, `φ(∫ u)`, differs from changing outcome utility
-before expectation, `∫ φ(u)`. `mapValues` performs the former and retains the
-original integrability conditions. The latter uses a new expected-value problem
-whose admissible deviations and valid incumbents may also change. For probability
-laws and integrable real utilities, positive affine transformations commute with
-expectation. Arbitrary increasing transformations generally do not. A sure `1`
+The two recoding operations act at different stages:
+
+- After integration, `mapValues` computes `φ(∫ u)`. Arbitrary monotone maps preserve
+  equilibrium, and comparison-reflecting maps also reflect it. The original
+  integrability conditions are retained.
+- Before integration, recoding outcome utilities computes `∫ φ(u)`. This defines
+  a new expected-value problem whose admissible deviations and valid incumbents
+  may change. For probability laws and integrable real utilities, affine maps of
+  any slope commute with expectation. Positive slope additionally preserves and
+  reflects utility order, giving the equilibrium iff below. Commutation with
+  expectation and preservation of preferences are separate requirements.
+
+Arbitrary increasing transformations generally do not commute with expectation. A sure `1`
 and a fair lottery over `0, 2` have equal means, but cubing outcomes gives means
 `1, 4`. The utility-independent law certificate can still be evaluated at new
 integrable utilities; its source-equilibrium premise must concern that evaluation.
@@ -337,6 +352,8 @@ checks the public interfaces:
 - Equal rewards do not ensure honest-law equality, and improving deviations
   to invalid targets still exclude equilibrium.
 - Monotone value maps compose across different value spaces and player sets.
+- Comparison reflection gives an iff across value spaces for a compiler that omits
+  a target state.
 - Affine scaling changes additive errors, and a monotone collapse can create equilibria.
 - A deviation-constant offset preserves comparisons without any global value map.
 - Recoding an expected payoff differs from recoding utilities before integration.

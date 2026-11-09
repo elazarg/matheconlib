@@ -50,7 +50,7 @@ their stronger meaning of numerical reward preservation.
 
 * `EquilibriumProblem.IsDeviationOptimal.of_deviation_subset` restricts admissible deviations.
 * `EquilibriumProblem.IsEquilibrium.of_deviation_subset` also preserves candidate validity.
-* `EquilibriumProblem.IsDeviationOptimal.of_comparisons` transports matched comparisons.
+* `EquilibriumProblem.IsDeviationOptimal.of_deviation_comparisons` transports matched comparisons.
 * `EquilibriumProblem.preserves_comparisons_iff_forall_deviation_subsets` characterizes
   preservation of optimality under every restriction of admissible deviations.
 * `EquilibriumProblem.isEquilibrium_ofDeviation_iff` characterizes unrestricted candidates.
@@ -103,7 +103,7 @@ reward. -/
 /-- Transport optimality by matching each target deviation with a legal source comparison.
 Only nonimprovement of the matched deviation must be preserved; no numerical relation between
 the value spaces or comparisons at other incumbents is required. -/
-theorem IsDeviationOptimal.of_comparisons {W T J : Type*} [LE V] [LE W]
+theorem IsDeviationOptimal.of_deviation_comparisons {W T J : Type*} [LE V] [LE W]
     {Q : EquilibriumProblem T J W} {s : S} {t : T} (h : P.IsDeviationOptimal s) (g : J → I)
     (hdev : ∀ j t', Q.deviation j t t' → ∃ s', P.deviation (g j) s s' ∧
       (P.value (g j) s' ≤ P.value (g j) s → Q.value j t' ≤ Q.value j t)) :
@@ -142,13 +142,13 @@ lemma isEquilibrium_iff [LE V] (P : EquilibriumProblem S I V) (s : S) :
   ⟨fun h ↦ ⟨h.valid, h.deviation_le⟩, fun h ↦ ⟨h.1, h.2⟩⟩
 
 /-- Comparison transport checks validity only at the target incumbent. -/
-theorem IsEquilibrium.of_comparisons {W T J : Type*} [LE V] [LE W]
+theorem IsEquilibrium.of_deviation_comparisons {W T J : Type*} [LE V] [LE W]
     {Q : EquilibriumProblem T J W} {s : S} {t : T} (h : P.IsEquilibrium s) (g : J → I)
     (hvalid : Q.valid t)
     (hdev : ∀ j t', Q.deviation j t t' → ∃ s', P.deviation (g j) s s' ∧
       (P.value (g j) s' ≤ P.value (g j) s → Q.value j t' ≤ Q.value j t)) :
     Q.IsEquilibrium t :=
-  ⟨hvalid, h.deviation_le.of_comparisons g hdev⟩
+  ⟨hvalid, h.deviation_le.of_deviation_comparisons g hdev⟩
 
 /-- Removing admissible deviations preserves equilibrium when rewards agree and validity is
 preserved. -/
@@ -304,7 +304,7 @@ variable {V : Type r} {S : Type u} {I : Type v} {T : Type w} {J : Type x} {U : T
 /-- A deviation-lifting map preserves deviation optimality. -/
 theorem transport_isDeviationOptimal [LE V] (f : GameMorphism P Q) {s : S}
     (h : P.IsDeviationOptimal s) : Q.IsDeviationOptimal (f.toFun s) := by
-  apply h.of_comparisons f.deviatorMap
+  apply h.of_deviation_comparisons f.deviatorMap
   intro j t ht
   obtain ⟨s', hs', rfl⟩ := f.deviation_lifts j s t ht
   exact ⟨s', hs', fun hle ↦ by simpa only [f.value_eq] using hle⟩
@@ -359,7 +359,7 @@ variable {V : Type r} {S : Type u} {I : Type v} {T : Type w} {J : Type x} {U : T
 /-- Deviation optimality pulls back along a deviation-preserving map. -/
 theorem pullback_isDeviationOptimal [LE V] (f : GameComorphism P Q) {s : S}
     (h : Q.IsDeviationOptimal (f.toFun s)) : P.IsDeviationOptimal s :=
-  h.of_comparisons f.deviatorMap fun i s' hs' ↦
+  h.of_deviation_comparisons f.deviatorMap fun i s' hs' ↦
     ⟨f.toFun s', f.deviation_maps i s s' hs',
       fun hle ↦ by simpa only [f.value_eq] using hle⟩
 
