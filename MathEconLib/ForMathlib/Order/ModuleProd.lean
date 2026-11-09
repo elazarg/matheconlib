@@ -5,9 +5,7 @@ Authors: Elazar Gershuni
 -/
 module
 
-public import Mathlib.Algebra.Order.Module.Basic
-public import Mathlib.Algebra.Order.Monoid.Prod
-public import Mathlib.Algebra.Module.Prod
+public import Mathlib.Algebra.Order.Module.Defs
 
 /-! # Componentwise ordered scalar multiplication on products -/
 

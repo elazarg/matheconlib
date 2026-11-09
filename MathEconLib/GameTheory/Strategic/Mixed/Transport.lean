@@ -5,7 +5,7 @@ Authors: Elazar Gershuni
 -/
 module
 
-public import MathEconLib.GameTheory.Equilibrium.Averaging
+public import MathEconLib.GameTheory.Strategic.Outcome.Transport
 public import MathEconLib.GameTheory.Strategic.Mixed
 public import Mathlib.MeasureTheory.Measure.DiracProba
 
@@ -16,6 +16,9 @@ The Dirac embedding preserves pure Nash equilibrium for ordered vector payoffs.
 Every admitted mixed deviation is integrable by the existing mixed-equilibrium
 contract. Its product law is concentrated on unilateral pure deviations, so
 ordered averaging applies without selecting one dominating pure action.
+
+Law simulations also transport existing mixed Nash equilibria through their
+canonical stochastic outcome game, with no global payoff measurability assumption.
 -/
 
 @[expose] public noncomputable section
@@ -67,3 +70,24 @@ theorem IsNash.isMixedNash_dirac {G : StrategicGame I A V} {a : ∀ i, A i}
       exact (isUnilateralDeviation_iff i a b).mpr hb
 
 end MathEconLib.GameTheory.StrategicGame
+
+namespace MathEconLib.GameTheory.MixtureSimulation
+
+variable {I J V : Type*} {A : I → Type*} {B : J → Type*}
+    [Fintype I] [DecidableEq I] [DecidableEq J]
+    [∀ i, MeasurableSpace (A i)] [∀ j, MeasurableSpace (B j)]
+    [NormedAddCommGroup V] [NormedSpace ℝ V] [CompleteSpace V]
+    [PartialOrder V] [IsOrderedAddMonoid V] [IsOrderedModule ℝ V] [ClosedIciTopology V]
+    {G : StrategicGame I A V} {H : OutcomeGame J B (ProbabilityMeasure (∀ i, A i))}
+    [H.Measurable]
+
+/-- A law simulation transports mixed Nash to expected Nash in the target
+outcome game. The source's canonical mixed outcome game is automatically measurable. -/
+theorem transport_isMixedNash
+    (f : MixtureSimulation IsUnilateralDeviation IsUnilateralDeviation
+      G.outcomeGame.mixed.toKernel H.toKernel)
+    {σ : StrategicGame.MixedStrategy A} (hσ : G.IsMixedNash σ) :
+    (H.expectedNashProblem (G.payoffStructure.reindex f.deviatorMap)).IsEquilibrium (f.toFun σ) :=
+  f.transport_expectedNash G.payoffStructure (G.mixedNashProblem_eq_expectedNashProblem ▸ hσ)
+
+end MathEconLib.GameTheory.MixtureSimulation

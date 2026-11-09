@@ -273,10 +273,51 @@ theorem vector_pure : vectorGame.IsNash (fun _ ↦ true) := by
 theorem vector_mixed : vectorGame.IsMixedNash (fun _ ↦ diracProba true) :=
   vector_pure.isMixedNash_dirac
 
+/-- An extra action component leaves the actual randomized outcome unchanged. -/
+def redundantMixedOutcome : OutcomeGame Unit (fun _ ↦ ProbabilityMeasure Bool × Bool)
+    (ProbabilityMeasure (Unit → Bool)) where
+  outcome a := ProbabilityMeasure.pi (fun i ↦ (a i).1)
+
+instance : redundantMixedOutcome.Measurable where
+  measurable_outcome := ProbabilityMeasure.measurable_pi.comp <|
+    Measurable.of_eval fun i ↦ (measurable_pi_apply i).fst
+
+private lemma mixed_profile_law (σ : StrategicGame.MixedStrategy (fun _ : Unit ↦ Bool)) :
+    vectorGame.outcomeGame.mixed.toKernel σ =
+      (ProbabilityMeasure.pi σ : Measure (Unit → Bool)) := by
+  simp [OutcomeGame.mixed, StrategicGame.outcomeGame]
+
+def redundantMixedSimulation : MixtureSimulation IsUnilateralDeviation IsUnilateralDeviation
+    vectorGame.outcomeGame.mixed.toKernel redundantMixedOutcome.toKernel where
+  toFun σ i := (σ i, false)
+  deviatorMap := id
+  simulate _ _ := Kernel.deterministic (fun a i ↦ (a i).1)
+    (Measurable.of_eval fun i ↦ (measurable_pi_apply i).fst)
+  isMarkov_simulate _ _ := inferInstance
+  honest_law σ := by exact (mixed_profile_law σ).symm
+  deviation_ae i σ _ _ := by
+    cases i
+    exact ae_of_all _ (unit_unilateral σ)
+  deviation_law _ _ t _ := by
+    rw [Kernel.comp_deterministic_eq_comap, Kernel.comap_apply, mixed_profile_law]
+    rfl
+
+/-- Native mixed Nash transports through a law simulation with a redundant action. -/
+theorem redundant_mixed_equilibrium :
+    (redundantMixedOutcome.expectedNashProblem vectorGame.payoffStructure).IsEquilibrium
+      (fun _ ↦ (diracProba true, false)) :=
+  redundantMixedSimulation.transport_isMixedNash vector_mixed
+
 /-- The law-level identity composes without changing the selected certificate. -/
 example : (MixtureSimulation.id target.deviation targetLaw
     (fun _ _ ↦ MeasurableSet.of_discrete)).comp lawSimulation
       (fun _ _ ↦ MeasurableSet.of_discrete) = lawSimulation := by simp
+
+example : (MixtureSimulation.idOfMeasurableSingleton target.deviation targetLaw).comp
+    lawSimulation (fun _ _ ↦ MeasurableSet.of_discrete) = lawSimulation := by simp
+
+example : lawSimulation.comp (MixtureSimulation.idOfMeasurableSingleton source.deviation sourceLaw)
+    (fun _ _ ↦ MeasurableSet.of_discrete) = lawSimulation := by simp
 
 /-- Arbitrary deviation predicates on the real line admit identity simulation. -/
 example (D : Unit → ℝ → ℝ → Prop) : MixtureSimulation D D Kernel.id Kernel.id :=
@@ -386,8 +427,6 @@ end MathEconLibTest.GameTheory.Simulation
 
 section EquilibriumSimulation
 
-open MathEconLib.GameTheory
-
 example {S I T J V : Type*} [Preorder V]
     {P : EquilibriumProblem S I V} {Q : EquilibriumProblem T J V}
     (f : GameSimulation P Q) {s : S} (h : P.IsEquilibrium s) :
@@ -419,3 +458,24 @@ example {I O V : Type*} {A : I → Type*} [DecidableEq I] [MeasurableSpace O]
     [NormedAddCommGroup V] [NormedSpace ℝ V] [CompleteSpace V]
     (G : OutcomeGame I A (ProbabilityMeasure O)) (P : PayoffStructure I O V) :
     EquilibriumProblem (∀ i, A i) I V := G.expectedNashProblem P
+
+/-- Reindexing bounded utilities needs no measurable or topological structure. -/
+example {I J O V : Type*} [Bornology V] (P : PayoffStructure I O V) [P.Bounded] (f : J → I) :
+    (P.reindex f).Bounded := inferInstance
+
+/-- The pure Nash problem has exactly the unilateral replacement relation. -/
+example {I V : Type*} {A : I → Type*} [DecidableEq I] (G : StrategicGame I A V) :
+    G.nashProblem =
+      { deviation := fun i a b ↦ ∃ s, b = Function.update a i s
+        value := G.payoff
+        valid := fun _ ↦ True } := rfl
+
+/-- The mixed Nash problem retains its full defining record, including its payoff function. -/
+example {I V : Type*} {A : I → Type*} [Fintype I] [DecidableEq I]
+    [∀ i, MeasurableSpace (A i)] [NormedAddCommGroup V] [NormedSpace ℝ V] [CompleteSpace V]
+    (G : StrategicGame I A V) :
+    G.mixedNashProblem =
+      { deviation := fun i σ σ' ↦ (∃ τ, σ' = Function.update σ i τ) ∧
+          Integrable (G.payoff i) (Measure.pi (fun j ↦ (σ' j : Measure (A j))))
+        value := G.mixedExtension.payoff
+        valid := G.MixedPayoffsIntegrable } := rfl

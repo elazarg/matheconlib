@@ -304,7 +304,6 @@ theorem isEquilibrium_iff (f : GameMorphism P Q) (g : GameComorphism P Q)
     Q.IsEquilibrium (f.toFun s) ↔ P.IsEquilibrium s :=
   ⟨fun h ↦ g.pullback (hmap ▸ h), f.transport⟩
 
-
 end GameMorphism
 
 end MathEconLib.GameTheory

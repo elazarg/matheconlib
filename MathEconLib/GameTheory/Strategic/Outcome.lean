@@ -23,6 +23,7 @@ be flattened by integration.
 
 * `OutcomeGame`: Outcomes determined by action profiles.
 * `PayoffStructure`: Players' utilities over outcomes.
+* `PayoffStructure.reindex`: Utilities pulled back along a player map.
 * `StrategicGame.ofOutcome`: Strategic payoffs obtained by evaluating outcomes.
 * `OutcomeGame.mixed`: Outcome distributions induced by independent mixed actions.
 * `OutcomeGame.mixedFlattened`: Mixed actions with stochastic outcomes.
@@ -59,6 +60,20 @@ structure PayoffStructure (I : Type*) (O : Type*) (V : Type*) where
 
 variable {ι : Type*} {A : ι → Type*} {O : Type*} {V : Type*}
 
+namespace PayoffStructure
+
+/-- Pull back utilities along a map from new players to the original players. -/
+@[simps] def reindex {J : Type*} (P : PayoffStructure ι O V) (f : J → ι) :
+    PayoffStructure J O V where
+  payoff := P.payoff ∘ f
+
+@[simp] lemma reindex_id (P : PayoffStructure ι O V) : P.reindex id = P := rfl
+
+@[simp] lemma reindex_comp {J K : Type*} (P : PayoffStructure ι O V)
+    (f : J → ι) (g : K → J) : (P.reindex f).reindex g = P.reindex (f ∘ g) := rfl
+
+end PayoffStructure
+
 /-- The strategic payoffs of an outcome game evaluated by the players' utilities. -/
 def StrategicGame.ofOutcome (G : OutcomeGame ι A O) (P : PayoffStructure ι O V) :
     StrategicGame ι A V where
@@ -77,8 +92,9 @@ open scoped ProbabilityTheory
 
 variable [∀ i, MeasurableSpace (A i)] [MeasurableSpace O]
 
-/-- For countably many players with measurable action singletons, the set of
-unilateral deviations is measurable. Utility integrability is a separate condition. -/
+/-- The `IsUnilateralDeviation` relation from `Strategic.Basic` has measurable
+fibers for countably many players with measurable action singletons.
+Utility integrability is a separate condition. -/
 lemma measurableSet_isUnilateralDeviation [DecidableEq ι] [Countable ι]
     [∀ i, MeasurableSingletonClass (A i)] (i : ι) (a : ∀ i, A i) :
     MeasurableSet {b | IsUnilateralDeviation i a b} := by
@@ -152,6 +168,12 @@ export PayoffStructure.Measurable (measurable_payoff)
 
 export PayoffStructure.Bounded (isBounded_payoff_range)
 
+instance {J : Type*} [MeasurableSpace V] (P : PayoffStructure ι O V) [P.Measurable]
+    (f : J → ι) : (P.reindex f).Measurable := ⟨fun j ↦ P.measurable_payoff (f j)⟩
+
+instance {J : Type*} [Bornology V] (P : PayoffStructure ι O V) [P.Bounded]
+    (f : J → ι) : (P.reindex f).Bounded := ⟨fun j ↦ P.isBounded_payoff_range (f j)⟩
+
 /-- The payoff structure obtained by integrating utilities over outcome distributions.
 
 For real-valued payoffs, using this construction to evaluate lotteries adopts the expected-utility
@@ -164,6 +186,11 @@ utilities. -/
 noncomputable def expected [NormedAddCommGroup V] [NormedSpace ℝ V] [CompleteSpace V]
     (P : PayoffStructure ι O V) : PayoffStructure ι (ProbabilityMeasure O) V where
   payoff i μ := μ[P.payoff i]
+
+/-- Expected utility commutes with player reindexing. -/
+@[simp] lemma expected_reindex {J : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+    [CompleteSpace V] (P : PayoffStructure ι O V) (f : J → ι) :
+    (P.reindex f).expected = P.expected.reindex f := rfl
 
 /-- Real expected utility is measurable for bounded measurable utilities. -/
 instance (P : PayoffStructure ι O ℝ) [P.Measurable] [P.Bounded] : P.expected.Measurable where
@@ -246,6 +273,9 @@ protected class Continuous [TopologicalSpace V] (P : PayoffStructure ι O V) whe
   continuous_payoff i : Continuous (P.payoff i)
 
 export Continuous (continuous_payoff)
+
+instance {J : Type*} [TopologicalSpace V] (P : PayoffStructure ι O V) [P.Continuous]
+    (f : J → ι) : (P.reindex f).Continuous := ⟨fun j ↦ P.continuous_payoff (f j)⟩
 
 /-- Continuous utilities into a Borel value space are measurable when open sets in the outcome
 space are measurable. -/

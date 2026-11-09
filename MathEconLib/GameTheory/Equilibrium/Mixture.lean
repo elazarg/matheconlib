@@ -149,6 +149,12 @@ def ofExactLifts (f : S → T) (g : J → I)
   cases hk
   rfl
 
+/-- Both identity constructors select the same maps and kernel. -/
+theorem idOfMeasurableSingleton_eq_id [MeasurableSingletonClass S]
+    (D : I → S → S → Prop) (L : Kernel S O)
+    (hD : ∀ i s, MeasurableSet {s' | D i s s'}) :
+    idOfMeasurableSingleton D L = id D L hD := rfl
+
 @[simp] theorem id_comp (f : MixtureSimulation DP DQ LP LQ)
     (hDP : ∀ i s, MeasurableSet {s' | DP i s s'})
     (hDQ : ∀ j t, MeasurableSet {t' | DQ j t t'}) :
@@ -163,6 +169,20 @@ def ofExactLifts (f : S → T) (g : J → I)
   apply ext (f := f.comp (id DP LP hDP) hDP) (g := f) rfl rfl
   funext j s
   exact Kernel.id_comp _
+
+@[simp] theorem idOfMeasurableSingleton_comp [MeasurableSingletonClass T]
+    (f : MixtureSimulation DP DQ LP LQ)
+    (hDP : ∀ i s, MeasurableSet {s' | DP i s s'}) :
+    (idOfMeasurableSingleton DQ LQ).comp f hDP = f := by
+  apply ext (f := (idOfMeasurableSingleton DQ LQ).comp f hDP) (g := f) rfl rfl
+  funext j s
+  exact Kernel.comp_id _
+
+@[simp] theorem comp_idOfMeasurableSingleton [MeasurableSingletonClass S]
+    (f : MixtureSimulation DP DQ LP LQ)
+    (hDP : ∀ i s, MeasurableSet {s' | DP i s s'}) :
+    f.comp (idOfMeasurableSingleton DP LP) hDP = f := by
+  rw [idOfMeasurableSingleton_eq_id DP LP hDP, comp_id]
 
 /-- Kernel associativity makes staged simulation independent of parentheses. -/
 theorem comp_assoc {A B : Type*} [MeasurableSpace A] {DA : B → A → A → Prop}

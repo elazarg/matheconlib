@@ -37,7 +37,7 @@ theorem transport_expectedNash
     (f : MixtureSimulation IsUnilateralDeviation IsUnilateralDeviation G.toKernel H.toKernel)
     (P : PayoffStructure I O V) {a : ∀ i, A i}
     (ha : (G.expectedNashProblem P).IsEquilibrium a) :
-    (H.expectedNashProblem ⟨P.payoff ∘ f.deviatorMap⟩).IsEquilibrium (f.toFun a) :=
+    (H.expectedNashProblem (P.reindex f.deviatorMap)).IsEquilibrium (f.toFun a) :=
   f.transport_ofExpectedValue P.payoff ha
 
 end MathEconLib.GameTheory.MixtureSimulation

@@ -20,7 +20,7 @@ exact statements and hypotheses.
 | `Equilibrium.ComparisonMixture` | Shared mixtures of prescribed and alternative laws, independently of game structure |
 | `Equilibrium.Mixture` | Utility-independent law simulations, composition, evaluation, and the fixed-incumbent comparison bridge |
 | `Strategic.Basic`, `Strategic.Outcome`, `Strategic.Mixed` | Unilateral deviations, stochastic outcome evaluation, and independent mixed Nash |
-| `Strategic.Mixed.Transport`, `Strategic.Outcome.Transport` | Pure-to-mixed Nash and stochastic outcome-game transport |
+| `Strategic.Mixed.Transport`, `Strategic.Outcome.Transport` | Pure-to-mixed Nash, mixed-source law transport, and stochastic outcome-game transport |
 
 The existing `EquilibriumProblem`, `StrategicGame`, `OutcomeGame`, and
 `PayoffStructure` own the game semantics. Measures, probability measures, and
@@ -56,7 +56,9 @@ their expected interpretation. General measure families are permitted;
 probabilistic outcome-game applications supply probability measures.
 
 `mixedNashProblem` specializes this constructor to the independent product
-law. Its existing admissibility, values, and validity are unchanged.
+law. Both `nashProblem` and `mixedNashProblem` retain their full defining
+records: the tests check each record by `rfl`, including the mixed value
+function `G.mixedExtension.payoff`. Existing reduction equations are unchanged.
 `OutcomeGame.expectedNashProblem` specializes it to the game's stochastic
 outcomes and a `PayoffStructure`. This definition does not require measurable
 action spaces or a measurable outcome map. Measurability enters
@@ -68,6 +70,11 @@ construction on the existing mixed outcome game, including integrability.
 
 Preservation translates source states by `f : S → T` and assigns each target
 deviator a source deviator by `g : J → I`.
+
+`PayoffStructure.reindex P g` pulls utilities back along that player map.
+It commutes with expected utility and preserves measurability, boundedness,
+and continuity. For an unbundled utility family the same operation is ordinary
+function composition, `u ∘ g`; `reindex_payoff` connects the two representations.
 
 | Contract | Required correspondence |
 | --- | --- |
@@ -128,6 +135,11 @@ constructing a global `GameSimulation` requires uniform conditions.
 construction, including validity from honest-law equality.
 `transport_expectedNash` specializes it to `OutcomeGame` and
 `PayoffStructure`, so callers need no separate payoff-representation proofs.
+`transport_isMixedNash` applies this adapter to the canonical mixed outcome
+game and consumes the existing `G.IsMixedNash` predicate. Its target is the
+expected Nash problem of a stochastic outcome game on the original pure
+profiles. The canonical mixed outcome game is automatically measurable;
+no global payoff measurability assumption is introduced.
 
 ## Measurable simulation and composition
 
@@ -155,6 +167,9 @@ adapters add integrability separately, so composition needs no measurable
 integrability restriction on the bare relation.
 `id` uses measurable deviation sets; `idOfMeasurableSingleton` supplies
 identity on spaces with measurable singletons without that premise.
+The two identity constructors are equal when both sets of premises are
+available, and both have simplification laws for left and right composition.
+Composition still requires measurable source deviation sets.
 `ofExactLifts` uses measurable deterministic lifts and honest-law equality.
 Discrete target spaces allow the exact morphism's existential lifts to be
 selected measurably.
@@ -186,6 +201,8 @@ checks the public interfaces:
 - An added coin action has no exact lift but admits domination and a law mixture.
 - Stochastic outcome-game transport reuses the law certificate through the
   outcome and payoff adapters.
+- An existing vector-valued mixed equilibrium transports to a randomized target
+  with an additional outcome-irrelevant action component.
 - A varying-prescribed-law comparison mixture has no matching prescribed
   source law at either source index.
 - Local validity suffices even when global validity preservation fails.
