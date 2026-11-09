@@ -128,11 +128,8 @@ theorem comp_assoc {A B : Type*} {W : EquilibriumProblem A B V}
 /-- A separate reflection contract on the same state map gives an iff. -/
 theorem isEquilibrium_iff (f : GameSimulation P Q) (g : GameComorphism P Q)
     (hmap : g.toFun = f.toFun) (s : S) :
-    Q.IsEquilibrium (f.toFun s) ↔ P.IsEquilibrium s := by
-  constructor
-  · intro h
-    exact g.pullback (hmap ▸ h)
-  · exact f.transport
+    Q.IsEquilibrium (f.toFun s) ↔ P.IsEquilibrium s :=
+  ⟨fun h ↦ g.pullback (hmap ▸ h), f.transport⟩
 
 /-- Additive slack transports unchanged whenever addition is monotone on the
 right. This states the inequalities without introducing another equilibrium predicate. -/
@@ -146,23 +143,6 @@ theorem transport_le_add [Add V] [AddRightMono V] (f : GameSimulation P Q) (ε :
 end GameSimulation
 
 namespace GameMorphism
-
-section Equivalence
-
-variable {V : Type r} [LE V] {S : Type u} {I : Type v} {T : Type w} {J : Type x}
-    {P : EquilibriumProblem S I V} {Q : EquilibriumProblem T J V}
-
-/-- Exact preservation and independent reflection on the same state map give an
-iff using only a comparison relation; no order laws are required. -/
-theorem isEquilibrium_iff (f : GameMorphism P Q) (g : GameComorphism P Q)
-    (hmap : g.toFun = f.toFun) (s : S) :
-    Q.IsEquilibrium (f.toFun s) ↔ P.IsEquilibrium s := by
-  constructor
-  · intro h
-    exact g.pullback (hmap ▸ h)
-  · exact f.transport
-
-end Equivalence
 
 variable {V : Type r} [Preorder V] {S : Type u} {I : Type v}
     {T : Type w} {J : Type x} {U : Type y} {K : Type z}

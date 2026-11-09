@@ -64,6 +64,7 @@ public import MathEconLib.ForMathlib.StochasticOrder
 public import MathEconLib.GameTheory.Equilibrium
 public import MathEconLib.GameTheory.Equilibrium.Averaging
 public import MathEconLib.GameTheory.Equilibrium.ComparisonMixture
+public import MathEconLib.GameTheory.Equilibrium.Expected
 public import MathEconLib.GameTheory.Equilibrium.Mixture
 public import MathEconLib.GameTheory.Equilibrium.Problem
 public import MathEconLib.GameTheory.Equilibrium.Simulation
@@ -82,6 +83,7 @@ public import MathEconLib.GameTheory.Strategic.Mixed
 public import MathEconLib.GameTheory.Strategic.Mixed.Finite
 public import MathEconLib.GameTheory.Strategic.Mixed.Transport
 public import MathEconLib.GameTheory.Strategic.Outcome
+public import MathEconLib.GameTheory.Strategic.Outcome.Transport
 public import MathEconLib.Matching
 public import MathEconLib.Matching.Classical.Marriage
 public import MathEconLib.Matching.Classical.Marriage.Basic

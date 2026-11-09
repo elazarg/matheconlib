@@ -6,6 +6,8 @@ Authors: Elazar Gershuni
 module
 
 public import MathEconLib.GameTheory.Equilibrium.Averaging
+public import MathEconLib.GameTheory.Equilibrium.ComparisonMixture
+public import MathEconLib.GameTheory.Equilibrium.Expected
 public import Mathlib.Probability.Kernel.Composition.IntegralCompProd
 public import Mathlib.Probability.Kernel.Composition.CompMap
 
@@ -77,6 +79,21 @@ def id (D : I → S → S → Prop) (L : Kernel S O)
   deviation_ae i s t ht := by
     change ∀ᵐ s' ∂Measure.dirac t, D i s s'
     exact (ae_dirac_iff (hD i s)).mpr ht
+  deviation_law _ _ _ _ := by simp
+
+/-- Measurable singletons suffice for an identity simulation even when the
+deviation sets themselves are not known to be measurable. -/
+def idOfMeasurableSingleton [MeasurableSingletonClass S]
+    (D : I → S → S → Prop) (L : Kernel S O) : MixtureSimulation D D L L where
+  toFun := _root_.id
+  deviatorMap := _root_.id
+  simulate _ _ := Kernel.id
+  isMarkov_simulate _ _ := inferInstance
+  honest_law _ := rfl
+  deviation_ae i s t ht := by
+    change ∀ᵐ s' ∂Measure.dirac t, D i s s'
+    rw [ae_dirac_eq]
+    exact ht
   deviation_law _ _ _ _ := by simp
 
 /-- Measurable simulation kernels compose by kernel composition. Only source
@@ -190,7 +207,9 @@ theorem value_eq (s : S) (j : J) : Q.value j (f.toFun s) = P.value (f.deviatorMa
 
 /-- An integrable target law gives an integrable mixture of source values,
 supported on admissible deviations, with the same target value. -/
-theorem integral_representation (hDP : P.deviation = DP) {j : J} {s : S} {t : T}
+theorem integral_representation {j : J} {s : S} {t : T}
+    (hlegal : ∀ s', DP (f.deviatorMap j) s s' →
+      Integrable (u (f.deviatorMap j)) (LP s') → P.deviation (f.deviatorMap j) s s')
     (ht : DQ j (f.toFun s) t) (hint : Integrable (u (f.deviatorMap j)) (LQ t)) :
     ∃ μ : ProbabilityMeasure S, Integrable (P.value (f.deviatorMap j)) μ ∧
       (∀ᵐ s' ∂(μ : Measure S), P.deviation (f.deviatorMap j) s s') ∧
@@ -198,36 +217,40 @@ theorem integral_representation (hDP : P.deviation = DP) {j : J} {s : S} {t : T}
   have hi : Integrable (u (f.deviatorMap j)) ((LP ∘ₖ f.simulate j s) t) :=
     (f.deviation_law j s t ht).symm ▸ hint
   have heval : P.value (f.deviatorMap j) =
-      fun s' ↦ ∫ o, u (f.deviatorMap j) o ∂LP s' :=
-    funext (hP (f.deviatorMap j))
+      fun s' ↦ ∫ o, u (f.deviatorMap j) o ∂LP s' := funext (hP (f.deviatorMap j))
   refine ⟨⟨f.simulate j s t, inferInstance⟩, ?_, ?_, ?_⟩
   · simpa only [ProbabilityMeasure.coe_mk, heval] using hi.integral_comp
-  · simpa only [ProbabilityMeasure.coe_mk, hDP] using f.deviation_ae j s t ht
+  · exact ((f.deviation_ae j s t ht).and hi.ae_of_comp).mono fun s' hs' ↦
+      hlegal s' hs'.1 hs'.2
   · simp only [ProbabilityMeasure.coe_mk]
-    rw [hQ, ← f.deviation_law j s t ht, Kernel.integral_comp hi,
-      heval]
+    rw [hQ, ← f.deviation_law j s t ht, Kernel.integral_comp hi, heval]
 
 variable [CompleteSpace V] [PartialOrder V] [IsOrderedAddMonoid V]
     [IsOrderedModule ℝ V] [ClosedIciTopology V]
 
-/-- Ordered integral evaluation transports optimality without scalarizing payoffs. -/
-theorem transport_isDeviationOptimal (hDP : P.deviation = DP) (hDQ : Q.deviation = DQ)
-    (hdev : ∀ j s t, DQ j (f.toFun s) t → Integrable (u (f.deviatorMap j)) (LQ t))
-    {s : S} (hs : P.IsDeviationOptimal s) : Q.IsDeviationOptimal (f.toFun s) := by
-  apply hs.of_integral_bounds f.deviatorMap
-  · intro j
-    exact (f.value_eq u hP hQ s j).symm.le
-  · intro j t ht
-    have ht' : DQ j (f.toFun s) t := hDQ ▸ ht
-    obtain ⟨μ, hi, hd, he⟩ := f.integral_representation u hP hQ hDP ht' (hdev j s t ht')
-    exact ⟨μ, hi, hd, he.le⟩
+/-- Ordered evaluation transports optimality using only admitted target deviations
+at the incumbent. Integrable simulated source deviations must be admissible in `P`. -/
+theorem transport_isDeviationOptimal {s : S}
+    (hlegal : ∀ j s', DP (f.deviatorMap j) s s' →
+      Integrable (u (f.deviatorMap j)) (LP s') → P.deviation (f.deviatorMap j) s s')
+    (hcover : ∀ j t, Q.deviation j (f.toFun s) t → DQ j (f.toFun s) t)
+    (hdev : ∀ j t, Q.deviation j (f.toFun s) t → Integrable (u (f.deviatorMap j)) (LQ t))
+    (hs : P.IsDeviationOptimal s) : Q.IsDeviationOptimal (f.toFun s) := by
+  apply hs.of_integral_bounds f.deviatorMap (fun j ↦ (f.value_eq u hP hQ s j).ge)
+  intro j t ht
+  obtain ⟨μ, hi, hd, he⟩ :=
+    f.integral_representation u hP hQ (hlegal j) (hcover j t ht) (hdev j t ht)
+  exact ⟨μ, hi, hd, he.le⟩
 
-/-- Full equilibrium transport additionally preserves candidate validity. -/
-theorem transport (hDP : P.deviation = DP) (hDQ : Q.deviation = DQ)
-    (hvalid : ∀ s, P.valid s → Q.valid (f.toFun s))
-    (hdev : ∀ j s t, DQ j (f.toFun s) t → Integrable (u (f.deviatorMap j)) (LQ t))
-    {s : S} (hs : P.IsEquilibrium s) : Q.IsEquilibrium (f.toFun s) :=
-  ⟨hvalid s hs.valid, f.transport_isDeviationOptimal u hP hQ hDP hDQ hdev hs.deviation_le⟩
+/-- Full equilibrium transport needs validity only of the translated incumbent. -/
+theorem transport {s : S}
+    (hlegal : ∀ j s', DP (f.deviatorMap j) s s' →
+      Integrable (u (f.deviatorMap j)) (LP s') → P.deviation (f.deviatorMap j) s s')
+    (hcover : ∀ j t, Q.deviation j (f.toFun s) t → DQ j (f.toFun s) t)
+    (hvalid : Q.valid (f.toFun s))
+    (hdev : ∀ j t, Q.deviation j (f.toFun s) t → Integrable (u (f.deviatorMap j)) (LQ t))
+    (hs : P.IsEquilibrium s) : Q.IsEquilibrium (f.toFun s) :=
+  ⟨hvalid, f.transport_isDeviationOptimal u hP hQ hlegal hcover hdev hs.deviation_le⟩
 
 end Evaluation
 
@@ -256,19 +279,33 @@ def toSimulation (f : MixtureSimulation DP DQ LP LQ)
     (u : I → O → ℝ)
     (hP : ∀ i s, P.value i s = ∫ o, u i o ∂LP s)
     (hQ : ∀ j t, Q.value j t = ∫ o, u (f.deviatorMap j) o ∂LQ t)
-    (hDP : P.deviation = DP) (hDQ : Q.deviation = DQ)
+    (hlegal : ∀ j s s', DP (f.deviatorMap j) s s' →
+      Integrable (u (f.deviatorMap j)) (LP s') → P.deviation (f.deviatorMap j) s s')
+    (hcover : ∀ j s t, Q.deviation j (f.toFun s) t → DQ j (f.toFun s) t)
     (hvalid : ∀ s, P.valid s → Q.valid (f.toFun s))
-    (hdev : ∀ j s t, DQ j (f.toFun s) t → Integrable (u (f.deviatorMap j)) (LQ t)) :
+    (hdev : ∀ j s t, Q.deviation j (f.toFun s) t → Integrable (u (f.deviatorMap j)) (LQ t)) :
     GameSimulation P Q where
   toFun := f.toFun
   deviatorMap := f.deviatorMap
-  value_le j s := (f.value_eq u hP hQ s j).symm.le
+  value_le j s := (f.value_eq u hP hQ s j).ge
   valid_preserves := hvalid
   deviation_dominated j s t ht := by
-    have ht' : DQ j (f.toFun s) t := hDQ ▸ ht
-    obtain ⟨s', hd, _, hb⟩ := f.exists_source_deviation_ge u ht' (hdev j s t ht')
-    refine ⟨s', hDP.symm ▸ hd, ?_⟩
-    simpa only [hP, hQ] using hb
+    obtain ⟨s', hd, hi, hb⟩ := f.exists_source_deviation_ge u (hcover j s t ht) (hdev j s t ht)
+    exact ⟨s', hlegal j s s' hd hi, by simpa only [hP, hQ] using hb⟩
+
+/-- Evaluating outcome kernels admits integrable simulated deviations automatically.
+Honest-law equality also transports incumbent integrability. -/
+theorem transport_ofExpectedValue {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+    [CompleteSpace V] [PartialOrder V] [IsOrderedAddMonoid V] [IsOrderedModule ℝ V]
+    [ClosedIciTopology V] (f : MixtureSimulation DP DQ LP LQ) (u : I → O → V) {s : S}
+    (hs : (EquilibriumProblem.ofExpectedValue DP LP u).IsEquilibrium s) :
+    (EquilibriumProblem.ofExpectedValue DQ LQ (u ∘ f.deviatorMap)).IsEquilibrium (f.toFun s) := by
+  apply f.transport (P := EquilibriumProblem.ofExpectedValue DP LP u)
+    (Q := EquilibriumProblem.ofExpectedValue DQ LQ (u ∘ f.deviatorMap)) u
+    (fun _ _ ↦ rfl) (fun _ _ ↦ rfl)
+    (fun _ _ hd hi ↦ ⟨hd, hi⟩) (fun _ _ ht ↦ ht.1) ?_ (fun _ _ ht ↦ ht.2) hs
+  intro j
+  simpa only [Function.comp_apply, f.honest_law] using hs.valid (f.deviatorMap j)
 
 end MixtureSimulation
 
@@ -296,5 +333,29 @@ def toMixtureSimulation [DiscreteMeasurableSpace T] (f : GameMorphism P Q)
     simpa only [lift, dite_eq_left ht] using (f.deviation_lifts j s t ht).choose_spec.2
 
 end GameMorphism
+
+namespace MixtureSimulation
+
+variable {S : Type u} {T : Type v} {I J : Type*} {O : Type o}
+    [MeasurableSpace S] [MeasurableSpace T] [MeasurableSpace O]
+    {DP : I → S → S → Prop} {DQ : J → T → T → Prop}
+    {LP : Kernel S O} {LQ : Kernel T O}
+
+/-- At a fixed incumbent and deviator, a deviation simulation is a mixture of
+comparisons with constant prescribed law. The target index records legality. -/
+def toComparisonMixture (f : MixtureSimulation DP DQ LP LQ) (j : J) (s : S) :
+    ComparisonMixture (Kernel.const S (LP s)) LP
+      (Kernel.const {t // DQ j (f.toFun s) t} (LQ (f.toFun s)))
+      (LQ.comap Subtype.val measurable_subtype_coe) where
+  mixing := (f.simulate j s).comap Subtype.val measurable_subtype_coe
+  isMarkov_mixing := inferInstance
+  prescribed_eq := by rw [Kernel.const_comp', f.honest_law]
+  alternative_eq := by
+    apply Kernel.ext
+    intro t
+    change (LP ∘ₖ f.simulate j s) t.val = LQ t.val
+    exact f.deviation_law j s t.val t.property
+
+end MixtureSimulation
 
 end MathEconLib.GameTheory

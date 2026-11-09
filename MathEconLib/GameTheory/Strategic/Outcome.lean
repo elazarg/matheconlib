@@ -1,12 +1,13 @@
 /-
-Copyright (c) 2026 Ben Eltschig, Daniel Lyng. All rights reserved.
+Copyright (c) 2026 Ben Eltschig, Daniel Lyng, Elazar Gershuni. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Ben Eltschig, Daniel Lyng
+Authors: Ben Eltschig, Daniel Lyng, Elazar Gershuni
 -/
 module
 
 public import MathEconLib.ForMathlib.ProbabilityMeasure
 public import MathEconLib.GameTheory.Strategic.Basic
+public import MathEconLib.GameTheory.Equilibrium.Expected
 
 /-!
 # Outcomes and expected payoffs
@@ -26,6 +27,8 @@ be flattened by integration.
 * `OutcomeGame.mixed`: Outcome distributions induced by independent mixed actions.
 * `OutcomeGame.mixedFlattened`: Mixed actions with stochastic outcomes.
 * `PayoffStructure.expected`: Expected utilities over outcome distributions.
+* `OutcomeGame.toKernel`: Measurable stochastic outcomes as a Markov kernel.
+* `OutcomeGame.expectedNashProblem`: Expected Nash with integrability in admissibility.
 
 ## Main statements
 
@@ -74,6 +77,15 @@ open scoped ProbabilityTheory
 
 variable [∀ i, MeasurableSpace (A i)] [MeasurableSpace O]
 
+/-- For countably many players with measurable action singletons, the set of
+unilateral deviations is measurable. Utility integrability is a separate condition. -/
+lemma measurableSet_isUnilateralDeviation [DecidableEq ι] [Countable ι]
+    [∀ i, MeasurableSingletonClass (A i)] (i : ι) (a : ∀ i, A i) :
+    MeasurableSet {b | IsUnilateralDeviation i a b} := by
+  simp only [isUnilateralDeviation_iff, Set.ofPred_forall]
+  exact MeasurableSet.iInter fun j ↦ .iInter fun _ ↦
+    (measurableSet_singleton (a j)).preimage (measurable_pi_apply j)
+
 namespace OutcomeGame
 
 /-- An outcome game is measurable when its outcome function is measurable. -/
@@ -82,6 +94,19 @@ protected class Measurable (G : OutcomeGame ι A O) where
   measurable_outcome : Measurable G.outcome
 
 export Measurable (measurable_outcome)
+
+/-- A measurable stochastic outcome game determines a Markov kernel on profiles. -/
+def toKernel (G : OutcomeGame ι A (ProbabilityMeasure O)) [G.Measurable] :
+    ProbabilityTheory.Kernel (∀ i, A i) O :=
+  ProbabilityMeasure.toKernel G.outcome G.measurable_outcome
+
+/-- The profile's outcome law is the kernel's value. -/
+@[simp] lemma toKernel_apply (G : OutcomeGame ι A (ProbabilityMeasure O)) [G.Measurable]
+    (a : ∀ i, A i) : G.toKernel a = (G.outcome a : Measure O) := rfl
+
+instance (G : OutcomeGame ι A (ProbabilityMeasure O)) [G.Measurable] :
+    ProbabilityTheory.IsMarkovKernel G.toKernel := inferInstanceAs
+      (ProbabilityTheory.IsMarkovKernel (ProbabilityMeasure.toKernel _ _))
 
 /-- The outcome distribution induced by independent mixed actions.
 
@@ -159,6 +184,28 @@ instance [NormedAddCommGroup V] [NormedSpace ℝ V] [CompleteSpace V]
 end PayoffStructure
 
 end Measurable
+
+namespace OutcomeGame
+
+open MeasureTheory
+
+variable [MeasurableSpace O]
+
+/-- The expected-utility Nash problem of a stochastic outcome game. Incumbents
+and unilateral deviations satisfy the usual payoff integrability conditions. -/
+noncomputable def expectedNashProblem [DecidableEq ι] [NormedAddCommGroup V]
+    [NormedSpace ℝ V] [CompleteSpace V] (G : OutcomeGame ι A (ProbabilityMeasure O))
+    (P : PayoffStructure ι O V) : EquilibriumProblem (∀ i, A i) ι V :=
+  .ofExpectedValue IsUnilateralDeviation (fun a ↦ (G.outcome a : Measure O)) P.payoff
+
+/-- The expected Nash problem evaluates the existing expected payoff structure. -/
+@[simp] lemma expectedNashProblem_value [DecidableEq ι] [NormedAddCommGroup V]
+    [NormedSpace ℝ V] [CompleteSpace V]
+    (G : OutcomeGame ι A (ProbabilityMeasure O))
+    (P : PayoffStructure ι O V) (i : ι) (a : ∀ i, A i) :
+    (G.expectedNashProblem P).value i a = (StrategicGame.ofOutcome G P.expected).payoff i a := rfl
+
+end OutcomeGame
 
 section Continuous
 

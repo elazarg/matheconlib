@@ -5,7 +5,7 @@ Authors: Elazar Gershuni
 -/
 module
 
-public import MathEconLib.GameTheory.Equilibrium.Mixture
+public import Mathlib.Probability.Kernel.Composition.IntegralCompProd
 
 /-!
 # Mixtures of incentive comparisons
@@ -101,28 +101,5 @@ theorem preserves_at {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] [Com
 
 end ComparisonMixture
 
-namespace MixtureSimulation
-
-variable {S : Type u} {T : Type v} {I J : Type*} {O : Type o}
-    [MeasurableSpace S] [MeasurableSpace T] [MeasurableSpace O]
-    {DP : I → S → S → Prop} {DQ : J → T → T → Prop}
-    {LP : Kernel S O} {LQ : Kernel T O}
-
-/-- At a fixed incumbent and deviator, a deviation simulation is a mixture of
-comparisons with constant prescribed law. The target index records legality. -/
-def toComparisonMixture (f : MixtureSimulation DP DQ LP LQ) (j : J) (s : S) :
-    ComparisonMixture (Kernel.const S (LP s)) LP
-      (Kernel.const {t // DQ j (f.toFun s) t} (LQ (f.toFun s)))
-      (LQ.comap Subtype.val measurable_subtype_coe) where
-  mixing := (f.simulate j s).comap Subtype.val measurable_subtype_coe
-  isMarkov_mixing := inferInstance
-  prescribed_eq := by rw [Kernel.const_comp', f.honest_law]
-  alternative_eq := by
-    apply Kernel.ext
-    intro t
-    change (LP ∘ₖ f.simulate j s) t.val = LQ t.val
-    exact f.deviation_law j s t.val t.property
-
-end MixtureSimulation
 
 end MathEconLib.GameTheory

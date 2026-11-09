@@ -675,30 +675,3 @@ example : ∀ {ι : Type u} {A : ι → Type v} {O : Type w}
     [P.expected.Continuous],
     ∃ a, (StrategicGame.ofOutcome G.mixed P.expected).IsNash a :=
   @OutcomeGame.exists_isNash_of_isCompact
-
-
-/-! ## Equilibrium simulations -/
-
-section EquilibriumSimulation
-
-open MathEconLib.GameTheory
-
-example {S I T J V : Type*} [Preorder V]
-    {P : EquilibriumProblem S I V} {Q : EquilibriumProblem T J V}
-    (f : GameSimulation P Q) {s : S} (h : P.IsEquilibrium s) :
-    Q.IsEquilibrium (f.toFun s) := f.transport h
-
-example {S I T J V : Type*} [LE V]
-    {P : EquilibriumProblem S I V} {Q : EquilibriumProblem T J V}
-    (f : GameMorphism P Q) (g : GameComorphism P Q)
-    (hmap : g.toFun = f.toFun) (s : S) :
-    Q.IsEquilibrium (f.toFun s) ↔ P.IsEquilibrium s := f.isEquilibrium_iff g hmap s
-
-example {S I T J V : Type*} [Preorder V] [Add V] [AddRightMono V]
-    {P : EquilibriumProblem S I V} {Q : EquilibriumProblem T J V}
-    (f : GameSimulation P Q) (ε : V) {s : S}
-    (h : ∀ i s', P.deviation i s s' → P.value i s' ≤ P.value i s + ε) :
-    ∀ j t, Q.deviation j (f.toFun s) t → Q.value j t ≤ Q.value j (f.toFun s) + ε :=
-  f.transport_le_add ε h
-
-end EquilibriumSimulation

@@ -18,11 +18,5 @@ namespace Prod
 instance instIsOrderedModule {R M N : Type*} [Preorder R] [Zero R]
     [Preorder M] [Zero M] [Preorder N] [Zero N] [SMul R M] [SMul R N]
     [IsOrderedModule R M] [IsOrderedModule R N] : IsOrderedModule R (M × N) where
-  smul_le_smul_of_nonneg_left := by
-    intro a ha b c h
-    exact ⟨smul_le_smul_of_nonneg_left h.1 ha, smul_le_smul_of_nonneg_left h.2 ha⟩
-  smul_le_smul_of_nonneg_right := by
-    intro b hb a c h
-    exact ⟨smul_le_smul_of_nonneg_right h hb.1, smul_le_smul_of_nonneg_right h hb.2⟩
 
 end Prod

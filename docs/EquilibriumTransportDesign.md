@@ -1,238 +1,218 @@
-# Equilibrium morphisms and simulations
+# Equilibrium transport architecture
 
-## Status
-
-Implementation draft on `design/equilibrium-simulations`, based on MathEconLib
-`f379e22088caa905e95701e1f820696a4c40b01c`. The branch extends the theory around
-`EquilibriumProblem`; its fields and existing equilibrium predicates are unchanged.
-The new API is proposed for review, not an adopted upstream design.
-
-The implementation is available through
+The public root is
 [`MathEconLib.GameTheory.Equilibrium`](../MathEconLib/GameTheory/Equilibrium.lean).
-The exact Lean declarations are authoritative for binders and assumptions.
+The strategic applications are available through
+[`Strategic.Mixed.Transport`](../MathEconLib/GameTheory/Strategic/Mixed/Transport.lean)
+and
+[`Strategic.Outcome.Transport`](../MathEconLib/GameTheory/Strategic/Outcome/Transport.lean).
+All are exported by `MathEconLib`. The Lean declarations are authoritative for
+exact statements and hypotheses.
 
-| Module | Content |
+## Layers
+
+| Module | Responsibility |
 | --- | --- |
-| [Simulation](../MathEconLib/GameTheory/Equilibrium/Simulation.lean) | Pointwise domination, `GameSimulation`, transport, composition, exact-map conversion, reflection, and additive slack |
-| [Averaging](../MathEconLib/GameTheory/Equilibrium/Averaging.lean) | Ordered integral bounds and the scalar dominating-witness constructor |
-| [Mixture](../MathEconLib/GameTheory/Equilibrium/Mixture.lean) | Utility-independent kernel simulation, composition, observations, evaluation, and exact-lift relationships |
-| [ComparisonMixture](../MathEconLib/GameTheory/Equilibrium/ComparisonMixture.lean) | Shared mixtures of two laws and ordered incentive preservation |
-| [Mixed.Transport](../MathEconLib/GameTheory/Strategic/Mixed/Transport.lean) | Pure Nash implies mixed Nash at the Dirac profile, including ordered vector payoffs |
-| [ModuleProd](../MathEconLib/ForMathlib/Order/ModuleProd.lean) | Componentwise ordered scalar multiplication, used by the vector client |
-| [Simulation clients](../MathEconLibTest/GameTheory/Simulation.lean) | Public-interface applications and counterexamples |
+| `Equilibrium.Problem` | Candidate validity, deviation optimality, equilibrium, exact morphisms and comorphisms |
+| `Equilibrium.Expected` | Expected-value evaluation with integrable incumbents and deviations |
+| `Equilibrium.Simulation` | Pointwise domination, preservation, composition, reflection with a separate comorphism, and additive slack |
+| `Equilibrium.Averaging` | Ordered averaging and scalar dominating witnesses |
+| `Equilibrium.ComparisonMixture` | Shared mixtures of prescribed and alternative laws, independently of game structure |
+| `Equilibrium.Mixture` | Utility-independent law simulations, composition, evaluation, and the fixed-incumbent comparison bridge |
+| `Strategic.Basic`, `Strategic.Outcome`, `Strategic.Mixed` | Unilateral deviations, stochastic outcome evaluation, and independent mixed Nash |
+| `Strategic.Mixed.Transport`, `Strategic.Outcome.Transport` | Pure-to-mixed Nash and stochastic outcome-game transport |
 
-## Shared foundations
+The existing `EquilibriumProblem`, `StrategicGame`, `OutcomeGame`, and
+`PayoffStructure` own the game semantics. Measures, probability measures, and
+kernels are Mathlib's carriers. No alternative equilibrium predicate or
+probability representation is introduced. Generic product-order support and
+the conversion from measurable probability-measure families to Markov kernels
+live in `ForMathlib`.
 
-The owners remain `EquilibriumProblem`, `StrategicGame`, `OutcomeGame`,
-`PayoffStructure`, the mixed and Bayesian equilibrium problems, and the existing
-probability APIs. Kernels are Mathlib's `ProbabilityTheory.Kernel`; no alternative
-game form, probability carrier, preference hierarchy, or equilibrium engine is added.
+## Admissibility and expected values
 
-Selected state maps, deviator maps, and simulation kernels are data in `Type`.
-Their laws are proofs. Existence of an individual dominating source deviation
-remains existential. Certificates are explicit arguments, not typeclasses.
-Standard Markov-kernel instances expose the probability property of selected kernels.
+Candidate validity constrains the incumbent. An admissible deviation to an
+invalid target still counts against equilibrium. `IsDeviationOptimal` isolates
+the payoff inequalities from candidate validity.
 
-Candidate validity constrains the incumbent. An admissible deviation to an invalid
-target still counts. Full transport includes validity preservation or reflection;
-deviation-optimality transport is stated independently.
+`IsUnilateralDeviation` is the shared profile relation: one player replaces
+their action while every other player's action remains fixed. It is used by
+pure Nash, mixed Nash, and stochastic outcome Nash.
 
-## Contracts and relationships
+`EquilibriumProblem.ofExpectedValue D L u` evaluates a relation `D` using a
+family of measures `L` and utilities `u` in a real Banach space:
 
-For source states `S`, target states `T`, and deviators `I` and `J`, preservation
-uses `f : S → T` and `g : J → I`. Reflection uses a deviator map in the other direction.
+| Component | Definition |
+| --- | --- |
+| Value at `s` for `i` | The integral of `u i` against `L s` |
+| Admitted deviation from `s` to `t` | `D i s t` and integrability of `u i` against `L t` |
+| Valid incumbent `s` | Integrability against `L s` for every player |
 
-| Contract | Requirement | Result |
-| --- | --- | --- |
-| Existing `GameMorphism` | Each target deviation lifts to a legal source deviation with exactly that image; corresponding values agree | Preservation |
-| Existing `GameComorphism` | Source deviations map to target deviations; corresponding values agree | Reflection at image states |
-| `GameSimulation` | Each target deviation is bounded by a legal source deviation; translated incumbent values weakly increase | Preservation |
-| `MixtureSimulation` | Honest observed laws agree; a Markov kernel represents each target deviation by legal source deviations | Utility-independent law correspondence, ordered averaging, and scalar simulation |
-| `ComparisonMixture` | One Markov kernel mixes both prescribed and alternative laws with the same weights | Preservation of integrable ordered comparisons |
+The constructor needs no measurable structure on states, no measurability of
+the family of measures, and no global boundedness or measurability of utilities.
+Integrability is checked against the individual laws used by the problem.
+Completeness of the payoff space ensures that integrable Bochner values have
+their expected interpretation. General measure families are permitted;
+probabilistic outcome-game applications supply probability measures.
 
-```mermaid
-flowchart TD
-  E["Exact morphism"] -->|"preordered values"| D["Deviation domination"]
-  E -->|"honest laws and measurable lifts"| M["Law-mixture simulation"]
-  M -->|"integrable scalar evaluation and validity"| D
-  M -->|"fixed incumbent"| C["Comparison mixture"]
-  M -->|"ordered integral evaluation and validity"| P["Equilibrium preservation"]
-  D --> P
-  C -->|"integration and problem adapters"| P
-```
+`mixedNashProblem` specializes this constructor to the independent product
+law. Its existing admissibility, values, and validity are unchanged.
+`OutcomeGame.expectedNashProblem` specializes it to the game's stochastic
+outcomes and a `PayoffStructure`. This definition does not require measurable
+action spaces or a measurable outcome map. Measurability enters
+`OutcomeGame.toKernel`, where a uniform outcome kernel is needed.
+`mixedNashProblem_eq_expectedNashProblem` identifies mixed Nash with this
+construction on the existing mixed outcome game, including integrability.
 
-These arrows have different hypotheses. Exact reward preservation alone does not
-preserve observed laws. A mixture law need not correspond to any single source
-state. Bounds for one utility need not hold for other utilities.
+## Preservation and reflection
 
-### Ordered domination
+Preservation translates source states by `f : S → T` and assigns each target
+deviator a source deviator by `g : J → I`.
 
-`GameSimulation` itself assumes only `LE V`. Its transport and composition use
-`Preorder V`. The argument for a target deviation to `t` is
+| Contract | Required correspondence |
+| --- | --- |
+| `GameMorphism` | Target deviations lift exactly to source deviations; corresponding values agree; validity is preserved |
+| `GameComorphism` | Source deviations map to target deviations; corresponding values agree; validity is reflected |
+| `GameSimulation` | Every target deviation is bounded by a legal source deviation; the incumbent value weakly increases; validity is preserved |
+| `MixtureSimulation` | Honest laws agree; every covered target deviation law is a probability mixture of legal source deviation laws |
+| `ComparisonMixture` | One probability kernel mixes both laws of each source comparison to reproduce the target comparison |
+
+Simulation fields need only a comparison relation. Transport and composition
+use preorder laws; exact morphism and comorphism transport needs only `LE`.
+The pointwise domination argument is
 
 \[
 v_Q(j,t) \le v_P(g(j),s') \le v_P(g(j),s) \le v_Q(j,f(s)).
 \]
 
-The last inequality is part of the certificate; incumbent equality is unnecessary
-for preservation. `GameMorphism.toSimulation` supplies the bounds by equality.
-The conversion preserves identity and composition.
+`IsDeviationOptimal.of_dominated_deviations` states this argument at one
+incumbent. `GameSimulation` packages the hypotheses uniformly and supports
+identity and composition. Exact morphisms convert to simulations.
 
-`IsDeviationOptimal.of_dominated_deviations` gives the unbundled, pointwise result.
-It requires neither a global compiler nor validity outside the candidate in question.
+A comorphism with the same state map supplies independent reflection, giving
+an equilibrium iff at image states. This does not assert that every target
+equilibrium has a source preimage. `transport_le_add` preserves the same
+additive slack under monotone addition; it does not add an approximate
+equilibrium predicate.
 
-A simulation and a `GameComorphism` with the same state map give an equilibrium iff
-at corresponding states. An exact morphism/comorphism pair gives this iff with only
-`LE V`. Neither result asserts that every target equilibrium has a source preimage.
+## Averaging and law evaluation
 
-`transport_le_add` preserves the same additive slack under monotone addition. It
-states inequalities without creating a competing approximate-equilibrium predicate.
+`IsDeviationOptimal.of_integral_bounds` replaces a dominating source point
+with an integrable probability mixture of admissible source deviations.
+Ordered integration proves preservation for ordered Banach payoffs with
+compatible addition, scalar multiplication, and closed upper order intervals.
+It does not require a componentwise dominating support point.
 
-### Averaging and scalar evaluation
+For real payoffs, Mathlib's mean-bound witness theorem supplies one admissible
+source deviation with value at least the integral. Almost-sure admissibility
+is included in the excluded null set. `GameSimulation.ofIntegralBounds` and
+`MixtureSimulation.toSimulation` use this scalar selection. The selected
+point need not reproduce the mixture's outcome law.
 
-`IsDeviationOptimal.of_integral_bounds` admits a probability measure on an arbitrary
-measurable source state space. It must almost surely choose legal source deviations;
-the source-value integrand must be integrable; the target deviation value may be
-bounded above by its integral. Ordered integration then replaces the first step of
-the domination chain.
+A law certificate is parameterized by bare relations `DP`, `DQ` and kernels
+`LP`, `LQ`, independently of utilities. Evaluation against problems `P`,
+`Q` needs the following adapters at the incumbent:
 
-The ordered-vector version uses a complete real normed space, compatible partial
-order and scalar multiplication, and `ClosedIciTopology`. An arbitrary order on a
-Banach space is insufficient.
+- Every deviation admitted by `Q` is covered by `DQ`.
+- A source alternative satisfying `DP` and having integrable utility is
+  admitted by `P`.
+- Utility is integrable under each admitted target deviation's law.
+- The translated incumbent is valid in `Q`.
 
-For real values, `GameSimulation.ofIntegralBounds` uses Mathlib's
-`exists_notMem_null_integral_le` to select an admissible source deviation whose
-value is at least the integral. The selected value need not equal the integral.
-The witness depends on the utility evaluation; infinite expected values are outside
-this constructor.
+Relation equality is unnecessary. Conditional source integrability follows
+almost surely from target integrability and the kernel composition identity.
+The pointwise transport lemmas require these conditions only at the incumbent;
+constructing a global `GameSimulation` requires uniform conditions.
 
-### Law mixtures and measurability
+`transport_ofExpectedValue` supplies these adapters for the shared expected-value
+construction, including validity from honest-law equality.
+`transport_expectedNash` specializes it to `OutcomeGame` and
+`PayoffStructure`, so callers need no separate payoff-representation proofs.
 
-`MixtureSimulation` takes deviation relations and source/target observation kernels
-as explicit parameters. Its selected kernel
+## Measurable simulation and composition
+
+A `MixtureSimulation` selects
 
 ```lean
 simulate : J → S → Kernel T S
 ```
 
-is Markov. At a source incumbent `s`, it sends each target alternative `t` to a
-probability law on source alternatives. Only the simulation kernel is required to
-be Markov by the certificate: the observation kernels can be general measure kernels.
-Probability-valued games instantiate these with Markov observation kernels.
+and requires a Markov kernel for every fixed deviator and incumbent. This
+selected measurable realization is stronger than pointwise existence of
+representing probability measures. No joint measurability in the fixed
+parameters or measurability of the incumbent compiler is required.
 
-Simulation composes by kernel composition. Source deviation sets must be measurable
-for almost-sure legality to propagate through composition. No measurability of the
-incumbent compiler, or joint measurability in the fixed deviator/incumbent parameters,
-is imposed when the proof does not need it. `id`, `comp`, their identity and
-associativity laws, and `mapOutcome` are implemented.
+The observation kernels themselves may be general measure kernels.
+Probabilistic games use Markov observation kernels. Honest-law equality alone
+says nothing about whether a pointwise utility-preserving map is a law
+simulation.
 
-`ofExactLifts` accepts measurable deterministic source lifts and honest-law equality.
-`GameMorphism.toMixtureSimulation` constructs them automatically when the target
-measurable space is discrete and source deviation sets are measurable. Arbitrary
-pointwise exact lifts do not automatically provide measurable selections.
+Composition mixes the selected simulation kernels. Source deviation sets must
+be measurable to propagate almost-sure legality through composition.
+For countably many players with measurable action singletons,
+`measurableSet_isUnilateralDeviation` supplies this premise. Expected-value
+adapters add integrability separately, so composition needs no measurable
+integrability restriction on the bare relation.
+`id` uses measurable deviation sets; `idOfMeasurableSingleton` supplies
+identity on spaces with measurable singletons without that premise.
+`ofExactLifts` uses measurable deterministic lifts and honest-law equality.
+Discrete target spaces allow the exact morphism's existential lifts to be
+selected measurably.
 
-For utility evaluation, `value_eq` identifies honest incumbent values.
-`integral_representation` derives the source-value mixture from the actual target
-law's integrability, using Mathlib's kernel tower identity. The representation
-hypotheses identify the resulting integrals with the supplied problems' values,
-including deviator reindexing. `transport` handles ordered vector values;
-`exists_source_deviation_ge` additionally supplies a legal, integrable scalar
-witness whose utility is at least the target utility; `toSimulation` uses it. Candidate validity
-is an explicit adapter hypothesis in both cases.
+`mapOutcome` applies a common measurable observation to both outcome laws
+while retaining the simulation witnesses. It makes the observed outcome
+space explicit.
 
-### Mixtures of comparisons
+## Mixtures of comparisons
 
-`ComparisonMixture` does not require a compiler or a common incumbent. Its selected
-kernel represents both target laws by source laws, with identical mixture weights.
-It has identity, composition, associativity, and `preserves_at`.
+`ComparisonMixture` pairs prescribed and alternative laws and mixes both
+with the same weights. Its preservation theorem assumes integrability of
+the two actual target laws and source inequalities almost surely under the
+selected mixture. Identity and composition retain this shared randomization.
 
-The preservation theorem needs integrability on the two actual target laws. Source
-inequalities need hold only almost surely under the mixture; conditional integrability
-and the integrability of conditional means follow from the target hypotheses.
+Prescribed source laws may vary with the comparison. Consequently the
+certificate supplies neither one source incumbent nor a deviation relation.
+An equilibrium application must connect its source comparisons to admissible
+deviations. `MixtureSimulation.toComparisonMixture` supplies this connection
+at a fixed incumbent, where every prescribed source law is constant.
+The comparison theory imports only Mathlib kernel integration; the bridge
+belongs to the simulation module.
 
-`MixtureSimulation.toComparisonMixture` fixes an incumbent and deviator. Target
-indices are admitted deviations, and every source prescribed law is the incumbent
-law. A general comparison mixture does not itself supply the common-incumbent and
-legal-deviation adapters needed for an equilibrium theorem. No converse is asserted.
+## Clients and boundaries
 
-## Checked clients and boundaries
+[`MathEconLibTest.GameTheory.Simulation`](../MathEconLibTest/GameTheory/Simulation.lean)
+checks the public interfaces:
 
-The public-interface client module applies the named theorems to concrete models:
+- An added coin action has no exact lift but admits domination and a law mixture.
+- Stochastic outcome-game transport reuses the law certificate through the
+  outcome and payoff adapters.
+- A varying-prescribed-law comparison mixture has no matching prescribed
+  source law at either source index.
+- Local validity suffices even when global validity preservation fails.
+- A bare law certificate covering a nonintegrable state still transports
+  equilibrium through the admitted-deviation interface.
+- A vector-valued pure equilibrium embeds into the genuine mixed Nash problem;
+  a separate integrable vector mean has no dominating support point.
+- Equal rewards do not ensure honest-law equality, and improving deviations
+  to invalid targets still exclude equilibrium.
 
-- Two source actions earn `0` and `1`; a target adds an action earning `1/2`.
-  Domination transports equilibrium at the action earning `1`. The chosen inclusion
-  cannot be an exact morphism because it cannot lift the added action.
-- The coin action's entire law is represented using the existing `FinDist` operations.
-  Both `toSimulation` and direct ordered transport derive the target equilibrium.
-  The fixed-incumbent adapter also applies `ComparisonMixture.preserves_at`.
-- A coarsening to one state composes with the non-exact simulation. A separate
-  comorphism establishes reflection on compiled candidates.
-- A two-objective game has a common maximizing action. The general Dirac theorem
-  establishes its genuine vector-valued `IsMixedNash`, with all incumbent and admitted
-  deviation integrability conditions accounted for.
-- Neither `(1,0)` nor `(0,1)` dominates their componentwise mean `(1/2,1/2)`.
-  This refutes a general vector mean-witness constructor, not ordered averaging.
-- Equal numerical rewards can accompany incompatible constant observation laws;
-  an exact reward map alone cannot produce a law simulation.
-- Invalid incumbents remain invalid, and an improving deviation to an invalid target
-  still excludes equilibrium.
+The Dirac theorem uses finite player sets and arbitrary action spaces with
+measurable singletons. It compares exactly the integrable deviations admitted
+by `mixedNashProblem`.
 
-The general Dirac theorem allows arbitrary action spaces with measurable singletons,
-finite player sets, and the ordered Banach payoff structure above. It uses the current
-`mixedNashProblem` contract exactly: incumbent payoffs are integrable and only admitted,
-integrable unilateral deviations are compared. It does not silently extend the
-contract to all nonintegrable deviations.
+Infinite or undefined expected values remain outside these transport results.
+Coalition preservation needs one source replacement bounding all members
+simultaneously; separate scalar witnesses do not establish it. Arbitrary
+comparison relations, quantitative law approximation, and computational
+indistinguishability require their own compatibility results.
 
-## Scope of this draft
+## Provenance
 
-[PR #281](https://github.com/matheconlib/matheconlib/pull/281) supplies the proposed
-explicit-comparison API and remains separate. Additive slack inequalities here can
-be specialized through that API after it settles. Arbitrary comparisons do not
-inherit ordered domination or averaging without their own compatibility laws.
-
-[Issue #242](https://github.com/matheconlib/matheconlib/issues/242) governs the
-finite-expectation and deviation-coverage repair. This branch changes neither that
-scope nor the treatment of infinite or undefined expectations.
-
-Coalition simulation requires one source replacement bounding all members at once.
-Scalar selection separately for each member is insufficient: gain vectors `(2,-1)`
-and `(-1,2)` each have a blocking member but their fair mixture benefits both. No
-coalition transport, extended-expectation certificate, quantitative approximation,
-or computational-indistinguishability theorem is claimed here.
-
-## Validation and provenance
-
-Validation on this branch (9 November 2026):
-
-- Full default build passes: 9,258 jobs, including the API pins and client tests.
-  No changed Lean file emits a warning.
-- The compiled axiom audit passes for 4,772 declarations in all 208 project modules.
-  Only `propext`, `Classical.choice`, and `Quot.sound` occur.
-- Source re-elaboration passes for all nine changed or added Lean files, covering
-  85 anonymous declarations. Audited source hashes match the implementation.
-  The unchanged baseline files were not all re-elaborated by this audit.
-- The proof-checker's 21 self-tests pass. Regenerated import lists pass `mk_all --check`.
-  Header checks pass using the same rules as the shell script, executed natively.
-- Ancillary shell/ZIP helper tests are blocked by the local Windows MSYS and ZIP
-  environment. Those tools were not changed by this branch; the standard CI checks
-  should run in their supported environment before upstream merge.
-
-Generated reports and local dependency overrides are under ignored `.lake/`;
-dependency pins are unchanged. This checkout uses the already cached, matching
-pinned packages through `--packages=.lake/local-packages.json`. With normally
-installed dependencies, the standard verification commands are:
-
-```sh
-bash scripts/update-imports.sh --check
-bash scripts/check-headers.sh
-lake build
-python scripts/check-proof-integrity.py
-```
-
-GameTheory at `6f1af625b77215dd9e4454e6120275dbd8b61f51` supplies proof ideas and
-boundary cases, particularly
-[UtilitySimulation](https://github.com/elazarg/GameTheory/blob/6f1af625b77215dd9e4454e6120275dbd8b61f51/GameTheory/Core/UtilitySimulation.lean),
-[MixtureSimulation](https://github.com/elazarg/GameTheory/blob/6f1af625b77215dd9e4454e6120275dbd8b61f51/GameTheory/Core/MixtureSimulation.lean),
-and [IncentiveSimulation](https://github.com/elazarg/GameTheory/blob/6f1af625b77215dd9e4454e6120275dbd8b61f51/GameTheory/Analysis/IncentiveSimulation.lean).
-The implementation uses MathEconLib's carriers and existing equilibrium notions;
-these results are not cross-library equivalences or a dependency on GameTheory.
+The development adapts proof ideas and boundary cases from
+[GameTheory's utility simulations](https://github.com/elazarg/GameTheory/blob/6f1af625b77215dd9e4454e6120275dbd8b61f51/GameTheory/Core/UtilitySimulation.lean),
+[law simulations](https://github.com/elazarg/GameTheory/blob/6f1af625b77215dd9e4454e6120275dbd8b61f51/GameTheory/Core/MixtureSimulation.lean),
+and
+[incentive comparisons](https://github.com/elazarg/GameTheory/blob/6f1af625b77215dd9e4454e6120275dbd8b61f51/GameTheory/Analysis/IncentiveSimulation.lean).
+The implementation uses MathEconLib's existing games and Mathlib's measure
+theory. These bridges are internal MathEconLib results, not cross-library
+equivalences or a dependency on GameTheory.

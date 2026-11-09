@@ -5,7 +5,7 @@ Authors: Elazar Gershuni
 -/
 module
 
-public import MathEconLib.GameTheory.Equilibrium.ComparisonMixture
+public import MathEconLib.GameTheory.Equilibrium.Mixture
 
 /-!
 # Equilibrium problems and transport

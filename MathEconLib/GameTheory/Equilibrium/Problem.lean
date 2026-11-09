@@ -1,7 +1,7 @@
 /-
-Copyright (c) 2026 Daniel Lyng. All rights reserved.
+Copyright (c) 2026 Daniel Lyng, Elazar Gershuni. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Daniel Lyng
+Authors: Daniel Lyng, Elazar Gershuni
 -/
 module
 
@@ -291,5 +291,20 @@ def comp (g : GameComorphism Q R) (f : GameComorphism P Q) : GameComorphism P R 
   valid_reflects s h := f.valid_reflects s (g.valid_reflects (f.toFun s) h)
 
 end GameComorphism
+
+namespace GameMorphism
+
+variable {V : Type r} [LE V] {S : Type u} {I : Type v} {T : Type w} {J : Type x}
+    {P : EquilibriumProblem S I V} {Q : EquilibriumProblem T J V}
+
+/-- Exact preservation and independent reflection on the same state map give an
+iff using only a comparison relation; no order laws are required. -/
+theorem isEquilibrium_iff (f : GameMorphism P Q) (g : GameComorphism P Q)
+    (hmap : g.toFun = f.toFun) (s : S) :
+    Q.IsEquilibrium (f.toFun s) ↔ P.IsEquilibrium s :=
+  ⟨fun h ↦ g.pullback (hmap ▸ h), f.transport⟩
+
+
+end GameMorphism
 
 end MathEconLib.GameTheory

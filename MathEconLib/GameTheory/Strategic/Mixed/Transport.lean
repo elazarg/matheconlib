@@ -34,10 +34,8 @@ conclusion compares precisely the integrable deviations admitted by `IsMixedNash
 theorem IsNash.isMixedNash_dirac {G : StrategicGame I A V} {a : ∀ i, A i}
     (ha : G.IsNash a) : G.IsMixedNash (fun i ↦ diracProba (a i)) := by
   let σ : MixedStrategy A := fun i ↦ diracProba (a i)
-  have hpure : ∀ᵐ b ∂Measure.pi (fun i ↦ (σ i : Measure (A i))), b = a := by
-    filter_upwards [Measure.ae_eq_pi (μ := fun i ↦ Measure.dirac (a i))
-      (fun i ↦ ae_eq_dirac (fun x : A i ↦ x))] with b hb
-    exact hb
+  have hpure : ∀ᵐ b ∂Measure.pi (fun i ↦ (σ i : Measure (A i))), b = a :=
+    Measure.ae_eq_pi (fun i ↦ ae_eq_dirac (fun x : A i ↦ x))
   have hpay (i : I) : G.payoff i =ᵐ[Measure.pi (fun j ↦ (σ j : Measure (A j)))]
       fun _ ↦ G.payoff i a := hpure.mono fun _ hb ↦ congrArg (G.payoff i) hb
   have hvalid : G.MixedPayoffsIntegrable σ := fun i ↦
@@ -60,19 +58,12 @@ theorem IsNash.isMixedNash_dirac {G : StrategicGame I A V} {a : ∀ i, A i}
         by_cases hj : j = i
         · exact ae_of_all _ fun _ hne ↦ (hne hj).elim
         · have hc : ∀ᵐ x ∂(Function.update σ i τ j : Measure (A j)), x = a j := by
-            have he : Function.update σ i τ j = σ j := Function.update_of_ne hj τ σ
-            rw [he]
-            change ∀ᵐ x ∂Measure.dirac (a j), x = a j
-            simp only [ae_dirac_eq, eventually_pure]
+            rw [Function.update_of_ne hj]
+            exact ae_eq_dirac (fun x : A j ↦ x)
           exact (Measure.tendsto_eval_ae_ae (μ := fun j ↦
             (Function.update σ i τ j : Measure (A j))) (i := j)).eventually hc
             |>.mono fun _ hx _ ↦ hx
       filter_upwards [eventually_all.mpr hcoord] with b hb
-      refine ⟨b i, ?_⟩
-      funext j
-      by_cases hj : j = i
-      · subst j
-        simp
-      · exact (hb j hj).trans (Function.update_of_ne hj (b i) a).symm
+      exact (isUnilateralDeviation_iff i a b).mpr hb
 
 end MathEconLib.GameTheory.StrategicGame

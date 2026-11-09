@@ -7,6 +7,7 @@ module
 
 public import MathEconLib.GameTheory.Equilibrium
 public import MathEconLib.GameTheory.Strategic.Mixed.Transport
+public import MathEconLib.GameTheory.Strategic.Outcome.Transport
 public import MathEconLib.ForMathlib.Order.ModuleProd
 public import MathEconLib.Probability.FinDist.Measure
 public import Mathlib.Algebra.Order.Monoid.Prod
@@ -20,6 +21,8 @@ also check composition, reflection, vector averaging, and candidate validity.
 -/
 
 @[expose] public noncomputable section
+
+open scoped ENNReal
 
 open MathEconLib.GameTheory MathEconLib.Probability MeasureTheory ProbabilityTheory
 
@@ -112,6 +115,8 @@ private lemma pure_law (b : Bool) : (FinDist.pure b).toMeasure = Measure.dirac b
 
 def sourceLaw : Kernel Bool Bool := Kernel.id
 
+instance : IsMarkovKernel sourceLaw := inferInstanceAs (IsMarkovKernel Kernel.id)
+
 def targetLaw : Kernel (Fin 3) Bool where
   toFun q := (weights q).toMeasure
   measurable' := Measurable.of_discrete
@@ -153,7 +158,8 @@ example : ∃ b, source.deviation () false b ∧ Integrable (utility ()) (source
 
 /-- The general law-to-utility relationship yields a second simulation certificate. -/
 def evaluatedSimulation : GameSimulation source target :=
-  lawSimulation.toSimulation utility source_evaluation target_evaluation rfl rfl
+  lawSimulation.toSimulation utility source_evaluation target_evaluation
+    (fun _ _ _ hd _ ↦ hd) (fun _ _ _ ht ↦ ht)
     (fun _ _ ↦ trivial) (fun i _ q _ ↦ target_integrable i q)
 
 theorem law_target_equilibrium : target.IsEquilibrium (compile true) :=
@@ -161,8 +167,9 @@ theorem law_target_equilibrium : target.IsEquilibrium (compile true) :=
 
 /-- The law certificate also transports directly through the averaging theorem. -/
 theorem averaging_target_equilibrium : target.IsEquilibrium (compile true) :=
-  lawSimulation.transport utility source_evaluation target_evaluation rfl rfl
-    (fun _ _ ↦ trivial) (fun i _ q _ ↦ target_integrable i q) source_equilibrium
+  lawSimulation.transport utility source_evaluation target_evaluation
+    (fun _ _ hd _ ↦ hd) (fun _ _ ht ↦ ht) trivial
+    (fun i q _ ↦ target_integrable i q) source_equilibrium
 
 /-- A fixed-incumbent law simulation gives a two-law comparison certificate. -/
 theorem comparison_bound (q : {q // target.deviation () (compile true) q}) :
@@ -174,6 +181,83 @@ theorem comparison_bound (q : {q // target.deviation () (compile true) q}) :
   change (∫ o, utility () o ∂sourceLaw b) ≤ ∫ o, utility () o ∂sourceLaw true
   rw [← source_evaluation, ← source_evaluation]
   exact source_equilibrium.deviation_le () b trivial
+
+/-- Prescribed laws may vary across the source comparisons. The target's fair
+prescribed law is not the prescribed law of either source comparison. -/
+def varyingComparison : ComparisonMixture sourceLaw (Kernel.const Bool (sourceLaw false))
+    (Kernel.const Unit (targetLaw 1)) (Kernel.const Unit (sourceLaw false)) where
+  mixing := Kernel.const Unit (targetLaw 1)
+  isMarkov_mixing := inferInstance
+  prescribed_eq := Kernel.id_comp _
+  alternative_eq := Kernel.const_comp' _ _
+
+theorem varying_comparison_bound :
+    (∫ o, utility () o ∂sourceLaw false) ≤ ∫ o, utility () o ∂targetLaw 1 := by
+  apply varyingComparison.preserves_at (utility ()) ()
+    (target_integrable () 1) (Integrable.of_finite)
+  apply ae_of_all
+  intro b
+  change (∫ o, utility () o ∂sourceLaw false) ≤ ∫ o, utility () o ∂sourceLaw b
+  rw [← source_evaluation, ← source_evaluation]
+  cases b <;> norm_num [source, EquilibriumProblem.ofDeviation]
+
+theorem no_prescribed_source (b : Bool) : sourceLaw b ≠ targetLaw 1 := by
+  intro h
+  have he := congrArg (fun μ ↦ ∫ o, utility () o ∂μ) h
+  rw [← source_evaluation, ← target_evaluation] at he
+  cases b <;> norm_num [source, target, EquilibriumProblem.ofDeviation] at he
+
+/-- The same law certificate serves stochastic outcome games directly. -/
+def sourceOutcome : OutcomeGame Unit (fun _ ↦ Bool) (ProbabilityMeasure Bool) where
+  outcome a := ⟨sourceLaw (a ()), inferInstance⟩
+
+instance : sourceOutcome.Measurable := ⟨Measurable.of_discrete⟩
+
+def targetOutcome : OutcomeGame Unit (fun _ ↦ Fin 3) (ProbabilityMeasure Bool) where
+  outcome a := ⟨targetLaw (a ()), inferInstance⟩
+
+instance : targetOutcome.Measurable := ⟨Measurable.of_discrete⟩
+
+def outcomePayoffs : PayoffStructure Unit Bool ℝ := ⟨utility⟩
+
+private lemma unit_unilateral {A : Type*} (a b : Unit → A) :
+    IsUnilateralDeviation () a b :=
+  (isUnilateralDeviation_iff () a b).mpr fun j hj ↦ (hj (Subsingleton.elim j ())).elim
+
+private lemma sourceOutcome_kernel : sourceOutcome.toKernel =
+    Kernel.deterministic (fun a : Unit → Bool ↦ a ()) (measurable_pi_apply ()) := by
+  apply Kernel.ext
+  intro a
+  rfl
+
+def outcomeSimulation : MixtureSimulation IsUnilateralDeviation IsUnilateralDeviation
+    sourceOutcome.toKernel targetOutcome.toKernel where
+  toFun a _ := compile (a ())
+  deviatorMap := id
+  simulate _ _ := Kernel.deterministic (Function.const Unit) Measurable.of_discrete ∘ₖ
+    targetOutcome.toKernel
+  isMarkov_simulate _ _ := inferInstance
+  honest_law a := lawSimulation.honest_law (a ())
+  deviation_ae j a _ _ := by
+    cases j
+    exact ae_of_all _ (unit_unilateral a)
+  deviation_law _ _ t _ := by
+    rw [sourceOutcome_kernel, ← Kernel.comp_assoc, Kernel.deterministic_comp_deterministic]
+    change (Kernel.id ∘ₖ targetOutcome.toKernel) t = targetOutcome.toKernel t
+    rw [Kernel.id_comp]
+
+theorem source_outcome_equilibrium :
+    (sourceOutcome.expectedNashProblem outcomePayoffs).IsEquilibrium (fun _ ↦ true) := by
+  refine ⟨fun _ ↦ Integrable.of_finite, ?_⟩
+  intro i a _
+  change (∫ o, utility i o ∂sourceLaw (a ())) ≤ ∫ o, utility i o ∂sourceLaw true
+  rw [← source_evaluation, ← source_evaluation]
+  exact source_equilibrium.deviation_le i (a ()) trivial
+
+/-- Outcome laws, payoff evaluation, and admissibility are supplied by the adapter. -/
+theorem target_outcome_equilibrium :
+    (targetOutcome.expectedNashProblem outcomePayoffs).IsEquilibrium (fun _ ↦ compile true) :=
+  outcomeSimulation.transport_expectedNash outcomePayoffs source_outcome_equilibrium
 
 /-- The two objectives have a common maximizing action. -/
 def vectorGame : StrategicGame Unit (fun _ ↦ Bool) (ℝ × ℝ) where
@@ -194,11 +278,30 @@ example : (MixtureSimulation.id target.deviation targetLaw
     (fun _ _ ↦ MeasurableSet.of_discrete)).comp lawSimulation
       (fun _ _ ↦ MeasurableSet.of_discrete) = lawSimulation := by simp
 
-/-- Vector averaging need not have a componentwise dominating support point. -/
+/-- Arbitrary deviation predicates on the real line admit identity simulation. -/
+example (D : Unit → ℝ → ℝ → Prop) : MixtureSimulation D D Kernel.id Kernel.id :=
+  .idOfMeasurableSingleton D Kernel.id
+
+/-- Bare unilateral deviations admit law identities with arbitrary measurable
+action spaces and countably many players, without an integrability-set premise. -/
+example {I : Type*} {A : I → Type*} [Countable I] [DecidableEq I]
+    [∀ i, MeasurableSpace (A i)] [∀ i, MeasurableSingletonClass (A i)] :
+    MixtureSimulation (IsUnilateralDeviation (A := A)) IsUnilateralDeviation Kernel.id Kernel.id :=
+  .id _ _ measurableSet_isUnilateralDeviation
+
+/-- A finite vector payoff whose mean has no dominating support point. -/
+def vectorUtility (b : Bool) : ℝ × ℝ := if b then (1, 0) else (0, 1)
+
+lemma vector_integral : (∫ b, vectorUtility b ∂fair.toMeasure) = (1 / 2, 1 / 2) := by
+  rw [← FinDist.expect_eq_integral]
+  norm_num [fair, vectorUtility, FinDist.expect_mixture, FinDist.expect_pure]
+
+/-- An integrable vector mean need not have a componentwise dominating support point. -/
 theorem no_vector_mean_witness :
-    ¬ ∃ b : Bool, ((1 / 2 : ℝ), (1 / 2 : ℝ)) ≤ (if b then (1, 0) else (0, 1)) := by
+    ¬ ∃ b : Bool, (∫ b, vectorUtility b ∂fair.toMeasure) ≤ vectorUtility b := by
+  rw [vector_integral]
   rintro ⟨b, hb⟩
-  cases b <;> norm_num at hb
+  cases b <;> norm_num [vectorUtility] at hb
 
 /-- Equal rewards alone do not supply honest observed-law preservation. -/
 theorem no_constant_law_simulation : IsEmpty (MixtureSimulation terminal.deviation
@@ -223,4 +326,96 @@ theorem invalid_deviation_excludes : ¬ invalidTarget.IsEquilibrium 0 := by
   norm_num [invalidTarget, target, EquilibriumProblem.refine,
     EquilibriumProblem.ofDeviation] at hd
 
+def localTarget : EquilibriumProblem (Fin 3) Unit ℝ := target.refine (fun q ↦ q = 2)
+
+/-- Local transport works even though the same compiler fails global validity preservation. -/
+theorem local_target_equilibrium : localTarget.IsEquilibrium (compile true) := by
+  apply lawSimulation.transport (Q := localTarget) utility source_evaluation target_evaluation
+    (fun _ _ hd _ ↦ hd) (fun _ _ ht ↦ ht) ?_
+    (fun i q _ ↦ target_integrable i q) source_equilibrium
+  exact ⟨trivial, rfl⟩
+
+theorem no_global_validity : ¬ ∀ s, source.valid s → localTarget.valid (compile s) := by
+  intro h
+  have hv := (h false trivial).2
+  norm_num [compile] at hv
+
+/-- General observation kernels may include laws with nonintegrable utility. -/
+def partialLaw : Kernel Bool Unit where
+  toFun b := if b then (⊤ : ℝ≥0∞) • Measure.dirac () else Measure.dirac ()
+  measurable' := Measurable.of_discrete
+
+lemma partial_integrable (b : Bool) :
+    Integrable (fun _ : Unit ↦ (1 : ℝ)) (partialLaw b) ↔ b = false := by
+  cases b <;> simp [partialLaw, integrable_const_iff, isFiniteMeasure_iff]
+
+def integrableSource : EquilibriumProblem Bool Unit ℝ :=
+  .ofExpectedValue (fun _ _ b ↦ b = false) partialLaw (fun _ _ ↦ 1)
+
+def integrableTarget : EquilibriumProblem Bool Unit ℝ :=
+  .ofExpectedValue (fun _ _ _ ↦ True) partialLaw (fun _ _ ↦ 1)
+
+theorem integrable_source_equilibrium : integrableSource.IsEquilibrium false := by
+  refine ⟨fun _ ↦ (partial_integrable false).mpr rfl, ?_⟩
+  intro _ b hb
+  obtain rfl := hb.1
+  exact le_rfl
+
+/-- Conditional source admissibility and admitted-target integrability suffice,
+although the bare simulation relation also covers the nonintegrable state. -/
+theorem transport_with_integrability_restriction : integrableTarget.IsEquilibrium false :=
+  (MixtureSimulation.idOfMeasurableSingleton
+    (fun (_ : Unit) (_ _ : Bool) ↦ True) partialLaw).transport
+    (P := integrableSource) (Q := integrableTarget) (fun _ _ ↦ 1)
+    (fun _ _ ↦ rfl) (fun _ _ ↦ rfl)
+    (fun _ b _ hi ↦ ⟨(partial_integrable b).mp hi, hi⟩) (fun _ _ ht ↦ ht.1)
+    integrable_source_equilibrium.valid (fun _ _ ht ↦ ht.2) integrable_source_equilibrium
+
+theorem bare_source_deviation_not_admissible : ¬ integrableSource.deviation () false true := by
+  intro h
+  exact Bool.noConfusion h.1
+
+theorem not_all_bare_deviations_integrable :
+    ¬ ∀ b, Integrable (fun _ : Unit ↦ (1 : ℝ)) (partialLaw b) := by
+  intro h
+  simpa using (partial_integrable true).mp (h true)
+
 end MathEconLibTest.GameTheory.Simulation
+
+/-! ## Equilibrium simulations -/
+
+section EquilibriumSimulation
+
+open MathEconLib.GameTheory
+
+example {S I T J V : Type*} [Preorder V]
+    {P : EquilibriumProblem S I V} {Q : EquilibriumProblem T J V}
+    (f : GameSimulation P Q) {s : S} (h : P.IsEquilibrium s) :
+    Q.IsEquilibrium (f.toFun s) := f.transport h
+
+example {S I T J V : Type*} [LE V]
+    {P : EquilibriumProblem S I V} {Q : EquilibriumProblem T J V}
+    (f : GameMorphism P Q) (g : GameComorphism P Q)
+    (hmap : g.toFun = f.toFun) (s : S) :
+    Q.IsEquilibrium (f.toFun s) ↔ P.IsEquilibrium s := f.isEquilibrium_iff g hmap s
+
+example {S I T J V : Type*} [Preorder V] [Add V] [AddRightMono V]
+    {P : EquilibriumProblem S I V} {Q : EquilibriumProblem T J V}
+    (f : GameSimulation P Q) (ε : V) {s : S}
+    (h : ∀ i s', P.deviation i s s' → P.value i s' ≤ P.value i s + ε) :
+    ∀ j t, Q.deviation j (f.toFun s) t → Q.value j t ≤ Q.value j (f.toFun s) + ε :=
+  f.transport_le_add ε h
+
+end EquilibriumSimulation
+
+/-- Expected-value problems require no measurable structure on the state space. -/
+example {S I O V : Type*} [MeasurableSpace O] [NormedAddCommGroup V] [NormedSpace ℝ V]
+    [CompleteSpace V]
+    (D : I → S → S → Prop) (L : S → Measure O) (u : I → O → V) :
+    EquilibriumProblem S I V := .ofExpectedValue D L u
+
+/-- Defining stochastic Nash requires neither measurable actions nor a measurable outcome map. -/
+example {I O V : Type*} {A : I → Type*} [DecidableEq I] [MeasurableSpace O]
+    [NormedAddCommGroup V] [NormedSpace ℝ V] [CompleteSpace V]
+    (G : OutcomeGame I A (ProbabilityMeasure O)) (P : PayoffStructure I O V) :
+    EquilibriumProblem (∀ i, A i) I V := G.expectedNashProblem P
