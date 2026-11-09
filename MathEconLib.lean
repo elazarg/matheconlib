@@ -55,12 +55,18 @@ public import MathEconLib.ForMathlib.MeasureTheory.VonNeumannSelection
 public import MathEconLib.ForMathlib.Order.FixedPointLattice
 public import MathEconLib.ForMathlib.Order.IterateFiniteSet
 public import MathEconLib.ForMathlib.Order.IterateFixedPoint
+public import MathEconLib.ForMathlib.Order.ModuleProd
 public import MathEconLib.ForMathlib.Order.Refinement
 public import MathEconLib.ForMathlib.ProbabilityMeasure
 public import MathEconLib.ForMathlib.Quasiconvex
 public import MathEconLib.ForMathlib.Schauder
 public import MathEconLib.ForMathlib.StochasticOrder
+public import MathEconLib.GameTheory.Equilibrium
+public import MathEconLib.GameTheory.Equilibrium.Averaging
+public import MathEconLib.GameTheory.Equilibrium.ComparisonMixture
+public import MathEconLib.GameTheory.Equilibrium.Mixture
 public import MathEconLib.GameTheory.Equilibrium.Problem
+public import MathEconLib.GameTheory.Equilibrium.Simulation
 public import MathEconLib.GameTheory.Strategic.Basic
 public import MathEconLib.GameTheory.Strategic.Bayesian.Finite
 public import MathEconLib.GameTheory.Strategic.Bayesian.FiniteMeasurable
@@ -74,6 +80,7 @@ public import MathEconLib.GameTheory.Strategic.Bayesian.Measurable.PureBNE
 public import MathEconLib.GameTheory.Strategic.Existence
 public import MathEconLib.GameTheory.Strategic.Mixed
 public import MathEconLib.GameTheory.Strategic.Mixed.Finite
+public import MathEconLib.GameTheory.Strategic.Mixed.Transport
 public import MathEconLib.GameTheory.Strategic.Outcome
 public import MathEconLib.Matching
 public import MathEconLib.Matching.Classical.Marriage
