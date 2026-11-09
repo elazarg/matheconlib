@@ -78,6 +78,7 @@ def ofIntegralBounds (f : S → T) (g : J → I)
         Q.value j t ≤ ∫ s', P.value (g j) s' ∂(μ : Measure S)) : GameSimulation P Q where
   toFun := f
   deviatorMap := g
+  valueMap _ := OrderHom.id
   value_le := hbase
   valid_preserves := hvalid
   deviation_dominated j s t ht := by

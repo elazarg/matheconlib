@@ -48,6 +48,7 @@ lemma target_value_le_one (q : Fin 3) : target.value () q ≤ 1 := by
 def domination : GameSimulation source target where
   toFun := compile
   deviatorMap := id
+  valueMap _ := OrderHom.id
   value_le _ b := by cases b <;> norm_num [source, target, compile,
     EquilibriumProblem.ofDeviation]
   deviation_dominated _ _ q _ := ⟨true, trivial, target_value_le_one q⟩
@@ -88,6 +89,7 @@ def terminal : EquilibriumProblem Unit Unit ℝ :=
 def coarsening : GameSimulation target terminal where
   toFun _ := ()
   deviatorMap := id
+  valueMap _ := OrderHom.id
   value_le _ q := target_value_le_one q
   deviation_dominated _ _ _ _ := by
     refine ⟨2, trivial, ?_⟩
@@ -421,14 +423,131 @@ theorem not_all_bare_deviations_integrable :
   intro h
   simpa using (partial_integrable true).mp (h true)
 
+/-! ## Value coordinates and comparison transport -/
+
+/-- Two target players share one source player but use different value coordinates. -/
+def vectorRecoding (j : Bool) : ℝ →o ℝ × ℝ where
+  toFun x := (if j then 2 * x + 3 else x + 1, x + 7)
+  monotone' := by
+    intro x y h
+    constructor
+    · cases j <;> dsimp <;> linarith
+    · exact add_le_add_left h 7
+
+def vectorTarget : EquilibriumProblem (Fin 3) Bool (ℝ × ℝ) :=
+  .ofDeviation (fun _ _ _ ↦ True) (fun j q ↦ vectorRecoding j (target.value () q))
+
+def recoding : GameSimulation target vectorTarget :=
+  .ofExactLifts id (fun _ ↦ ()) vectorRecoding (fun _ _ ↦ rfl)
+    (fun _ _ t _ ↦ ⟨t, trivial, rfl⟩) (fun _ _ ↦ trivial)
+
+def firstCoordinate : (ℝ × ℝ) →o ℝ :=
+  ⟨fun v ↦ v.1 + 11, fun _ _ h ↦ add_le_add_left h.1 11⟩
+
+def finalTarget : EquilibriumProblem (Fin 3) Unit ℝ :=
+  .ofDeviation (fun _ _ _ ↦ True) (fun _ q ↦ firstCoordinate (vectorTarget.value true q))
+
+def projecting : GameSimulation vectorTarget finalTarget :=
+  .ofExactLifts id (fun _ ↦ true) (fun _ ↦ firstCoordinate) (fun _ _ ↦ rfl)
+    (fun _ _ t _ ↦ ⟨t, trivial, rfl⟩) (fun _ _ ↦ trivial)
+
+/-- Nontrivial value maps compose across different value spaces and player sets. -/
+theorem recoded_equilibrium : finalTarget.IsEquilibrium (compile true) :=
+  (projecting.comp (recoding.comp domination)).transport source_equilibrium
+
+def affineRecoding : ℝ →o ℝ :=
+  ⟨fun x ↦ 3 * x + 7, fun _ _ h ↦ by linarith⟩
+
+def rescaled : EquilibriumProblem Bool Unit ℝ := source.mapValues (fun _ ↦ affineRecoding)
+
+def rescaling : GameSimulation source rescaled :=
+  .ofExactLifts id id (fun _ ↦ affineRecoding) (fun _ _ ↦ rfl)
+    (fun _ _ t ht ↦ ⟨t, ht, rfl⟩) (fun _ ht ↦ ht)
+
+/-- The compatibility premise scales errors by the affine slope, not by the offset. -/
+theorem rescaled_error {s : Bool} (ε : ℝ)
+    (h : ∀ i b, source.deviation i s b → source.value i b ≤ source.value i s + ε) :
+    ∀ j b, rescaled.deviation j s b → rescaled.value j b ≤ rescaled.value j s + 3 * ε := by
+  apply rescaling.transport_le_add (fun _ ↦ ε) (fun _ ↦ 3 * ε) _ h
+  intro j
+  change 3 * (source.value () s + ε) + 7 ≤ (3 * source.value () s + 7) + 3 * ε
+  linarith
+
+theorem rescaled_approximate_false :
+    ∀ j b, rescaled.deviation j false b → rescaled.value j b ≤ rescaled.value j false + 3 := by
+  simpa only [mul_one] using rescaled_error (s := false) 1
+    (by intro i b _; cases b <;> norm_num [source, EquilibriumProblem.ofDeviation])
+
+theorem same_error_fails : ¬ ∀ j b, rescaled.deviation j false b →
+    rescaled.value j b ≤ rescaled.value j false + 1 := by
+  intro h
+  have := h () true trivial
+  change 3 * 1 + 7 ≤ (3 * 0 + 7 : ℝ) + 1 at this
+  norm_num at this
+
+/-- A monotone collapse creates an equilibrium at a previously suboptimal state. -/
+theorem collapsed_equilibrium :
+    (source.mapValues (fun _ _ ↦ (0 : ℝ))).IsEquilibrium false :=
+  ⟨trivial, fun _ _ _ ↦ le_rfl⟩
+
+theorem source_not_equilibrium_false : ¬ source.IsEquilibrium false := by
+  intro h
+  have := h.deviation_le () true trivial
+  norm_num [source, EquilibriumProblem.ofDeviation] at this
+
+/-- The second coordinate is fixed during every admitted deviation. -/
+def contextualSource : EquilibriumProblem (Bool × Bool) Unit ℝ :=
+  .ofDeviation (fun _ s t ↦ t.2 = s.2) (fun _ s ↦ if s.1 then 1 else 0)
+
+def contextualTarget : EquilibriumProblem (Bool × Bool) Unit ℝ :=
+  .ofDeviation contextualSource.deviation
+    (fun i s ↦ contextualSource.value i s + if s.2 then 10 else 0)
+
+/-- Offsets constant along legal deviations need no global function of source values. -/
+theorem contextual_transport {s : Bool × Bool} (h : contextualSource.IsEquilibrium s) :
+    contextualTarget.IsEquilibrium s := by
+  apply h.of_comparisons id trivial
+  intro i t ht
+  refine ⟨t, ht, fun hle ↦ ?_⟩
+  change t.2 = s.2 at ht
+  change contextualSource.value i t + _ ≤ contextualSource.value i s + _
+  rw [ht]
+  exact add_le_add_left hle _
+
+example : contextualTarget.IsEquilibrium (true, false) :=
+  contextual_transport ⟨trivial, by
+    intro i t _
+    change (if t.1 then (1 : ℝ) else 0) ≤ 1
+    split <;> norm_num⟩
+
+theorem no_global_value_map : ¬ ∃ φ : ℝ → ℝ,
+    ∀ s, contextualTarget.value () s = φ (contextualSource.value () s) := by
+  rintro ⟨φ, hφ⟩
+  have h0 := hφ (true, false)
+  have h1 := hφ (true, true)
+  norm_num [contextualSource, contextualTarget, EquilibriumProblem.ofDeviation] at h0 h1
+  linarith
+
+def fairEvaluation (u : Bool → ℝ) : EquilibriumProblem Unit Unit ℝ :=
+  .ofExpectedValue (fun _ _ _ ↦ True) (fun _ ↦ fair.toMeasure) (fun _ ↦ u)
+
+/-- Recoding the expected payoff differs from recoding outcome utilities before averaging. -/
+theorem nonlinear_before_after :
+    ((fairEvaluation (fun b ↦ if b then 2 else 0)).mapValues (fun _ x ↦ x ^ 3)).value () () ≠
+      (fairEvaluation (fun b ↦ (if b then 2 else 0) ^ 3)).value () () := by
+  change (∫ b, (if b then (2 : ℝ) else 0) ∂fair.toMeasure) ^ 3 ≠
+    ∫ b, (if b then (2 : ℝ) else 0) ^ 3 ∂fair.toMeasure
+  rw [← FinDist.expect_eq_integral, ← FinDist.expect_eq_integral]
+  norm_num [fair, FinDist.expect_mixture, FinDist.expect_pure]
+
 end MathEconLibTest.GameTheory.Simulation
 
 /-! ## Equilibrium simulations -/
 
 section EquilibriumSimulation
 
-example {S I T J V : Type*} [Preorder V]
-    {P : EquilibriumProblem S I V} {Q : EquilibriumProblem T J V}
+example {S I T J V W : Type*} [Preorder V] [Preorder W]
+    {P : EquilibriumProblem S I V} {Q : EquilibriumProblem T J W}
     (f : GameSimulation P Q) {s : S} (h : P.IsEquilibrium s) :
     Q.IsEquilibrium (f.toFun s) := f.transport h
 
@@ -438,20 +557,55 @@ example {S I T J V : Type*} [LE V]
     (hmap : g.toFun = f.toFun) (s : S) :
     Q.IsEquilibrium (f.toFun s) ↔ P.IsEquilibrium s := f.isEquilibrium_iff g hmap s
 
-example {S I T J V : Type*} [Preorder V] [Add V] [AddRightMono V]
-    {P : EquilibriumProblem S I V} {Q : EquilibriumProblem T J V}
-    (f : GameSimulation P Q) (ε : V) {s : S}
-    (h : ∀ i s', P.deviation i s s' → P.value i s' ≤ P.value i s + ε) :
-    ∀ j t, Q.deviation j (f.toFun s) t → Q.value j t ≤ Q.value j (f.toFun s) + ε :=
-  f.transport_le_add ε h
+example {S I T J V W : Type*} [Preorder V] [Preorder W] [Add V] [Add W] [AddRightMono W]
+    {P : EquilibriumProblem S I V} {Q : EquilibriumProblem T J W}
+    (f : GameSimulation P Q) (ε : I → V) (δ : J → W) {s : S}
+    (herror : ∀ j, f.valueMap j (P.value (f.deviatorMap j) s + ε (f.deviatorMap j)) ≤
+      f.valueMap j (P.value (f.deviatorMap j) s) + δ j)
+    (h : ∀ i s', P.deviation i s s' → P.value i s' ≤ P.value i s + ε i) :
+    ∀ j t, Q.deviation j (f.toFun s) t → Q.value j t ≤ Q.value j (f.toFun s) + δ j :=
+  f.transport_le_add ε δ herror h
 
 end EquilibriumSimulation
+
+/-- The comparison core requires no order laws and permits different value spaces. -/
+example {S I T J V W : Type*} [LE V] [LE W]
+    {P : EquilibriumProblem S I V} {Q : EquilibriumProblem T J W} {s : S} {t : T}
+    (h : P.IsEquilibrium s) (g : J → I) (hvalid : Q.valid t)
+    (hdev : ∀ j t', Q.deviation j t t' → ∃ s', P.deviation (g j) s s' ∧
+      (P.value (g j) s' ≤ P.value (g j) s → Q.value j t' ≤ Q.value j t)) :
+    Q.IsEquilibrium t := h.of_comparisons g hvalid hdev
+
+/-- Standard order embeddings preserve and reflect equilibrium without being onto. -/
+example {S I V W : Type*} [LE V] [LE W] (P : EquilibriumProblem S I V)
+    (φ : I → V ↪o W) (s : S) :
+    (P.mapValues (fun i ↦ φ i)).IsEquilibrium s ↔ P.IsEquilibrium s :=
+  P.isEquilibrium_mapValues_iff _ (fun i _ _ ↦ (φ i).map_rel_iff) s
 
 /-- Expected-value problems require no measurable structure on the state space. -/
 example {S I O V : Type*} [MeasurableSpace O] [NormedAddCommGroup V] [NormedSpace ℝ V]
     [CompleteSpace V]
     (D : I → S → S → Prop) (L : S → Measure O) (u : I → O → V) :
     EquilibriumProblem S I V := .ofExpectedValue D L u
+
+/-- Affine outcome recoding needs probability laws, but no global utility integrability. -/
+example {S I O : Type*} [MeasurableSpace O] (D : I → S → S → Prop) (L : S → Measure O)
+    [∀ s, IsProbabilityMeasure (L s)] (u : I → O → ℝ) (a c : I → ℝ)
+    (ha : ∀ i, 0 < a i) (s : S) :
+    (EquilibriumProblem.ofExpectedValue D L (fun i o ↦ a i * u i o + c i)).IsEquilibrium s ↔
+      (EquilibriumProblem.ofExpectedValue D L u).IsEquilibrium s :=
+  EquilibriumProblem.isEquilibrium_ofExpectedValue_affine_iff D L u a c ha s
+
+/-- At undefined expectations, affine invariance of equilibria is not equality of value records. -/
+example {O : Type*} [MeasurableSpace O] (μ : ProbabilityMeasure O) (u : O → ℝ)
+    (hu : ¬ Integrable u μ) :
+    ((EquilibriumProblem.ofExpectedValue (fun (_ : Unit) (_ _ : Unit) ↦ True)
+      (fun _ ↦ (μ : Measure O)) (fun _ ↦ u)).mapValues (fun _ x ↦ x + 1)).value () () ≠
+      (EquilibriumProblem.ofExpectedValue (fun (_ : Unit) (_ _ : Unit) ↦ True)
+        (fun _ ↦ (μ : Measure O)) (fun _ o ↦ u o + 1)).value () () := by
+  change (∫ o, u o ∂μ) + 1 ≠ ∫ o, u o + 1 ∂μ
+  rw [integral_undef hu, integral_undef (fun h ↦ hu (integrable_add_const_iff.mp h))]
+  norm_num
 
 /-- Defining stochastic Nash requires neither measurable actions nor a measurable outcome map. -/
 example {I O V : Type*} {A : I → Type*} [DecidableEq I] [MeasurableSpace O]

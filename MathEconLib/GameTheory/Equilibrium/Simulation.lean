@@ -6,16 +6,21 @@ Authors: Elazar Gershuni
 module
 
 public import MathEconLib.GameTheory.Equilibrium.Problem
-public import Mathlib.Order.Basic
+public import Mathlib.Order.Hom.Basic
 public import Mathlib.Algebra.Order.Monoid.Unbundled.Basic
 
 /-!
 # Equilibrium transport by deviation domination
 
-A simulation bounds every target deviation by an admissible source deviation.
-The translated incumbent may have a larger value. Exact morphisms are a special
-case. Scalar utility evaluation is an application of this ordered-value contract.
-Reflection requires a separate comorphism; preservation alone does not imply it.
+A simulation bounds every target deviation by an admissible source deviation,
+measured through a monotone value map for each target deviator. Source and target
+values may live in different preorders. The translated incumbent may have a larger
+value than its recoding. Exact reward-preserving morphisms use identity value maps.
+
+The pointwise comparison theorem in `Equilibrium.Problem` underlies transport.
+Additive errors require a separate compatibility bound for the value maps;
+monotonicity alone does not preserve a numerical error. Reflection requires
+an independent contract; preservation alone does not imply it.
 -/
 
 @[expose] public section
@@ -25,39 +30,42 @@ namespace MathEconLib.GameTheory
 universe u v w x y z r
 
 /-- A state translation preserving validity and bounding each target deviation
-by a source deviation, while weakly increasing incumbent values. -/
-structure GameSimulation {V : Type r} [LE V] {S : Type u} {I : Type v}
+by a source deviation after a playerwise monotone change of value coordinates. -/
+structure GameSimulation {V W : Type*} [Preorder V] [Preorder W] {S : Type u} {I : Type v}
     {T : Type w} {J : Type x}
-    (P : EquilibriumProblem S I V) (Q : EquilibriumProblem T J V) where
+    (P : EquilibriumProblem S I V) (Q : EquilibriumProblem T J W) where
   /-- Translate source candidates into target candidates. -/
   toFun : S → T
   /-- The source deviator representing each target deviator. -/
   deviatorMap : J → I
-  /-- Translation weakly increases the incumbent's value. -/
-  value_le : ∀ j s, P.value (deviatorMap j) s ≤ Q.value j (toFun s)
+  /-- Recoding source values into each target deviator's value coordinates. -/
+  valueMap : J → V →o W
+  /-- Translation weakly increases the recoded incumbent value. -/
+  value_le : ∀ j s, valueMap j (P.value (deviatorMap j) s) ≤ Q.value j (toFun s)
   /-- Every target deviation is bounded by one admissible source deviation. -/
   deviation_dominated : ∀ j s t, Q.deviation j (toFun s) t →
     ∃ s', P.deviation (deviatorMap j) s s' ∧
-      Q.value j t ≤ P.value (deviatorMap j) s'
+      Q.value j t ≤ valueMap j (P.value (deviatorMap j) s')
   /-- Valid source candidates have valid images. -/
   valid_preserves : ∀ s, P.valid s → Q.valid (toFun s)
 
 namespace EquilibriumProblem
 
-variable {V : Type r} [Preorder V] {S : Type u} {I : Type v}
-    {T : Type w} {J : Type x} {P : EquilibriumProblem S I V} {Q : EquilibriumProblem T J V}
+variable {V W : Type*} [Preorder V] [Preorder W] {S : Type u} {I : Type v}
+    {T : Type w} {J : Type x} {P : EquilibriumProblem S I V} {Q : EquilibriumProblem T J W}
 
 /-- Pointwise domination transports optimality without requiring a bundled map
 or any hypothesis about candidates other than the one under consideration. -/
 theorem IsDeviationOptimal.of_dominated_deviations {s : S} {t : T}
-    (h : P.IsDeviationOptimal s) (g : J → I)
-    (hbase : ∀ j, P.value (g j) s ≤ Q.value j t)
+    (h : P.IsDeviationOptimal s) (g : J → I) (φ : J → V →o W)
+    (hbase : ∀ j, φ j (P.value (g j) s) ≤ Q.value j t)
     (hdev : ∀ j t', Q.deviation j t t' →
-      ∃ s', P.deviation (g j) s s' ∧ Q.value j t' ≤ P.value (g j) s') :
+      ∃ s', P.deviation (g j) s s' ∧ Q.value j t' ≤ φ j (P.value (g j) s')) :
     Q.IsDeviationOptimal t := by
+  apply h.of_comparisons g
   intro j t' ht'
   obtain ⟨s', hs', hbound⟩ := hdev j t' ht'
-  exact hbound.trans ((h (g j) s' hs').trans (hbase j))
+  exact ⟨s', hs', fun hle ↦ hbound.trans (((φ j).monotone hle).trans (hbase j))⟩
 
 end EquilibriumProblem
 
@@ -65,29 +73,30 @@ namespace GameSimulation
 
 section Extensionality
 
-variable {V : Type r} [LE V] {S : Type u} {I : Type v} {T : Type w} {J : Type x}
-    {P : EquilibriumProblem S I V} {Q : EquilibriumProblem T J V}
+variable {V W : Type*} [Preorder V] [Preorder W] {S : Type u} {I : Type v}
+    {T : Type w} {J : Type x} {P : EquilibriumProblem S I V} {Q : EquilibriumProblem T J W}
 
-/-- Simulation certificates with the same maps are equal by proof irrelevance. -/
+/-- Certificates with the same state, deviator, and value maps are equal by proof irrelevance. -/
 @[ext] theorem ext {f g : GameSimulation P Q} (hf : f.toFun = g.toFun)
-    (hg : f.deviatorMap = g.deviatorMap) : f = g := by
+    (hg : f.deviatorMap = g.deviatorMap) (hv : f.valueMap = g.valueMap) : f = g := by
   cases f
   cases g
   cases hf
   cases hg
+  cases hv
   rfl
 
 end Extensionality
 
-variable {V : Type r} [Preorder V] {S : Type u} {I : Type v}
+variable {V W X : Type*} [Preorder V] [Preorder W] [Preorder X] {S : Type u} {I : Type v}
     {T : Type w} {J : Type x} {U : Type y} {K : Type z}
-    {P : EquilibriumProblem S I V} {Q : EquilibriumProblem T J V}
-    {R : EquilibriumProblem U K V}
+    {P : EquilibriumProblem S I V} {Q : EquilibriumProblem T J W}
+    {R : EquilibriumProblem U K X}
 
 /-- Domination transports deviation optimality without a validity assumption. -/
 theorem transport_isDeviationOptimal (f : GameSimulation P Q) {s : S}
     (h : P.IsDeviationOptimal s) : Q.IsDeviationOptimal (f.toFun s) :=
-  h.of_dominated_deviations f.deviatorMap (fun j ↦ f.value_le j s)
+  h.of_dominated_deviations f.deviatorMap f.valueMap (fun j ↦ f.value_le j s)
     (fun j t ↦ f.deviation_dominated j s t)
 
 /-- A simulation sends equilibria to equilibria. -/
@@ -99,6 +108,7 @@ theorem transport (f : GameSimulation P Q) {s : S} (h : P.IsEquilibrium s) :
 def id (P : EquilibriumProblem S I V) : GameSimulation P P where
   toFun := _root_.id
   deviatorMap := _root_.id
+  valueMap _ := OrderHom.id
   value_le _ _ := le_rfl
   deviation_dominated _ _ t ht := ⟨t, ht, le_rfl⟩
   valid_preserves _ h := h
@@ -107,11 +117,13 @@ def id (P : EquilibriumProblem S I V) : GameSimulation P P where
 def comp (g : GameSimulation Q R) (f : GameSimulation P Q) : GameSimulation P R where
   toFun := g.toFun ∘ f.toFun
   deviatorMap := f.deviatorMap ∘ g.deviatorMap
-  value_le k s := (f.value_le (g.deviatorMap k) s).trans (g.value_le k (f.toFun s))
+  valueMap k := (g.valueMap k).comp (f.valueMap (g.deviatorMap k))
+  value_le k s := ((g.valueMap k).monotone (f.value_le (g.deviatorMap k) s)).trans
+    (g.value_le k (f.toFun s))
   deviation_dominated k s t ht := by
     obtain ⟨q, hq, hb⟩ := g.deviation_dominated k (f.toFun s) t ht
     obtain ⟨p, hp, hc⟩ := f.deviation_dominated (g.deviatorMap k) s q hq
-    exact ⟨p, hp, hb.trans hc⟩
+    exact ⟨p, hp, hb.trans ((g.valueMap k).monotone hc)⟩
   valid_preserves s hs := g.valid_preserves (f.toFun s) (f.valid_preserves s hs)
 
 @[simp] theorem id_comp (f : GameSimulation P Q) : (id Q).comp f = f := by
@@ -120,25 +132,46 @@ def comp (g : GameSimulation Q R) (f : GameSimulation P Q) : GameSimulation P R 
 @[simp] theorem comp_id (f : GameSimulation P Q) : f.comp (id P) = f := by
   ext <;> rfl
 
-theorem comp_assoc {A B : Type*} {W : EquilibriumProblem A B V}
-    (h : GameSimulation R W) (g : GameSimulation Q R) (f : GameSimulation P Q) :
+theorem comp_assoc {A B Y : Type*} [Preorder Y] {Z : EquilibriumProblem A B Y}
+    (h : GameSimulation R Z) (g : GameSimulation Q R) (f : GameSimulation P Q) :
     (h.comp g).comp f = h.comp (g.comp f) := by
   ext <;> rfl
 
-/-- A separate reflection contract on the same state map gives an iff. -/
-theorem isEquilibrium_iff (f : GameSimulation P Q) (g : GameComorphism P Q)
+/-- Transport playerwise additive errors through value maps with a compatible bound.
+The bound is needed only at the incumbent. An affine map with slope `a` scales
+its source error by `a`; identity maps preserve it. -/
+theorem transport_le_add [Add V] [Add W] [AddRightMono W]
+    (f : GameSimulation P Q) (ε : I → V) (δ : J → W) {s : S}
+    (herror : ∀ j, f.valueMap j (P.value (f.deviatorMap j) s + ε (f.deviatorMap j)) ≤
+      f.valueMap j (P.value (f.deviatorMap j) s) + δ j)
+    (h : ∀ i s', P.deviation i s s' → P.value i s' ≤ P.value i s + ε i) :
+    ∀ j t, Q.deviation j (f.toFun s) t → Q.value j t ≤ Q.value j (f.toFun s) + δ j := by
+  intro j t ht
+  obtain ⟨s', hs', hbound⟩ := f.deviation_dominated j s t ht
+  exact hbound.trans (((f.valueMap j).monotone (h (f.deviatorMap j) s' hs')).trans
+    ((herror j).trans (add_le_add_left (f.value_le j s) (δ j))))
+
+/-- Exact deviation lifts give a simulation after any monotone value recoding. -/
+def ofExactLifts (f : S → T) (g : J → I) (φ : J → V →o W)
+    (hvalue : ∀ j s, Q.value j (f s) = φ j (P.value (g j) s))
+    (hlift : ∀ j s t, Q.deviation j (f s) t →
+      ∃ s', P.deviation (g j) s s' ∧ f s' = t)
+    (hvalid : ∀ s, P.valid s → Q.valid (f s)) : GameSimulation P Q where
+  toFun := f
+  deviatorMap := g
+  valueMap := φ
+  value_le j s := (hvalue j s).symm.le
+  deviation_dominated j s t ht := by
+    obtain ⟨s', hs', rfl⟩ := hlift j s t ht
+    exact ⟨s', hs', (hvalue j s').le⟩
+  valid_preserves := hvalid
+
+/-- A separate reward-preserving reflection contract on the same state map gives an iff. -/
+theorem isEquilibrium_iff {Q : EquilibriumProblem T J V}
+    (f : GameSimulation P Q) (g : GameComorphism P Q)
     (hmap : g.toFun = f.toFun) (s : S) :
     Q.IsEquilibrium (f.toFun s) ↔ P.IsEquilibrium s :=
   ⟨fun h ↦ g.pullback (hmap ▸ h), f.transport⟩
-
-/-- Additive slack transports unchanged whenever addition is monotone on the
-right. This states the inequalities without introducing another equilibrium predicate. -/
-theorem transport_le_add [Add V] [AddRightMono V] (f : GameSimulation P Q) (ε : V) {s : S}
-    (h : ∀ i s', P.deviation i s s' → P.value i s' ≤ P.value i s + ε) :
-    ∀ j t, Q.deviation j (f.toFun s) t → Q.value j t ≤ Q.value j (f.toFun s) + ε := by
-  intro j t ht
-  obtain ⟨s', hs', hbound⟩ := f.deviation_dominated j s t ht
-  exact hbound.trans ((h (f.deviatorMap j) s' hs').trans (add_le_add_left (f.value_le j s) ε))
 
 end GameSimulation
 
@@ -150,14 +183,9 @@ variable {V : Type r} [Preorder V] {S : Type u} {I : Type v}
     {R : EquilibriumProblem U K V}
 
 /-- Exact deviation lifting is a special case of deviation domination. -/
-def toSimulation (f : GameMorphism P Q) : GameSimulation P Q where
-  toFun := f.toFun
-  deviatorMap := f.deviatorMap
-  value_le j s := (f.value_eq j s).symm.le
-  deviation_dominated j s t ht := by
-    obtain ⟨s', hs', rfl⟩ := f.deviation_lifts j s t ht
-    exact ⟨s', hs', (f.value_eq j s').le⟩
-  valid_preserves := f.valid_preserves
+def toSimulation (f : GameMorphism P Q) : GameSimulation P Q :=
+  .ofExactLifts f.toFun f.deviatorMap (fun _ ↦ OrderHom.id)
+    f.value_eq f.deviation_lifts f.valid_preserves
 
 @[simp] theorem toSimulation_id (P : EquilibriumProblem S I V) :
     (id P).toSimulation = GameSimulation.id P := by

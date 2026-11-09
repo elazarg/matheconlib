@@ -13,9 +13,9 @@ exact statements and hypotheses.
 
 | Module | Responsibility |
 | --- | --- |
-| `Equilibrium.Problem` | Candidate validity, deviation optimality, equilibrium, exact morphisms and comorphisms |
+| `Equilibrium.Problem` | Validity, optimality, comparison transport, value recoding, exact morphisms and comorphisms |
 | `Equilibrium.Expected` | Expected-value evaluation with integrable incumbents and deviations |
-| `Equilibrium.Simulation` | Pointwise domination, preservation, composition, reflection with a separate comorphism, and additive slack |
+| `Equilibrium.Simulation` | Monotone value maps, deviation domination, composition, and compatible additive errors |
 | `Equilibrium.Averaging` | Ordered averaging and scalar dominating witnesses |
 | `Equilibrium.ComparisonMixture` | Shared mixtures of prescribed and alternative laws, independently of game structure |
 | `Equilibrium.Mixture` | Utility-independent law simulations, composition, evaluation, and the fixed-incumbent comparison bridge |
@@ -80,27 +80,97 @@ function composition, `u ∘ g`; `reindex_payoff` connects the two representatio
 | --- | --- |
 | `GameMorphism` | Target deviations lift exactly to source deviations; corresponding values agree; validity is preserved |
 | `GameComorphism` | Source deviations map to target deviations; corresponding values agree; validity is reflected |
-| `GameSimulation` | Every target deviation is bounded by a legal source deviation; the incumbent value weakly increases; validity is preserved |
+| `GameSimulation` | Every target deviation is bounded by a recoded legal source value; the incumbent bounds its recoding; validity is preserved |
 | `MixtureSimulation` | Honest laws agree; every covered target deviation law is a probability mixture of legal source deviation laws |
 | `ComparisonMixture` | One probability kernel mixes both laws of each source comparison to reproduce the target comparison |
 
-Simulation fields need only a comparison relation. Transport and composition
-use preorder laws; exact morphism and comorphism transport needs only `LE`.
-The pointwise domination argument is
+`IsDeviationOptimal.of_comparisons` is the pointwise transport core. For every
+admitted target deviation, it asks for a legal source deviation whose
+nonimprovement implies target nonimprovement. The two problems may have different
+value spaces equipped only with `LE`; no order laws or numerical recoding are
+needed. Exact morphism and comorphism transport use this core.
+
+`GameSimulation` is a stronger, numerical certificate. It supplies a Mathlib
+order homomorphism `valueMap j : V →o W` for each target deviator. Its argument is
 
 \[
-v_Q(j,t) \le v_P(g(j),s') \le v_P(g(j),s) \le v_Q(j,f(s)).
+v_Q(j,t) \le \varphi_j(v_P(g(j),s'))
+\le \varphi_j(v_P(g(j),s)) \le v_Q(j,f(s)).
 \]
 
 `IsDeviationOptimal.of_dominated_deviations` states this argument at one
-incumbent. `GameSimulation` packages the hypotheses uniformly and supports
-identity and composition. Exact morphisms convert to simulations.
+incumbent. `GameSimulation` packages it uniformly over incumbents. Source and
+target values need preorders. Value maps are indexed by target deviators: two
+target players represented by the same source player can use different scales.
+Composition reindexes the inner value map by the outer deviator map, then
+composes the order homomorphisms. Identity uses identity value maps.
+`ofExactLifts` combines exact deviation lifts with recoded value equality;
+exact reward-preserving morphisms convert using identity value maps.
 
 A comorphism with the same state map supplies independent reflection, giving
 an equilibrium iff at image states. This does not assert that every target
-equilibrium has a source preimage. `transport_le_add` preserves the same
-additive slack under monotone addition; it does not add an approximate
-equilibrium predicate.
+equilibrium has a source preimage.
+
+## Value coordinates and additive errors
+
+`EquilibriumProblem.mapValues P φ` changes each player's values from `V` to `W`,
+leaving deviations and validity unchanged. Construction needs no order; identity
+and successive recodings satisfy identity and composition laws. Monotone maps
+preserve optimality and equilibrium. Maps preserving and reflecting comparisons,
+such as order embeddings, give an iff without needing to be surjective. A
+monotone constant map can create equilibria, so monotonicity alone gives no
+reflection.
+
+An exact morphism from `P.mapValues φ` to `Q` can be applied to
+`h.mapValues hφ`, where `h` is a source equilibrium and `hφ` proves monotonicity.
+This retains the numerical meaning of exact reward preservation. Simulations
+also admit inequalities around the recoded values rather than requiring equality.
+The comparison core covers transformations that do not factor through values:
+an additive term constant along each player's legal deviations cancels from
+those comparisons, even when it varies between different opponent profiles.
+
+`transport_le_add` accepts source errors `ε : I → V` and target errors
+`δ : J → W`. In addition to monotone target addition, it needs the pointwise bound
+
+\[
+\varphi_j(v_P(g(j),s)+\varepsilon_{g(j)})
+\le \varphi_j(v_P(g(j),s))+\delta_j.
+\]
+
+Only the incumbent value is used. Identity maps preserve the same error. A real
+affine map with slope `a > 0` and any offset transforms `ε` into `a * ε`;
+arbitrary monotone maps provide no numerical error bound by themselves. No
+additional approximate-equilibrium predicate is introduced.
+
+## Characterization and categorical interpretation
+
+Preserving a fixed game's equilibria observes less than preserving incentives.
+Different rankings of suboptimal alternatives may leave the equilibria unchanged.
+`preserves_comparisons_iff_forall_deviation_subsets` gives a precise stronger
+characterization: at a fixed incumbent, a change of values preserves every
+admissible nonimprovement comparison if and only if it preserves optimality
+under **every restriction of the deviation relation**. Both sides retain the
+same states and players. Candidate validity is deliberately absent from this
+optimality statement; an invalid incumbent would make equilibrium preservation
+vacuous. The reverse implication tests one deviation at a time.
+
+The categorical interpretation fixes an observation before choosing morphisms.
+Writing `E(P)` for the equilibrium subset of candidate states, preservation says
+`f(E(P)) ⊆ E(Q)`. Together with identity and composition, restriction of state
+maps to equilibria makes `E` a subfunctor of the state assignment. The inclusions
+of equilibrium subsets form a natural transformation. Preservation plus
+reflection gives `E(P) = f⁻¹(E(Q))`: the square of inclusions is a pullback. This
+does not imply that `f` is invertible or that all target equilibria are in its
+image. On a category of preserving and reflecting maps, the inclusion is a
+cartesian natural transformation. These statements describe the proved transport
+laws; the library does not add category instances.
+
+Best-response preservation is a related, stronger observation for strategic
+games. Hedges (2017) uses best-response-preserving morphisms for open games.
+Tewolde and Conitzer (2024) study transformations universally preserving mixed
+Nash or best-response sets; their positive-affine characterization assumes a
+specified class of separable transformations. None of our numerical or law
+certificates is claimed to characterize every equilibrium-preserving map.
 
 ## Averaging and law evaluation
 
@@ -140,6 +210,60 @@ game and consumes the existing `G.IsMixedNash` predicate. Its target is the
 expected Nash problem of a stochastic outcome game on the original pure
 profiles. The canonical mixed outcome game is automatically measurable;
 no global payoff measurability assumption is introduced.
+
+Value recoding after expectation, `φ(∫ u)`, differs from changing outcome utility
+before expectation, `∫ φ(u)`. `mapValues` performs the former and retains the
+original integrability conditions. The latter uses a new expected-value problem
+whose admissible deviations and valid incumbents may also change. For probability
+laws and integrable real utilities, positive affine transformations commute with
+expectation. Arbitrary increasing transformations generally do not. A sure `1`
+and a fair lottery over `0, 2` have equal means, but cubing outcomes gives means
+`1, 4`. The utility-independent law certificate can still be evaluated at new
+integrable utilities; its source-equilibrium premise must concern that evaluation.
+
+`isEquilibrium_ofExpectedValue_affine_iff` proves invariance under positive affine
+changes of real outcome utilities for probability laws. It needs no global
+integrability assumption: nonzero scaling and translation preserve integrability,
+and expectation identities are used only at valid incumbents and admitted
+deviations. At a nonintegrable state the total Bochner integral defaults to zero,
+so even affine transformations need not identify the entire value records.
+
+## Observations and approximate laws
+
+`MixtureSimulation` requires equality of the observed outcome laws, often called
+perfect indistinguishability. The requirement is local to compiled incumbents and
+their covered deviations. Equality concerns `O`, the outcomes read by utilities;
+`mapOutcome` permits a common measurable observation that forgets irrelevant
+detail. Equal laws give equal evaluations for every common integrable utility.
+
+A class of observable tests specifies which distinctions a weaker certificate
+would retain. Agreement against all bounded measurable utilities already
+characterizes equality of probability laws, since indicator functions test every
+measurable event. Restricting tests only weakens a contract if the remaining
+tests no longer separate the laws. Even bounded increasing tests separate
+probability laws on real outcomes, through indicators of upper rays. One-sided
+comparison against increasing utilities instead expresses stochastic dominance.
+Comparison against every bounded measurable utility in both signs forces equality.
+
+Composition does not require exact equality: numerical domination already
+composes here, and suitable ordered or approximate law contracts can also compose.
+For a fixed test class, transitivity alone composes agreement or
+indistinguishability certificates. Closure under precomposition is a separate
+condition when changing observations. Expressiveness is another condition:
+GameTheory's `SecureImplementation` composes by transitivity, while its
+`ContainsMeanTests` hypotheses make the selected tests sufficient for pseudo-Nash
+transport. The current library supplies no test-class or approximate-law certificate.
+
+For probability laws and bounded measurable real utilities, define total variation by
+`d(μ, ν) = sup_A |μ(A) - ν(A)|` over measurable events. If `m ≤ u ≤ M`, the
+expectation error is at most `d(μ, ν) * (M - m)`; for signed bounded utilities this
+gives `2 * d(μ, ν) * ‖u‖∞`. An equilibrium transport may incur both a deviation
+error and an incumbent error, which add. Exact incumbent-law agreement removes
+the latter error. Approximate simulation budgets also require an explicit
+composition rule; triangle inequalities and contraction under Markov kernels
+give additive budgets in the total-variation setting. These bounds explain the
+additional data an approximate extension would need; they are not theorems of
+the present exact-law API.
 
 ## Measurable simulation and composition
 
@@ -212,6 +336,10 @@ checks the public interfaces:
   a separate integrable vector mean has no dominating support point.
 - Equal rewards do not ensure honest-law equality, and improving deviations
   to invalid targets still exclude equilibrium.
+- Monotone value maps compose across different value spaces and player sets.
+- Affine scaling changes additive errors, and a monotone collapse can create equilibria.
+- A deviation-constant offset preserves comparisons without any global value map.
+- Recoding an expected payoff differs from recoding utilities before integration.
 
 The Dirac theorem uses finite player sets and arbitrary action spaces with
 measurable singletons. It compares exactly the integrable deviations admitted
@@ -220,8 +348,16 @@ by `mixedNashProblem`.
 Infinite or undefined expected values remain outside these transport results.
 Coalition preservation needs one source replacement bounding all members
 simultaneously; separate scalar witnesses do not establish it. Arbitrary
-comparison relations, quantitative law approximation, and computational
+solution concepts, quantitative law approximation, and computational
 indistinguishability require their own compatibility results.
+
+## References
+
+- Jules Hedges (2017), *Morphisms of open games*.
+  [arXiv:1711.07059](https://arxiv.org/abs/1711.07059).
+- Emanuel Tewolde and Vincent Conitzer (2024), *Game Transformations That
+  Preserve Nash Equilibria or Best-Response Sets*, IJCAI, pp. 2984–2993.
+  [DOI: 10.24963/ijcai.2024/331](https://doi.org/10.24963/ijcai.2024/331).
 
 ## Provenance
 

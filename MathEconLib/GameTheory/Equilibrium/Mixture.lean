@@ -307,11 +307,13 @@ def toSimulation (f : MixtureSimulation DP DQ LP LQ)
     GameSimulation P Q where
   toFun := f.toFun
   deviatorMap := f.deviatorMap
+  valueMap _ := OrderHom.id
   value_le j s := (f.value_eq u hP hQ s j).ge
   valid_preserves := hvalid
   deviation_dominated j s t ht := by
     obtain ⟨s', hd, hi, hb⟩ := f.exists_source_deviation_ge u (hcover j s t ht) (hdev j s t ht)
-    exact ⟨s', hlegal j s s' hd hi, by simpa only [hP, hQ] using hb⟩
+    exact ⟨s', hlegal j s s' hd hi,
+      (hQ j t).le.trans (hb.trans (hP (f.deviatorMap j) s').ge)⟩
 
 /-- Evaluating outcome kernels admits integrable simulated deviations automatically.
 Honest-law equality also transports incumbent integrability. -/
