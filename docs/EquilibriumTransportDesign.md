@@ -21,6 +21,7 @@ exact statements and hypotheses.
 | `Equilibrium.Mixture` | Utility-independent law simulations, composition, evaluation, and the fixed-incumbent comparison bridge |
 | `Strategic.Basic`, `Strategic.Outcome`, `Strategic.Mixed` | Unilateral deviations, stochastic outcome evaluation, and independent mixed Nash |
 | `Strategic.Mixed.Transport`, `Strategic.Outcome.Transport` | Pure-to-mixed Nash, mixed-source law transport, and stochastic outcome-game transport |
+| `Mechanism.Core.Revelation` | Multi-agent dominant-strategy and pure Bayesian revelation with outcome and transfer preservation |
 
 The existing `EquilibriumProblem`, `StrategicGame`, `OutcomeGame`, and
 `PayoffStructure` own the game semantics. Measures, probability measures, and
@@ -179,6 +180,33 @@ Tewolde and Conitzer (2024) study transformations universally preserving mixed
 Nash or best-response sets; their positive-affine characterization assumes a
 specified class of separable transformations. None of our numerical or law
 certificates is claimed to characterize every equilibrium-preserving map.
+
+## Revelation as a comorphism client
+
+[`Mechanism.Core.Revelation`](../MathEconLib/Mechanism/Core/Revelation.lean) applies
+action translation to the multi-agent revelation principle. A source strategy
+profile `σ` determines the direct mechanism `M.comap σ`. Reporting `r` executes
+the original action profile `σ(r)`, so outcomes and transfers agree pointwise.
+The map goes from direct reports to original actions; equilibrium pulls back
+along it. The maps need neither be injective nor surjective.
+
+`revelation_principle_dominant` assumes a dominant original action for every
+player and true type profile and produces a DSIC direct mechanism.
+`revelation_principle_bayesian` assumes a measurable pure Bayesian equilibrium
+and produces a direct mechanism with truthful ex-ante `IsBNE` under the same
+prior. Its proof reuses `BayesianGame.IsBNE.comapActions`, which is proved by
+`GameComorphism.pullback`. Integrable deviations and incumbent integrability are
+preserved by equality of realized payoffs. Pointwise conditional `IsBIC` at null
+types is a stronger conclusion requiring additional hypotheses.
+
+Both results use the existing quasilinear environment, including interdependent
+values. The [two-agent client](../MathEconLibTest/Mechanism/Revelation.lean) has a
+noninjective, nonsurjective
+message encoding and a correlated prior. This demonstrates exact transport;
+it needs no additional mixture simulation or change of utility coordinates.
+A second strategy agrees with the dominant one on the prior's support but is
+suboptimal at null types. Its direct mechanism has truthful ex-ante equilibrium
+and fails DSIC, testing the scope of the Bayesian conclusion.
 
 ## Averaging and law evaluation
 

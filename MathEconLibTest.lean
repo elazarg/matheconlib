@@ -39,6 +39,7 @@ import MathEconLibTest.Mechanism.BayesianICContract
 import MathEconLibTest.Mechanism.Core
 import MathEconLibTest.Mechanism.Games
 import MathEconLibTest.Mechanism.PostedPriceGames
+import MathEconLibTest.Mechanism.Revelation
 import MathEconLibTest.Mechanism.TruthfulNash
 import MathEconLibTest.Namespace
 import MathEconLibTest.Preferences.Basic

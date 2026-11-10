@@ -1,14 +1,16 @@
 /-
 Copyright (c) 2026 Ruiz Chen, Scott Duke Kominers, Daniel Lyng, Jujian Zhang,
-Bo Cowgill. All rights reserved.
+Bo Cowgill, Elazar Gershuni. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Ruiz Chen, Scott Duke Kominers, Daniel Lyng, Jujian Zhang, Bo Cowgill
+Authors: Ruiz Chen, Scott Duke Kominers, Daniel Lyng, Jujian Zhang, Bo Cowgill,
+Elazar Gershuni
 -/
 module
 
 public import MathEconLib.Mechanism.Auctions.AllPurchase.Spec
 public import MathEconLib.Mechanism.Core.Bayesian
 public import MathEconLib.Mechanism.Core.BayesianIC
+public import MathEconLib.Mechanism.Core.Revelation
 public import MathEconLib.Mechanism.Core.SolutionConcepts
 public import MathEconLib.Mechanism.Core.Strategic
 
@@ -30,6 +32,10 @@ Quasilinear conditional Bayesian IC permits correlated types, interdependent val
 multidimensional type spaces. Its full-space pointwise version implies truthful Bayesian Nash
 equilibrium under the stated analytic hypotheses.
 
+The multi-agent revelation principles absorb a pure strategy profile into the mechanism's report
+maps. Dominant strategies give a DSIC direct mechanism; measurable Bayesian equilibrium gives a
+truthful ex-ante equilibrium. Both preserve the original outcomes and transfers.
+
 ## Main definitions
 
 * `Mechanism`: Outcome and signed-transfer rules for dependent action profiles.
@@ -48,6 +54,9 @@ equilibrium under the stated analytic hypotheses.
 * `DirectMechanism.Quasilinear.IsBIC.isBNE`: Full-space pointwise BIC gives a truthful Bayesian
   equilibrium.
 * `Mechanism.inducedBayesianGame_comap`: Translating mechanism actions translates its Bayesian game.
+* `Mechanism.revelation_principle_dominant`: Dominant strategies admit a DSIC direct realization.
+* `Mechanism.revelation_principle_bayesian`: Pure Bayesian equilibrium admits a truthful direct
+  realization under the same prior and integrability convention.
 
 ## Tags
 

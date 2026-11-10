@@ -114,6 +114,7 @@ public import MathEconLib.Mechanism.Core.Comap
 public import MathEconLib.Mechanism.Core.Environment
 public import MathEconLib.Mechanism.Core.Mechanism
 public import MathEconLib.Mechanism.Core.Profile
+public import MathEconLib.Mechanism.Core.Revelation
 public import MathEconLib.Mechanism.Core.SolutionConcepts
 public import MathEconLib.Mechanism.Core.Strategic
 public import MathEconLib.Preferences
