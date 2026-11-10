@@ -53,7 +53,7 @@ The library is organized around shared definitions and results that economic mod
 
 | Area | Selected topics |
 | --- | --- |
-| Game theory | [Strategic and Bayesian games](MathEconLib/GameTheory/), pure and mixed Nash equilibria, [Nash equilibrium under action translation](MathEconLib/GameTheory/Strategic/Basic.lean), [equilibrium transport](docs/EquilibriumTransportDesign.md) |
+| Game theory | [Strategic and Bayesian games](MathEconLib/GameTheory/), pure and mixed Nash equilibria, [Nash equilibrium under action translation](MathEconLib/GameTheory/Strategic/Basic.lean), [dominated-strategy reduction](MathEconLibExamples/GameTheory/DominatedStrategies.lean), [equilibrium transport](docs/EquilibriumTransportDesign.md) |
 | Mechanism design and auctions | [Mechanisms](MathEconLib/Mechanism/), [induced strategic](MathEconLib/Mechanism/Core/Strategic.lean) and [Bayesian games](MathEconLib/Mechanism/Core/Bayesian.lean), [multi-agent revelation](MathEconLib/Mechanism/Core/Revelation.lean), [incentive compatibility and payment identities](MathEconLib/BidderProblem/), [revenue equivalence and auction formats](MathEconLib/Auction/) |
 | Choice and matching | [Choice functions and substitutability](MathEconLib/Choice/), [matching with contracts and stable outcomes](MathEconLib/Matching/) |
 | Pricing | [Single-parameter choice](MathEconLib/SingleParameter/), [value distributions, posted-price optimality, and comparative statics](MathEconLib/ValueDistribution/) |

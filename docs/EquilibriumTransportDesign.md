@@ -21,6 +21,7 @@ exact statements and hypotheses.
 | `Equilibrium.Mixture` | Utility-independent law simulations, composition, evaluation, and the fixed-incumbent comparison bridge |
 | `Strategic.Basic`, `Strategic.Outcome`, `Strategic.Mixed` | Unilateral deviations, stochastic outcome evaluation, and independent mixed Nash |
 | `Strategic.Mixed.Transport`, `Strategic.Outcome.Transport` | Pure-to-mixed Nash, mixed-source law transport, and stochastic outcome-game transport |
+| `Strategic.Reduction` | Domination certificates for retained strategies, including mixed-strategy reductions |
 | `Mechanism.Core.Revelation` | Multi-agent dominant-strategy and pure Bayesian revelation with outcome and transfer preservation |
 
 The existing `EquilibriumProblem`, `StrategicGame`, `OutcomeGame`, and
@@ -180,6 +181,40 @@ Tewolde and Conitzer (2024) study transformations universally preserving mixed
 Nash or best-response sets; their positive-affine characterization assumes a
 specified class of separable transformations. None of our numerical or law
 certificates is claimed to characterize every equilibrium-preserving map.
+
+## Dominated-strategy reduction
+
+[`Strategic.Reduction`](../MathEconLib/GameTheory/Strategic/Reduction.lean)
+constructs a `GameSimulation` for an action translation when each full deviation
+is weakly dominated by a retained deviation against the translated opponents.
+The action maps need not be injective. Pointwise Nash equivalence needs coverage
+only at the incumbent; the composable certificate needs it at every source
+profile. In a finite mixed extension, covering pure deviations suffices for all
+mixed deviations. Retained strategy carriers may themselves be infinite mixed
+strategy spaces.
+
+The [worked example](../MathEconLibExamples/GameTheory/DominatedStrategies.lean)
+is a two-player zero-sum game with row payoffs:
+
+| | L | R |
+| --- | ---: | ---: |
+| A | 3 | 0 |
+| B | 0 | 3 |
+| C | 1 | 1 |
+
+The half-half mixture of A and B strictly dominates C, while neither pure row
+does. The reduced game retains all mixtures of A and B. Its uniform equilibrium
+lifts to the full game through `dominatedFiniteMixedSimulation`.
+Against the uniform column strategy, every legal source deviation pays `3 / 2`,
+whereas deviating to C pays `1`. The checked `no_exact_deviation_payoff` therefore
+rules out exact payoff matching even after allowing mixed source strategies;
+`no_exact_morphism` excludes an exact morphism with the same inclusion, including
+alternative player maps.
+
+This is a client of payoff domination. Its omitted action need not have the same
+outcome law as any mixture of retained actions, so it does not establish a need
+for `MixtureSimulation`. Successive reductions can compose their simulations,
+lifting equilibria from the final reduced game back through the larger games.
 
 ## Revelation as a comorphism client
 
