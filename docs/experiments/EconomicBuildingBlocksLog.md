@@ -78,3 +78,28 @@ earlier GameTheory experiment ledger.
   compiled named-declaration audit. Retain the core generalization. This is
   hypothesis-locality evidence and is neutral on records versus operations.
   Complete project validation remains a gate for the investigation.
+
+## MEC-003 / source E2: an infinite positive deviation
+
+- **Date / status:** 2026-11-12; reserved, in progress.
+- **Question:** What does the current finite-integrable-deviation convention
+  assert when an excluded unilateral move has infinite nonnegative gain?
+  Does separating evaluation-domain information reduce actual certificate work,
+  rather than merely move the same hypotheses?
+- **Alternatives:** current finite-Bochner semantics and its existing filter;
+  explicitly separated evaluation guards under the same semantics; an
+  extended-value convention is a distinct admissible experimental alternative,
+  not silently equated with either of those.
+- **Representative slice:** two players choose Bool and a natural number.
+  The first stays for payoff zero or chooses `2^(n+1)`; the other receives zero
+  and randomizes geometrically. Prove an admitted equilibrium under the native
+  definition and an excluded own deviation with nonnegative integral top.
+- **Kill conditions:** prove equilibrium against every admitted mixed
+  deviation, not merely pure deviations. State infinite gain as a nonnegative
+  integral, since the real Bochner integral totalizes outside its domain.
+  Acknowledge current nonintegrable-deviation and opponent-only controls; charge
+  product-law and arbitrary-deviation proofs in the size measurement.
+- **Baseline / artifacts:** collecting `1d3750a`; child
+  `codex/experiment-economic-item-03-infinite-gain`. The original 40–60 line
+  estimate remains a hypothesis to measure, not a budget to satisfy by hiding
+  infrastructure.
