@@ -135,3 +135,28 @@ earlier GameTheory experiment ledger.
   boundary and expressiveness of the current record. It does not demonstrate
   a certificate-size reduction; paired E1/E3 measurements must still test that
   hypothesis without changing the accepted deviations or candidate guards.
+
+## MEC-004 / source E1: Bayesian revelation through records and direct lifts
+
+- **Date / status:** 2026-11-12; reserved, in progress.
+- **Question:** On the same native indirect mechanism, prior and measurable
+  strategy, is revelation better served by the existing action-translation
+  comorphism or direct measurable-deviation lifting? Does the literal same
+  certificate earn a second use?
+- **Alternatives:** `BayesianGame.comapActionsComorphism` and its pullback
+  operations; direct payoff/integrability/deviation reasoning. Compare the
+  natural comorphism direction, not an artificially stronger lifting morphism.
+- **Representative slice:** arbitrary supplied full-consequence utility and
+  the same candidate/deviation integrability convention; exact BNE and a second
+  explicit-comparison equilibrium using the same certificate. A finite
+  posted-price mechanism has an unused third action, a non-surjective indirect
+  strategy, a fair prior over two types, and actual applications of both routes.
+- **Kill conditions / measurement:** identical scopes and assumptions, all
+  measurable lifts and helpers charged, no private-value, quasilinear or
+  surjectivity assumptions added to the generic result. Distinguish installed
+  infrastructure, cold construction, shared semantics and marginal proofs.
+  The second comparison use is not falsely labeled the same DSIC certificate.
+  The pinned simulations-branch proof is prior evidence, not newly authored.
+- **Baseline / artifacts:** collecting `b2dc746`; child
+  `codex/experiment-economic-item-04-bayesian-revelation`. Route and concrete
+  application files will remain directly compiled under the test umbrella.
