@@ -323,12 +323,32 @@ def IsStrongNash [LE V] (G : StrategicGame ι A V)
     (a : (i : ι) → A i) :=
   ∀ a' ≠ a, ∃ i, a i ≠ a' i ∧ G.payoff i a' ≤ G.payoff i a
 
+/-- Actual incumbent and replacement comparisons suffice to identify strong Nash with absence
+of a joint strict gain. No comparisons between unrelated payoff vectors are required. -/
+lemma isStrongNash_iff_not_lt_of_comparable [Preorder V] (G : StrategicGame ι A V)
+    (a : (i : ι) → A i)
+    (hc : ∀ a' ≠ a, ∀ i, a i ≠ a' i →
+      G.payoff i a' ≤ G.payoff i a ∨ G.payoff i a ≤ G.payoff i a') :
+    G.IsStrongNash a ↔ ∀ a' ≠ a, ¬ ∀ i, a i ≠ a' i → G.payoff i a < G.payoff i a' := by
+  classical
+  constructor
+  · intro strong alternative different strict
+    obtain ⟨i, changed, rejection⟩ := strong alternative different
+    exact (not_lt_of_ge rejection) (strict i changed)
+  · intro noGain alternative different
+    by_contra noRejection
+    apply noGain alternative different
+    intro i changed
+    have not_le : ¬ G.payoff i alternative ≤ G.payoff i a :=
+      fun rejection ↦ noRejection ⟨i, changed, rejection⟩
+    exact lt_iff_le_not_ge.mpr ⟨(hc alternative different i changed).resolve_left not_le, not_le⟩
+
 /-- For linearly ordered payoffs, strong Nash equilibrium excludes every different action profile
 that strictly benefits all players who change their actions. -/
 lemma isStrongNash_iff_not_lt [LinearOrder V] (G : StrategicGame ι A V)
     (a : (i : ι) → A i) :
     G.IsStrongNash a ↔ ∀ a' ≠ a, ¬ ∀ i, a i ≠ a' i → G.payoff i a < G.payoff i a' := by
-  simp only [IsStrongNash, not_forall, not_lt, exists_prop]
+  exact G.isStrongNash_iff_not_lt_of_comparable a (fun _ _ _ _ ↦ le_total _ _)
 
 /-- Every strong Nash equilibrium is a Nash equilibrium. -/
 lemma IsStrongNash.isNash [Preorder V] [DecidableEq ι] {G : StrategicGame ι A V} {a : (i : ι) → A i}
