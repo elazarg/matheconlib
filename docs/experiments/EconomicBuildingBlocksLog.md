@@ -194,3 +194,28 @@ earlier GameTheory experiment ledger.
   before attributing that cost to records versus mathematical operations.
   Retain both compiled routes as evidence. Whole-project integration remains
   the investigation's final gate.
+
+## MEC-005 / source E3: who owns optimality proofs?
+
+- **Date / status:** 2026-11-12; reserved, in progress.
+- **Question:** Does a Mathlib-only guarded optimality operation earn ownership
+  of reusable proofs across equilibrium and attained choice, against the best
+  native direct/record baseline?
+- **Alternatives:** first canonicalize ordered equilibrium as a transparent
+  specialization of explicit comparison (independent native control); then
+  redefine actual per-player optimality through guarded menu optimality and
+  use its coverage theorem in game transport and a native choice contraction.
+  Keep both revisions reviewable, including an unsuccessful guarded rival.
+- **Representative slice:** existing Bayesian revelation clients, morphism
+  transport, native attained-bundle contraction/IRC, invalid deviation targets,
+  integrability filters, and an invalid incumbent with no judges.
+- **Kill conditions:** no loss of incumbent validity, no added target-validity
+  restriction, and no hidden changes to menus or comparisons. Charge all
+  bridging lemmas, repaired consumers and the second-use proof. Separate native
+  canonicalization gains from gains requiring a mathematical guarded layer.
+  A longer or semantically distorted implementation may refute proof ownership
+  without refuting the usefulness of the standalone operation.
+- **Baseline / artifacts:** collecting `483576e`; child
+  `codex/experiment-economic-item-05-optimality-foundations`. Compile serially;
+  no worktrees. Initial native transport body is three nonblank lines; attained
+  choice contraction body is six. No speed or compression result is assumed.
