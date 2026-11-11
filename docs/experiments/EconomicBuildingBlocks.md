@@ -107,6 +107,14 @@ the resulting design requires convincing comparative and semantic evidence.
 
 ## Corrections discovered against current sources
 
+Build environment note: the fork initially lacked much of the pinned compiled
+dependency cache. Local Lake `package-overrides.json` reuses the sibling's
+third-party package locations only after checking all nine manifest revisions
+match and their tracked sources are clean. The toolchain remains 4.35.0 and
+`lake-manifest.json` is unchanged. This is local cache reuse, not a dependency
+on GameTheory's authored library or a design assumption. A separate checkout
+can reproduce the commands with the ordinary matching Mathlib cache instead.
+
 - E2's inventory understates existing coverage: `Integrability.lean` already
   tests filtered nonintegrable deviations and a deviation whose opponent alone
   becomes nonintegrable. Positive infinite gain remains a distinct control;
