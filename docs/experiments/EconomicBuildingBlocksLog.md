@@ -219,3 +219,18 @@ earlier GameTheory experiment ledger.
   `codex/experiment-economic-item-05-optimality-foundations`. Compile serially;
   no worktrees. Initial native transport body is three nonblank lines; attained
   choice contraction body is six. No speed or compression result is assumed.
+- **Native control result:** ordered `IsDeviationOptimal` and `IsEquilibrium`
+  now transparently specialize their explicit-comparison owners. Both ordered
+  map transports reuse the corresponding generic comparison transport. The
+  factored direct revelation client drops its two representation conversions
+  and becomes a single application, matching the ordinary record client's
+  three-line declaration. Core source changes total 13 additions/19 deletions;
+  two internal method calls require explicit namespaces after abbreviation.
+  No downstream proof repairs are required. A new empty-judge fixture retains
+  rejection of an invalid incumbent despite vacuous deviation optimality.
+  `lake --iofail build MathEconLib.GameTheory.Equilibrium.Problem` passes;
+  complete `lake build` passes 9,302 jobs including API pins, examples and
+  tests. Existing upstream warnings/info remain visible. Compiled axiom checks
+  cover 189 declarations in the core, validity and revelation controls, with
+  only standard axioms; source checks pass. Retain this independent control
+  before trying the guarded rival; it already removes duplicated ownership.

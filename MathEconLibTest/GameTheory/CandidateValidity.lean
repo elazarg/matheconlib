@@ -52,6 +52,16 @@ open MathEconLib.GameTheory
 
 namespace MathEconLibTest.GameTheory.CandidateValidity
 
+/-- No judge can supply a missing incumbent validity certificate. -/
+def noJudges : EquilibriumProblem Unit Empty Nat where
+  deviation i := nomatch i
+  value i := nomatch i
+  valid _ := False
+
+theorem noJudges_optimal : noJudges.IsDeviationOptimal () := fun i ↦ nomatch i
+
+theorem noJudges_not_equilibrium : ¬ noJudges.IsEquilibrium () := fun h ↦ h.valid
+
 /-- Only `true` is a valid incumbent, and neither state admits a deviation. -/
 def noDeviations : EquilibriumProblem Bool Unit Nat where
   deviation _ _ _ := False
