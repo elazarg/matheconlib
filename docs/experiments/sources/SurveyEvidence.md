@@ -4,6 +4,8 @@ Nov 10, 2026 · @Elazar Gershuni
 
 The core of `EquilibriumProblem` uses only one comparison per deviation, yet it is presented as a value function into a shared type. Each transport theorem on branch `design/equilibrium-simulations` genuinely needs a different, larger bundle, so the transport layer is already a level hierarchy, just not named as one.
 
+**Scope.** This survey reads branch `design/equilibrium-simulations`. Upstream main also has explicit comparison relations (#281) and finite Afriat (#296). Evidence from GameTheory experiments (decisions D78–D92) is noted where it applies; MathEconLib-specific tests are on the Experiments tab.
+
 ## Vocabulary
 
 An equilibrium check asks one thing per candidate: is there a move, owned by some judge, that the judge counts as a gain? Everything stored beyond that answer either enables more questions or enforces consistency. Six independent axes describe what is stored; the judgment ladder is the main one.
@@ -169,11 +171,11 @@ Marriage stability is the Coalition-moves misfit. It fits `EquilibriumProblem` o
 | `tieBreak` | `Choice/Refinement.lean:46` | Order (complete preorder) | Order (linear) | refinement |
 | `ofIntegralBounds`, `MixtureSimulation.toSimulation` | see the transport table | Cardinal, Law-only | Order | ℝ values, integrability |
 
-**Missing.** Choice-to-preference rationalizability (revealed preference, Houthakker, Richter) is absent: only forward arrows from preferences to choice exist. Representation is finite-only; there is no countable or continuous (Debreu) version.
+**Missing.** A countable or continuous (Debreu) representation theorem. Finite rationalizability exists: `garp_iff_exists_afriatCertificate_and_regularUtility` (#296).
 
 ## Concepts outside the one-step scheme
 
-Coalition moves are the one misfit a library change could absorb; the others are constraints, maximizations or comparisons between mechanisms.
+Coalition moves are the one misfit a library change could absorb; the others are constraints, maximizations or comparisons between mechanisms. GameTheory's D82 and D83 show that local comparability covers strong Nash, and that a matching displacement fits once consenting players and affected coordinates are separated.
 
 | Concept | Anchor | What it is instead | Can it be made to fit? |
 | --- | --- | --- | --- |
@@ -187,14 +189,14 @@ Coalition moves are the one misfit a library change could absorb; the others are
 
 ## Design options for MathEconLib
 
-The branch already has a level hierarchy in its transport theorems; the options below make it explicit and remove the places where a statement asks for more than its proof uses. They are ordered by how much existing code they touch.
+The branch's transport theorems already assume different amounts; the options below make that explicit and remove the places where a statement asks for more than its proof uses. Each notes the related evidence. They are ordered by how much existing code they touch.
 
 1. **Name the levels in the documentation.** State, in the module docs of `Equilibrium/`, that `EquilibriumProblem` is Stay-vs-move data and which rung each transport file needs. No code changes.
-2. **Comparison-preserving maps.** Replace `value_eq` in `GameMorphism` and `GameComorphism` with preservation of the matched comparison, or add that notion beside them. The proofs already work this way.
+2. **Comparison-preserving maps.** Replace `value_eq` in `GameMorphism` and `GameComorphism` with preservation of the matched comparison, or add that notion beside them. The proofs already work this way. Main has `transportWith` and `pullbackWith` beside the maps, with `value_eq` kept.
 3. **Drop unused algebra from definitions.** `IsMixedNash` and `bneProblem` need only `[LE V]`; pure existence (`Strategic/Existence.lean:606`) needs only a linear order on values. Move the Banach and ordered-module requirements to the theorems that use them.
-4. **First-class coalition moves.** A move that carries its coalition, judged by strict unanimity. Strong Nash, marriage stability and contract blocking would share it, and it would keep order laws available, unlike the lawless-`LE` encoding.
-5. **A relation-valued problem.** If a relation-level structure is added (as PR #281 explores), make `EquilibriumProblem` its Score-level instance with a forgetful map and a lemma that the forgetful map preserves equilibria. Every Stay-vs-move theorem then applies to both.
-6. **Fill the missing arrows.** Choice-to-preference rationalizability, and a countable or continuous representation theorem.
+4. **First-class coalition moves.** A move that carries its coalition, judged by strict unanimity. Strong Nash, marriage stability and contract blocking would share it. *Evidence:* GameTheory needs no such structure for strong Nash or the tested matching case; local comparability suffices (D82, D83).
+5. **A relation-valued problem.** Make `EquilibriumProblem` the Score-level instance of a relation-level structure, with a forgetful map that preserves equilibria. Main's explicit comparison relations (`IsOptimalWith`, #281) sit on the existing record instead and cover most of this.
+6. **Fill the missing arrows.** Finite rationalizability exists (#296); a countable or continuous representation theorem is missing.
 
 GameTheory already stores a bare `Ranking` and applies it only to rooted pairs, so options 4 and 5 would bring the two libraries' cores to the same level.
 

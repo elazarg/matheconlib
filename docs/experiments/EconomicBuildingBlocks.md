@@ -14,31 +14,59 @@ comparison and candidate-validity equilibrium APIs, supplied-utility mechanism
 and Bayesian views, weak preference/maximizer interfaces, and finite Afriat
 rationalization through the canonical choice carrier.
 
-The root `AbstractionAnalysis.md` and `SurveyEvidence.md` are user-supplied
-historical proposals, including references to an older simulations branch.
-Their unchanged snapshots are retained under `sources/`. They motivate
-questions; their proposed hierarchy is not an implementation checklist.
+The root `AbstractionAnalysis.md`, `SurveyEvidence.md` and `Experiments.md` are
+user-supplied starting hypotheses. Their revised snapshots are retained under
+`sources/`; earlier versions remain in git history. The survey distinguishes
+upstream main from the separate simulations branch. The proposed experiments
+ask whether `EquilibriumProblem` earns its place as an internal building block
+or primarily supplies client vocabulary. Either answer must be allowed by the
+measurements; the proposed hierarchy is not an implementation checklist.
 The prior GameTheory investigation selected independent mathematical
 operations and preserved domain-owned semantics; its final record is
 [D92](https://github.com/elazarg/GameTheory/blob/9f74339e/docs/decisions/D92-economic-extraction-boundary.md).
 
-Claude's additional source is
+The original additional source is
 [the supplied artifact](https://claude.ai/artifact/QGxkUNzPsXB8QPFASJ2afW#c4750e5e-ce41).
-Its public URL currently returns an application shell and its content endpoint
-refuses unauthenticated access. Its content has not been reviewed or adopted;
-the user has been asked for the relevant text while independent work proceeds.
+Its public URL returns an application shell and its content endpoint refuses
+unauthenticated access. The user supplied the revised local Markdown files
+instead; these supersede the need to retrieve the artifact.
 
 The governing defaults remain `DESIGN.md`, `CONTRIBUTING.md` and the actual
-current APIs. No experiment changes those defaults by silently redefining an
-economic concept.
+current APIs. Local experimental branches may replace basic abstractions,
+including open design choices, as extensively as useful. Existing APIs are a
+comparison baseline, not a veto. Evidence selects what to retain or recommend;
+semantic differences must be stated rather than counted as free simplification.
 
-## First discriminating consumer
+## Experiment order after the revised inputs
+
+1. **E4: strong Nash and local comparability.** Generalize the theorem on a
+   real core branch, retain a linear-order specialization, and test vector
+   payoffs and incomparability.
+2. **E2: infinite-gain deviation.** Build the actual two-player probability
+   model and measure guard handling. Distinguish the documented integrable-only
+   convention from an intentional extended-value alternative. Existing
+   nonintegrable-deviation controls must be acknowledged.
+3. **E1 and E3: the deciding comparisons.** Implement both actual foundation
+   routes: revelation through maps versus direct reasoning, and a shared
+   guarded operation with native specializations versus the existing owners.
+   Charge all constructions, changed hypotheses, proof lines and second uses.
+4. **E5, then E6 if still useful.** Test composed reductions against repeated
+   hypotheses, then law-preference mixed equilibrium if the architectural
+   question remains unresolved. The simulations branch is a separate pinned
+   source, never silently substituted for main.
+
+The initial demand probe was reserved before the revised files arrived. It is
+deferred before compilation because it tests extraction more directly than
+the central record-versus-operations question. Its original hypothesis and
+kill conditions remain in the log; deferral is not a refutation.
+
+## Deferred extraction consumer
 
 Test regularity of demand on changing price/wealth budgets through the existing
 `RevealedPreference.utilityChoice`. Upstream's representation and observed
 attainment results do not establish a closed graph for changing feasible menus.
 
-The first item should connect native nonnegative bundles and expenditure to
+A later item could connect native nonnegative bundles and expenditure to
 budget lower hemicontinuity and closed feasible-maximizer graphs. Include zero
 wealth under strictly positive prices, which is admitted by the current
 dataset model. Test tied demand and the zero-price/zero-wealth failure. Keep
@@ -58,9 +86,9 @@ checks must be reproducible. Promotion requires a separate ownership decision.
   starting the experiment.
 - Search current MathEconLib and Mathlib by statement shape. Reuse new upstream
   owners rather than porting work they already subsume.
-- Preserve incumbent validity, allowed deviations, ties, information, transfer
-  signs and evaluation domains. Distinguish stronger convenience assumptions
-  from constitutive semantics.
+- Track incumbent validity, allowed deviations, ties, information, transfer
+  signs and evaluation domains. For equal-semantics comparisons preserve them;
+  intentional changes are valid experimental alternatives and must be named.
 - Compare direct hypotheses and existing transformations before introducing
   records, typeclasses or another probability abstraction. A successful
   negative result may leave every public definition unchanged.
@@ -73,6 +101,6 @@ checks must be reproducible. Promotion requires a separate ownership decision.
   and remaining tasks are theorem delivery or economic accounting. Reopen for
   demonstrated missing operations, duplicated semantics or excessive transport.
 
-After the demand experiment, select the next item from measured evidence and
-Claude's supplied content when available. No later hierarchy or broad rewrite
-is pre-approved by this plan.
+Select later variants from measured evidence and the revised starting files.
+Changing a foundation locally needs no further permission. Recommending it as
+the resulting design requires convincing comparative and semantic evidence.
