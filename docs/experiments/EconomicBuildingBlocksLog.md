@@ -135,3 +135,62 @@ earlier GameTheory experiment ledger.
   boundary and expressiveness of the current record. It does not demonstrate
   a certificate-size reduction; paired E1/E3 measurements must still test that
   hypothesis without changing the accepted deviations or candidate guards.
+
+## MEC-004 / source E1: Bayesian revelation through records and direct lifts
+
+- **Date / status:** 2026-11-12; focused comparison complete.
+- **Question:** On the same native indirect mechanism, prior and measurable
+  strategy, is revelation better served by the existing action-translation
+  comorphism or direct measurable-deviation lifting? Does the literal same
+  certificate earn a second use?
+- **Alternatives:** `BayesianGame.comapActionsComorphism` and its pullback
+  operations; direct payoff/integrability/deviation reasoning. Compare the
+  natural comorphism direction, not an artificially stronger lifting morphism.
+- **Representative slice:** arbitrary supplied full-consequence utility and
+  the same candidate/deviation integrability convention; exact BNE and a second
+  explicit-comparison equilibrium using the same certificate. A finite
+  posted-price mechanism has an unused third action, a non-surjective indirect
+  strategy, a fair prior over two types, and actual applications of both routes.
+- **Kill conditions / measurement:** identical scopes and assumptions, all
+  measurable lifts and helpers charged, no private-value, quasilinear or
+  surjectivity assumptions added to the generic result. Distinguish installed
+  infrastructure, cold construction, shared semantics and marginal proofs.
+  The second comparison use is not falsely labeled the same DSIC certificate.
+  The pinned simulations-branch proof is prior evidence, not newly authored.
+- **Baseline / artifacts:** collecting `b2dc746`; child
+  `codex/experiment-economic-item-04-bayesian-revelation`. Route and concrete
+  application files will remain directly compiled under the test umbrella.
+- **Artifacts / validation:** `MathEconLibTest/GameTheory/BayesianRevelation.lean`
+  and `RevelationConsumer.lean`; `lake build` on both targets passes 3,059 jobs.
+  Both authored files pass independent warning-as-error and long-line checks.
+  The build replays only the previously recorded upstream `stdSimplex` warning.
+  Compiled integrity checks cover 50 declarations with only the three standard
+  axioms; source elaboration checks cover discarded examples separately.
+- **Measurements:** excluding block comments, the generic file has 65 nonblank
+  lines and the economic consumer 64. Ordinary/comparison record clients use
+  3/4 lines including signatures. The direct comparison theorem uses 8, and a
+  factored ordinary client reusing it uses 5; the separate unfactored ordinary
+  proof uses 7. Thus reuse is available to both alternatives. The installed
+  `comapActionsComorphism` constructor itself costs 12 lines, in addition to
+  the general comorphism structure and pullback operations; these are not free
+  in a cold comparison. Both routes share the native `Strategy.mapActions`.
+  The direct route's opponent-agreement helper costs 10 lines; shared truthful,
+  lift and payoff helpers are retained explicitly. No timing win is claimed.
+- **Observations:** the generic statements have the same utility, prior,
+  candidate validity and own-deviation integrability assumptions. They require
+  neither surjectivity nor quasilinear/private-value utility. The monetary
+  consumer checks both types against all three actions, proves the unused
+  action has no strategy preimage, and applies both routes. The literal same
+  report comorphism transports ordinary and arbitrary explicit comparisons;
+  concrete error-tolerant clients apply this second theorem. Their source
+  bound follows from exact BNE, so this is not an approximate-only existence
+  example. The concrete mechanism has one player; the generic result handles
+  arbitrary opponents without changing them.
+- **Interpretation / next:** existing comorphisms earn marginal proof reuse
+  here, but this does not establish their cold-cost superiority or a universal
+  equilibrium hub. Factoring the direct theorem also reuses work. Part of its
+  remaining ordinary-client cost converts the separately defined ordered and
+  explicit-comparison judgements; test canonical specialization independently
+  before attributing that cost to records versus mathematical operations.
+  Retain both compiled routes as evidence. Whole-project integration remains
+  the investigation's final gate.
