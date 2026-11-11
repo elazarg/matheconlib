@@ -6,7 +6,7 @@ earlier GameTheory experiment ledger.
 
 ## MEC-001: native demand regularity and a shared maximizer operation
 
-- **Date / status:** 2026-11-12; reserved, in progress.
+- **Date / status:** 2026-11-12; deferred before compilation after revised experiment inputs.
 - **Question:** Can the canonical feasible-maximizer graph theorem be used by
   MathEconLib's existing `utilityChoice` on genuinely changing budgets without
   copying mathematics, changing demand semantics or adding a shared problem
@@ -30,3 +30,26 @@ earlier GameTheory experiment ledger.
   `f61ec82` over upstream `b0c6f35`; committed reproduction templates and
   commands will accompany the result. The GameTheory mathematical owner remains
   canonical during the experiment; no package ownership is frozen here.
+- **Outcome:** not run. A native recovery draft is retained locally, but no
+  build, measurement or conclusion is claimed. The user's revised
+  `Experiments.md` makes the record-versus-operations comparison the first
+  priority. Preserve this reservation and return only if extraction becomes
+  the useful next question.
+
+## MEC-002 / source E4: strong Nash with local comparability
+
+- **Date / status:** 2026-11-12; reserved, in progress.
+- **Question:** Does strong-Nash equivalence with absence of unanimous strict
+  gains require a globally linear reward order, or only actual comparisons
+  between incumbents and changed participants' alternatives?
+- **Alternatives:** the current global `LinearOrder` theorem; a `Preorder`
+  theorem with comparison hypotheses restricted to actual changed players.
+  This tests the invariance principle rather than deciding record ownership.
+- **Representative slice:** change the core theorem on the item branch, make
+  its existing linear version a specialization, and use a two-player
+  componentwise vector-payoff game. Include an incomparable-payoff rejection
+  control, so dropping comparison entirely cannot pass.
+- **Kill conditions:** keep the existing strong-Nash meaning and quantify the
+  same joint replacement for every changed player; do not quietly replace weak
+  rejection by absence of strict gain on incomparable rewards. Count the added
+  hypothesis and actual consumer proof, not only the core theorem.
