@@ -38,7 +38,7 @@ earlier GameTheory experiment ledger.
 
 ## MEC-002 / source E4: strong Nash with local comparability
 
-- **Date / status:** 2026-11-12; reserved, in progress.
+- **Date / status:** 2026-11-12; complete for the focused slice, supporting local comparability.
 - **Question:** Does strong-Nash equivalence with absence of unanimous strict
   gains require a globally linear reward order, or only actual comparisons
   between incumbents and changed participants' alternatives?
@@ -53,3 +53,28 @@ earlier GameTheory experiment ledger.
   same joint replacement for every changed player; do not quietly replace weak
   rejection by absence of strict gain on incomparable rewards. Count the added
   hypothesis and actual consumer proof, not only the core theorem.
+- **Artifacts / commands:** core
+  `MathEconLib/GameTheory/Strategic/Basic.lean`, consumer and rejection control
+  `MathEconLibTest/GameTheory/StrongNashComparability.lean`, imported by the
+  regenerated `MathEconLibTest.lean`; child
+  `codex/experiment-economic-item-02-local-strong-nash` over `48ba448`.
+  `lake --iofail build MathEconLibTest.GameTheory.StrongNashComparability`
+  passes 866 jobs. Import regeneration/check and copyright checks pass.
+- **Measurements:** the new generic theorem uses 17 nonblank lines; the whole
+  fixture uses 75 nonblank lines excluding block comments. The linear-order
+  proof is a one-line specialization, as its old proof was one line. No source
+  compression or elaboration-performance advantage is claimed.
+- **Observations:** a two-player coordination game with product-ordered real
+  vector rewards has an ordinary equilibrium defeated by a genuine joint
+  change, while the successful profile consumes the new local theorem.
+  A one-player crossing-vector replacement has no strict gain but violates
+  strong Nash; the proposed equivalence without comparability is explicitly
+  refuted. No global totality, finite-player or nonempty-player hypothesis is
+  added to the theorem.
+- **Integrity / outcome:** compiled axiom audit checks 88 owned declarations
+  across the core and fixture, with only `propext`, `Classical.choice` and
+  `Quot.sound`; source elaboration checks report no violations. The source
+  checks contain no anonymous examples, which are separately covered by the
+  compiled named-declaration audit. Retain the core generalization. This is
+  hypothesis-locality evidence and is neutral on records versus operations.
+  Complete project validation remains a gate for the investigation.

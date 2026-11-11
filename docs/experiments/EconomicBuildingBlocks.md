@@ -104,3 +104,22 @@ checks must be reproducible. Promotion requires a separate ownership decision.
 Select later variants from measured evidence and the revised starting files.
 Changing a foundation locally needs no further permission. Recommending it as
 the resulting design requires convincing comparative and semantic evidence.
+
+## Corrections discovered against current sources
+
+- E2's inventory understates existing coverage: `Integrability.lean` already
+  tests filtered nonintegrable deviations and a deviation whose opponent alone
+  becomes nonintegrable. Positive infinite gain remains a distinct control;
+  it is not the first deviation-integrability test or automatically a bug.
+- E1's natural map is `GameComorphism`: report changes map to original action
+  changes, and equilibrium pulls back. Requiring an opposite-direction
+  morphism would unfairly charge the record route for unavailable preimages.
+  The simulations branch already contains a short revelation application;
+  it is a pinned comparison source, not a new result on current main.
+- E3 must check equivalence rather than assume definitional identity: a bare
+  score maximum has no feasibility or evaluation guard; equilibrium validity
+  applies only to incumbents and must survive empty judge types. These are
+  testable obligations for rival foundations, not reasons to forbid them.
+- E5's reduction API belongs to the separately pinned simulations branch.
+  E6 may reuse an outcome law as the current record's value carrier, so that
+  fact alone cannot discriminate between the two architectural hypotheses.
