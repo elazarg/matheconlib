@@ -28,6 +28,8 @@ import MathEconLibTest.GameTheory.ChainedReductions
 import MathEconLibTest.GameTheory.CoalitionWitnessConsumer
 import MathEconLibTest.GameTheory.ComplementaryBlocking
 import MathEconLibTest.GameTheory.ConditionalBeliefs
+import MathEconLibTest.GameTheory.ConditionalIncentiveControls
+import MathEconLibTest.GameTheory.ConditionalIncentiveCorrelated
 import MathEconLibTest.GameTheory.DemandGraphBoundary
 import MathEconLibTest.GameTheory.DemandRegularityControls
 import MathEconLibTest.GameTheory.ExplicitComparisonValidity

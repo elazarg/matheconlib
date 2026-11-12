@@ -10,7 +10,7 @@ remain evidence, but line-count increases alone do not reject a component.
 
 ## MEC-007: supporting slopes as a reusable incentive interface
 
-- **Date / status:** 2026-11-12; focused validation complete; batch integration pending.
+- **Date / status:** 2026-11-12; complete, including the MEC-009 batch gate.
 - **Question:** Can an action-free supporting-slope condition own incentive
   mathematics for both native single-good problems and multi-unit quantities,
   while preserving the distinction between report and universal deviations?
@@ -55,7 +55,7 @@ remain evidence, but line-count increases alone do not reject a component.
 
 ## MEC-008: blocking witnesses and typed proposal reductions
 
-- **Date / status:** 2026-11-12; focused validation complete; batch integration pending.
+- **Date / status:** 2026-11-12; complete, including the MEC-009 batch gate.
 - **Question:** Which reusable operation belongs beneath coalition/contract
   stability when proposals differ from states? Does preserving positive
   blocking witnesses earn more reuse than merely packaging stable predicates?
@@ -467,7 +467,7 @@ remain evidence, but line-count increases alone do not reject a component.
 
 ## MEC-009: parametric demand and actual cross-library theorem reuse
 
-- **Date / status:** 2026-11-12; reserved, resuming MEC-001.
+- **Date / status:** 2026-11-12; complete, native and shared dependency branches validated.
 - **Question:** Does the existing general closed-feasible-maximizer operation
   provide useful native demand regularity without prescribing choices, positive
   wealth, compactness or a permanent library dependency?
@@ -545,7 +545,7 @@ remain evidence, but line-count increases alone do not reject a component.
 
 ## MEC-010: multidimensional supporting forms and finite cycles
 
-- **Date / status:** 2026-11-12; reserved, preparation while MEC-009 integrates.
+- **Date / status:** 2026-11-12; complete, collected with full build and source checks.
 - **Question:** Does the successful scalar supporting-slope interface extend
   to genuinely multidimensional IC without an inner product, topology, slope
   bounds or chosen action representation? Which content is lost by replacing
@@ -598,7 +598,7 @@ remain evidence, but line-count increases alone do not reject a component.
 
 ## MEC-011: conditional information, averaging and null signals
 
-- **Date / status:** 2026-11-12; reserved, preparation while shared demand audits.
+- **Date / status:** 2026-11-12; complete, including full build and source checks.
 - **Question:** Which existing information/averaging components already serve
   interim and ex-ante incentives, and what is lost at null signals? Can a
   mere judge-index map represent the relevant aggregation?
@@ -617,6 +617,27 @@ remain evidence, but line-count increases alone do not reject a component.
 - **Baseline:** current native conditional-belief and Bayesian APIs. Read-only
   inspection finds the positive-marginal finite equivalence and a.e. measurable
   theorem already implemented; they are the comparison baseline, not new work.
+- **Focused result:** native `Measurable/InterimAtoms` adds nonzero-singleton
+  localization of a common conull incentive comparison, using Mathlib's a.e.
+  filter. Its BNE corollary keeps the existing measurable-payoff and simultaneous
+  conditional-integrability guards. It adds neither independence nor finite or
+  countable type/action assumptions.
+- **Actual consumers:** `ConditionalIncentiveControls` keeps the same mechanism,
+  full true-type-dependent values, transfers and prior across two valid belief
+  versions. Native BIC averaging gives truthful ex-ante BNE under one version;
+  pointwise BIC fails under the other at the zero-mass type. All comparisons are
+  integrable. `ConditionalIncentiveCorrelated` uses the same mechanism under a
+  correlated prior: every marginal singleton has mass one half, a mixed joint
+  profile is null, and native averaging plus atomic recovery proves truthful
+  BIC/BNE and all pointwise interim comparisons.
+- **Command:** `lake --iofail build
+  MathEconLibTest.GameTheory.ConditionalIncentiveCorrelated` passes (3,118 jobs),
+  including the null-type consumer. Existing conditional kernels and averaging
+  already provide the substantive operations. A judge-index map alone supplies
+  neither integration nor the common conull comparison; an extra information
+  record has not earned a role. Full build passes 9,324 jobs; the three-module
+  kernel audit checks 38 declarations with standard axioms only. All five changed
+  Lean sources re-elaborate with zero violations and no discarded examples.
 
 ## MEC-012: private utility recodings and common welfare calibration
 
