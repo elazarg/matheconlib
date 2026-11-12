@@ -224,6 +224,14 @@ does not justify skipping those obligations for type-dependent deviations.
   its actual `K` is one. Native report IC, zero lowest-type utility and
   nonnegative original-bid IC yield native Bayesian equilibrium under the
   original type law against all admitted measurable nonnegative deviations.
+- **Original-action control:** the original real-action strategy fails native
+  BNE (9,121-job target). The negative bid pays utility `1/4` for every type,
+  while prescribed utility is `v^2/4`. The actual marginal interval
+  `Iic (1/2)` has mass `1/4` and bounded realized types have full measure.
+  Native interim recovery therefore contradicts real-action BNE on a
+  positive-mass set, not merely at the null lowest type. A reusable conditional
+  integrability theorem supplies the simultaneous all-action guard; the
+  existing interim identity and this guard share one pointwise payoff lemma.
 - **Status:** in progress.
 
 ## Subsequent action-domain control
