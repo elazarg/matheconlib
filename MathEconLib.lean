@@ -61,10 +61,13 @@ public import MathEconLib.ForMathlib.Order.FixedPointLattice
 public import MathEconLib.ForMathlib.Order.IterateFiniteSet
 public import MathEconLib.ForMathlib.Order.IterateFixedPoint
 public import MathEconLib.ForMathlib.Order.Refinement
+public import MathEconLib.ForMathlib.PotentialBounds
 public import MathEconLib.ForMathlib.ProbabilityMeasure
 public import MathEconLib.ForMathlib.Quasiconvex
 public import MathEconLib.ForMathlib.Schauder
 public import MathEconLib.ForMathlib.StochasticOrder
+public import MathEconLib.ForMathlib.SupportingForms
+public import MathEconLib.ForMathlib.SupportingForms.Convexity
 public import MathEconLib.ForMathlib.SupportingSlopes
 public import MathEconLib.ForMathlib.SupportingSlopes.Convexity
 public import MathEconLib.GameTheory.Equilibrium.Problem
@@ -139,6 +142,7 @@ public import MathEconLib.Probability.FinDist.Measure
 public import MathEconLib.Probability.FinDist.Simplex
 public import MathEconLib.RevealedPreference
 public import MathEconLib.RevealedPreference.Afriat
+public import MathEconLib.RevealedPreference.AfriatCycles
 public import MathEconLib.RevealedPreference.AfriatGeometry
 public import MathEconLib.RevealedPreference.Basic
 public import MathEconLib.RevealedPreference.BudgetRegularity
