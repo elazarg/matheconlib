@@ -641,7 +641,7 @@ remain evidence, but line-count increases alone do not reject a component.
 
 ## MEC-012: private utility recodings and common welfare calibration
 
-- **Date / status:** 2026-11-12; reserved, preparation.
+- **Date / status:** 2026-11-12; complete, including full build and source checks.
 - **Question:** Which mathematical operation separates private ordinal choice
   from the common calibration used by native efficiency and monetary statements?
 - **Alternatives:** ordinary finite weighted sums and existing `IsMaxOn`
@@ -662,6 +662,33 @@ remain evidence, but line-count increases alone do not reject a component.
 - **Ownership baseline:** native `QuasilinearEnvironment.totalValue`, native
   `DirectMechanism.IsEfficient`, existing `Choice.maximizers` and Mathlib
   `IsMaxOn`/finite-sum algebra. No new scalarization owner is presumed.
+- **Focused result:** `Core/WeightedWelfare` adds explicit weighted total value,
+  the reciprocal-weight affine covariance identity and a native `IsEfficient`
+  equivalence. The shared all-menu theorem lives in existing `Choice.Maximizers`
+  and uses Mathlib order reflection. It serves independent welfare and lottery
+  consumers without requiring a scale class.
+- **Controls:** two agents' outcome choices agree on every menu under positive
+  private factors, while native total-value efficiency reverses. Reciprocal
+  weights restore it. Scaling valuation alone reverses buy/decline with fixed
+  money; scaling the complete utility or both valuation and transfers preserves
+  the displayed comparison. Common transfer factors preserve budget balance;
+  private factors can destroy it. No participation or fixed-zero outside-option
+  invariance is claimed.
+- **Expectation boundary:** `ExpectedRecodingBoundary` has identical choices on
+  every pure-outcome menu for utilities `(0,1,3)` and `(0,1,3/2)`, but opposite
+  native expected-value comparisons of the half-first/half-third lottery with
+  the sure middle outcome. It proves the utilities are not positive-affine
+  recodings. Primitive ordinal utility changes therefore cannot be pushed
+  through expectation using the all-menu score theorem.
+- **Commands / review:** the focused build of WeightedWelfareConsumer and
+  ExpectedRecodingBoundary passes (3,065 jobs), with existing upstream simplex
+  deprecations visible. Both consumer files pass `lake env lean
+  -DwarningAsError=true -Dlinter.style.longLine=true`; semantic review confirms
+  covariance, assumptions and the monetary/ordinal distinctions. Full build
+  passes 9,327 jobs; the four-module kernel audit checks 91 declarations with
+  standard axioms only. All six changed Lean files re-elaborate with zero
+  violations and no discarded examples. **Outcome:** explicit weights and
+  ordinary order reflection suffice; a scale hierarchy adds no needed operation.
 
 ## MEC-013: possibility preferences over outcome laws
 
@@ -678,6 +705,12 @@ remain evidence, but line-count increases alone do not reject a component.
   not universal encodability. No silent substitution of expected-payoff Nash,
   no infinite-mixture conclusion from a finite-mixture proof, no copied law
   carrier and no unproved mixture-closure premise.
+- **Cross-control reserved before implementation:** test whether the expected-
+  utility atomic recovery from MEC-011 could extend to arbitrary law comparisons.
+  Under a fair binary prior, success at the first type already saturates ex-ante
+  possibility. The second, positive-mass type may still admit a conditional
+  improvement. Use native finite laws and all mixed contingent deviations;
+  do not misstate the existing expectation-based theorem as refuted.
 
 ## MEC-014: certificate conversion and retained provenance
 
@@ -694,3 +727,11 @@ remain evidence, but line-count increases alone do not reject a component.
 - **Kill conditions:** preserve judge maps, admissibility, source context and
   bound direction. Do not claim equality from verdict equivalence or install
   category structure merely to package composition.
+- **Optional ownership comparison:** after the four independent matching,
+  coalition, law-support and simulation consumers compile, test a probability-
+  free public witness operation and optional native matching adapters. The old
+  prototype's composed relation remembers an intermediate relation witness but
+  does not itself include the middle-obstruction proof. Compare an explicit
+  guarded composition that retains that proof; advertise exactly its stronger
+  provenance contract. Keep the original prototype on its evidence commits,
+  and do not replace native verdict predicates or impose a hierarchy.

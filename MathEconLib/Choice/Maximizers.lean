@@ -76,6 +76,16 @@ require the candidate to belong to the feasible set. -/
 theorem mem_maximizers_ofUtility [Preorder β] (value : α → β) {S : Set α} {a : α} :
     a ∈ maximizers (Preference.ofUtility value) S ↔ a ∈ S ∧ IsMaxOn value S a := Iff.rfl
 
+/-- Strictly increasing score recoding preserves every menu and every tie.
+Order reflection uses a linear source score; the target need only be preordered. -/
+theorem maximizers_ofUtility_comp_strictMono {X B C : Type*}
+    [LinearOrder B] [Preorder C] (utility : X → B) (recode : B → C)
+    (increasing : StrictMono recode) (menu : Set X) :
+    maximizers (Preference.ofUtility (recode ∘ utility)) menu =
+      maximizers (Preference.ofUtility utility) menu := by
+  ext chosen
+  simp only [mem_maximizers_ofUtility, isMaxOn_iff, Function.comp_apply, increasing.le_iff_le]
+
 theorem maximizers_subset (pref : Preference α) (S : Set α) : maximizers pref S ⊆ S :=
   fun _ h ↦ h.1
 

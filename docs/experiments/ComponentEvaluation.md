@@ -65,7 +65,7 @@ maps and deviation witnesses.
 | Separate states and outcomes | typed blocking proposals without fabricated rewards | MEC-008; rooted provenance needed |
 | Preferences over laws | non-expected-utility pure-deviation sufficiency | needs a named theorem |
 | Information transformations | interim/ex-ante comparison with null-signal control | MEC-011 focused checks pass; kernels/averaging reused, atomic recovery added |
-| Scales and identification | quantitative errors or welfare under independent recodings | MEC-012 in preparation |
+| Scales and identification | welfare, monetary comparisons and ordinal/EU boundary | MEC-012 passes; weights and order reflection suffice |
 | Certificate conversion | converting a composite certificate versus composing conversions | MEC-014 draft: provenance inclusion, equality under test |
 
 Stop a direction after representative consumers use established operations or
