@@ -59,14 +59,14 @@ maps and deviation witnesses.
 
 | Direction | Discriminating consumer | Status |
 | --- | --- | --- |
-| Reduced incentive views | supporting utility/allocation slopes, payment theory, multi-unit quantities | MEC-007 integrated; MEC-010 extends dimensions |
+| Reduced incentive views | supporting utility/allocation slopes, payment theory, multi-unit quantities | MEC-007 and MEC-010 integrated; shared potential cycles also serve Afriat |
 | Blocking proposals and coalitions | contracts, classical matching, strong Nash with exact scope | MEC-008 integrated |
 | Parametric choice | changing budgets, zero wealth, closed demand graph | MEC-009 shared branch; native geometry collected |
 | Separate states and outcomes | typed blocking proposals without fabricated rewards | MEC-008; rooted provenance needed |
 | Preferences over laws | non-expected-utility pure-deviation sufficiency | needs a named theorem |
-| Information transformations | interim/ex-ante comparison with null-signal control | MEC-011 in preparation |
+| Information transformations | interim/ex-ante comparison with null-signal control | MEC-011 focused checks pass; kernels/averaging reused, atomic recovery added |
 | Scales and identification | quantitative errors or welfare under independent recodings | MEC-012 in preparation |
-| Certificate conversion | converting a composite certificate versus composing conversions | untested |
+| Certificate conversion | converting a composite certificate versus composing conversions | MEC-014 draft: provenance inclusion, equality under test |
 
 Stop a direction after representative consumers use established operations or
 a counterexample narrows the proposal. Finite experiments cannot prove that no

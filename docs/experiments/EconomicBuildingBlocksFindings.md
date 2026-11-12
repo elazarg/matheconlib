@@ -115,6 +115,14 @@ or hypothetical encodings as successful reuse.
   stronger potential content is necessary. Direct scalar normalization through
   opaque linear maps hurt arithmetic automation; the lower operation keeps
   scalar increments transparent while preserving shared mathematical proofs.
+- **Conditional information:** the native kernels and averaging theorems already
+  carry the required structure. A small atom-localization theorem recovers the
+  common conull comparison at every type with nonzero marginal singleton mass.
+  An actual mechanism has the same prior and ex-ante equilibrium under two valid
+  belief versions, but different pointwise BIC at a null type. A correlated
+  positive-marginal consumer works despite missing joint atoms. This supports
+  kernels, integration and a.e. judgments as separate operations; mere judge
+  reindexing cannot perform their aggregation.
 
 ## What remains informative
 

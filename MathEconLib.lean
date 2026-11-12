@@ -79,6 +79,7 @@ public import MathEconLib.GameTheory.Strategic.Bayesian.Measurable.Beliefs
 public import MathEconLib.GameTheory.Strategic.Bayesian.Measurable.Comap
 public import MathEconLib.GameTheory.Strategic.Bayesian.Measurable.Game
 public import MathEconLib.GameTheory.Strategic.Bayesian.Measurable.Interim
+public import MathEconLib.GameTheory.Strategic.Bayesian.Measurable.InterimAtoms
 public import MathEconLib.GameTheory.Strategic.Bayesian.Measurable.InterimConverse
 public import MathEconLib.GameTheory.Strategic.Bayesian.Measurable.PureBNE
 public import MathEconLib.GameTheory.Strategic.Bayesian.Outcome
