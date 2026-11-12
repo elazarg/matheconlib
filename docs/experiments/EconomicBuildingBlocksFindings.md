@@ -214,6 +214,29 @@ Foundational alternatives remain available for local replacement when a new
 consumer discriminates between them. Additional theorem families by themselves
 are not another architecture experiment.
 
+## Subsequent theorem pressure
+
+The delivery ledger records three distinct obligations that the selected
+components keep separate: incentives over original actions, Bayesian equilibrium
+under the actual type law, and equilibrium existence across changed auction
+parameters. Report IC alone did not supply the first, and a quadratic profit
+formula alone did not supply the last.
+
+Repricing is an ordinary domain operation on the mechanism and its auction:
+allocation, scarcity and values stay the same, while payments change by the
+price difference times own purchases. A function from admissible prices to
+these actual auctions, together with pointwise native certificates, expresses
+the constructed equilibrium family. No additional family record or equilibrium
+predicate is needed. The two-auction profit comparison requests precisely the
+common primitives its proof uses, rather than equality of entire models.
+
+This tests composition and change locality beyond logical repackaging. The
+uniform consumer still supplies model-specific report IC and the baseline
+identity; the existing components supply off-range incentive coverage, guarded
+averaging and actual-profit identification. The construction does not turn
+those reusable proofs into a general equilibrium-existence theorem, and its
+interior regime does not settle other purchase regimes.
+
 ## Verification
 
 At the close of the component experiments, complete and explicit builds cover 283

@@ -132,13 +132,21 @@ does not justify skipping those obligations for type-dependent deviations.
   Its focused strict target passes (9,112 jobs). The generic two-auction profit
   comparison also passes strictly, conditional on supplied interior certificates
   and equality of the scarcity intercept, slope and distribution-based moment.
+- **Economic consumer:** expected aggregate purchases are `2(4-p)/3`, actual
+  seller profit at cost zero is `2p(4-p)/3`, and the actual price-two member
+  uniquely maximizes profit in the family at `8/3`. The gap is
+  `(2/3)(p-2)^2`. All three generic two-auction comparison results are consumed;
+  existence at the maximizing price is supplied by the family, rather than
+  assumed from a polynomial optimum. Price two recovers the original auction
+  and strategy. The focused strict consumer target passes (9,113 jobs).
 - **Status:** in progress.
 
 ## Next economic dependency
 
-A comparison of actual equilibria at different posted prices needs a
-price-indexed auction/strategy family on an explicitly admissible regime.
-Construct those equilibria before interpreting a price optimizer as a seller's
-choice across auctions. The existing single-auction profit envelope and the
-new BNE certification supply the proof components; they do not provide such
-a family by themselves.
+The endpoint price `5/2` has candidate strategy `v/2`, zero baseline and `K=0`.
+It fails the strict interior certificate. A thin endpoint equilibrium proof,
+using native original-action IC and the generic Bayesian bridge directly,
+would test whether those operations support a different regime without
+introducing a hierarchy. At production cost one, the common algebraic optimum
+is exactly this endpoint. Establish that actual equilibrium before extending
+the family or making a comparison across regimes.
