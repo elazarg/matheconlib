@@ -262,7 +262,7 @@ earlier GameTheory experiment ledger.
 
 ## MEC-006 / source E5: chained dominated-action reductions
 
-- **Date / status:** 2026-11-12; reserved, preparation in ignored templates.
+- **Date / status:** 2026-11-12; complete, including final integration.
 - **Question:** Does a composed simulation shorten two-round and arbitrary
   finite-round equilibrium transport against reusable direct per-round
   equivalences, rather than against duplicated direct payoff arguments?
@@ -284,3 +284,74 @@ earlier GameTheory experiment ledger.
   branch has diverging foundations; materialize only the required exact source
   slice in a test namespace, with documented proof adaptations. No unrelated
   simulation/error/reflection API is required or silently ported.
+- **Artifacts / provenance:** `MathEconLibTest/GameTheory/ReductionSupport.lean`
+  materializes the six-field simulation, identity/composition and dominated
+  action reduction statements from `Equilibrium/Simulation.lean` and
+  `Strategic/Reduction.lean` at `13f5a84`. Its transport proof directly chains
+  the same bounds, and its pointwise equivalence directly uses `isNash_iff`;
+  these two proof adaptations avoid branch-only comparison APIs. They add no
+  hypotheses. `ReductionChains.lean` supplies direct implication/equivalence
+  induction and full certificate induction, with equal composite state maps.
+  `ChainedReductions.lean` supplies the hostile economic example and both routes.
+- **Observations:** the retained row globally dominates the omitted row. The
+  retained column dominates only after that restriction; its full-game claim
+  is refuted. Both routes consume the literal same global witnesses and prove
+  the same included-profile equivalence. Retaining the bad row explicitly
+  violates domination; the resulting singleton game's equilibrium is not an
+  original equilibrium. Reflection uses the native action comorphism, not a
+  nonexistent reflection property of every simulation.
+- **Measurements:** 78 nonblank code lines excluding block comments for pinned
+  support, 35 for the chain comparison and 115 for the economic fixture. The
+  record equivalence uses three lines including its signature, plus two lines
+  for each of its two named certificates; direct equivalence uses five. Both
+  routes share economic witnesses and native action-comorphism reflection.
+  The 60–120 line estimate fits the fixture but not the charged support and
+  induction. No timing advantage is claimed.
+- **Scope / result:** direct implications and equivalences compose through
+  arbitrary finite chains. Full simulations compose too and retain richer
+  data: deviator/value maps, deviation witnesses and validity transport. State
+  and judge types may change; the generic certificate-chain theorem fixes one
+  value preorder, while binary composition supports different value carriers.
+  Thus n-round verdict induction is not exclusive evidence for records, and
+  the richer certificate is not compared as if it were merely an implication.
+  The pointwise direct theorem permits weaker scope than a globally packaged
+  simulation; the paired example deliberately gives both the global hypothesis.
+- **Validation:** all three focused targets pass `lake --iofail build` (868 or
+  fewer dependency jobs). Compiled integrity checks cover 107 declarations
+  with only standard axioms. Independent semantic/fairness review passes.
+  All three source elaboration checks pass (no discarded examples; the 107
+  named declarations are covered by the compiled check). Final integration
+  passes as recorded below.
+
+## Selected-branch integration gate
+
+- **Date / source:** 2026-11-12; reduction child `b1e7517`, collected with the
+  native optimality specialization. A final fetch confirms both upstream main
+  and fork main still point to `b0c6f35`.
+- **Build:** regenerated Git-based umbrellas, then complete `lake build` passes
+  9,305 jobs including library, API pins, examples and tests. An explicit
+  `lake --rehash --no-ansi build` on all 255 authored modules discovered by the
+  proof-integrity driver's `discover_sources` also passes 9,305 jobs. This
+  includes sources independently of umbrella reachability.
+- **Integrity:** `lake env lean --run scripts/CheckProofIntegrity.lean REPORT`
+  with that complete module list checks 5,870 declarations in 255 modules:
+  only `propext`, `Classical.choice` and `Quot.sound`, zero violations.
+  The driver's source-token scan finds zero holes across all 255 sources.
+  Source elaboration was checked on the experiment sources at their individual
+  gates; the guarded rival additionally checked all 18 changed files, including
+  25 discarded declarations. This records project-wide compiled coverage and
+  scoped source re-elaboration, not a fresh elaboration of every unchanged file.
+- **Repository checks:** `scripts/check-headers.sh` and
+  `scripts/update-imports.sh --check` pass. Integrity-checker tests pass 21 cases;
+  warning-report tests pass 28. The import-helper harness passes 11 cases under
+  WSL using a temporary LF-normalized helper copy, matching the Linux CI input.
+  The initial native invocation selected Windows' WSL `bash` with Windows path
+  syntax; the Node harness needed Git's `usr/bin` on PATH for `unzip`. These
+  environment fixes changed no tracked scripts.
+- **Diagnostics / hygiene:** existing upstream warnings and intentional test
+  info are visible in full builds; focused authored targets have no added
+  diagnostics. Only local dependency-cache overrides were used, after checking
+  exact manifest revisions; package configuration and manifest are untouched.
+  Generated Python caches and unselected guarded build artifacts were moved to
+  ignored scratch storage. The user's root Markdown inputs and pre-existing
+  simulations worktree remain untouched. No upstream publication occurred.
