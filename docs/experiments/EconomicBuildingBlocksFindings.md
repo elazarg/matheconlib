@@ -131,6 +131,13 @@ or hypothetical encodings as successful reuse.
   can reverse buying, and two ordinally equivalent utilities give opposite expected
   lottery comparisons. Common transfer factors preserve balance; private factors
   can destroy it. A scale hierarchy was unnecessary for these consumers.
+- **Preferences over laws:** finite support decomposition yields a useful
+  pure-deviation theorem without expected utility and retains the contributing
+  action. Actual finite stochastic outcome games have full-support possibility
+  equilibria. Three lotteries rule out expected-utility representation while
+  allowing Boolean scoring. An ex-ante possibility equilibrium can still fail
+  conditional optimality at a positive-mass type, so the expected-utility
+  information theorem cannot be generalized by replacing its comparison alone.
 
 ## What remains informative
 
@@ -141,11 +148,11 @@ discriminating paths; their reserved experiments preserve explicit kill
 conditions. A new abstraction must improve those consumers rather than merely
 rename a condition.
 
-The proposed outcome-law experiment is in draft preparation. Its original prediction
-about still needing a value carrier cannot discriminate between designs: the
-current carrier can already be an outcome law. A useful successor must name a
-law-preference theorem and an actual failed transport or mixture-closure step.
-No general existence or infinite-mixture theorem follows from the present work.
+The outcome-law experiment now supplies named finite theorems and a failed
+conditioning generalization. Its original prediction about still needing a
+value carrier could not discriminate between designs: the current carrier can
+already be an outcome law. No infinite-mixture or general conditional-consistency
+theorem follows from the finite results.
 
 These limits keep the general field-level conclusions provisional while making
 the next experiment concrete. Foundational alternatives remain available for

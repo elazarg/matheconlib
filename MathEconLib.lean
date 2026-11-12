@@ -142,6 +142,7 @@ public import MathEconLib.Probability.FinDist.ConditionalOn
 public import MathEconLib.Probability.FinDist.Expect
 public import MathEconLib.Probability.FinDist.Measure
 public import MathEconLib.Probability.FinDist.Simplex
+public import MathEconLib.Probability.FinDist.Support
 public import MathEconLib.RevealedPreference
 public import MathEconLib.RevealedPreference.Afriat
 public import MathEconLib.RevealedPreference.AfriatCycles

@@ -692,7 +692,7 @@ remain evidence, but line-count increases alone do not reject a component.
 
 ## MEC-013: possibility preferences over outcome laws
 
-- **Date / status:** 2026-11-12; reserved, independent draft preparation.
+- **Date / status:** 2026-11-12; complete, including full build and source checks.
 - **Question:** Can support-based preferences deliver a useful equilibrium
   theorem without expected utility, while retaining the actual probability law?
 - **Alternatives:** native law and support operations plus explicit comparisons;
@@ -711,6 +711,39 @@ remain evidence, but line-count increases alone do not reject a component.
   possibility. The second, positive-mass type may still admit a conditional
   improvement. Use native finite laws and all mixed contingent deviations;
   do not misstate the existing expectation-based theorem as refuted.
+- **Focused result:** native `Probability/FinDist/Support` owns positive-mass
+  decomposition, its support-membership corollary and pure-component identity.
+  It uses existing finite-sum positivity, no new probability carrier, utility
+  or measure import. A PMF bridge would require an additional mixture/bind
+  compatibility theorem and real/ENNReal conversions without improving this
+  consumer, so it is not introduced solely for packaging.
+- **Useful law theorems:** `PossibilityLawPreference` proves pure-deviation
+  sufficiency for arbitrary native finite stochastic continuations and returns
+  a contributing pure action from the support of a failed mixed comparison.
+  That witness operation feeds the rooted obstruction lift. Actual native
+  `OutcomeGame` outcomes are finite laws; independent native product sampling
+  followed by native finite mixture proves every full-support profile a
+  possibility equilibrium. Uniform profiles give finite existence for nonempty
+  action types. Three offered binary lotteries refute expected-utility
+  representation of their comparisons; Boolean scoring remains possible.
+- **Information control:** `PossibilityInformationBoundary` proves an ex-ante
+  possibility equilibrium against every mixed contingent strategy while a type
+  with mass one half has a strict conditional improvement. Positive type mass
+  does not suffice for arbitrary-law interim recovery. The native expectation-
+  based atom theorem remains correctly scoped; no independence or nullset
+  explanation can remove this control.
+- **Commands / scope:** focused build passes 3,055 jobs and all three new
+  files pass warning-as-error/line-length checks. The finite outcome law is a
+  composition of existing native operations; no equality with the separately
+  measure-based mixed flattening is asserted. No infinite-mixture theorem,
+  preference continuity or general conditional-consistency law is inferred.
+  Full build passes 9,330 jobs; the three-module kernel audit checks 53
+  declarations with standard axioms only. All five changed Lean files
+  re-elaborate with zero violations and no discarded examples. Independent
+  semantic review confirms the unrestricted deviation menu and finite scope.
+  **Outcome:** select native support operations; retain the explicit law model
+  and conditional-consistency boundary as scoped evidence, without a universal
+  law-preference class.
 
 ## MEC-014: certificate conversion and retained provenance
 
