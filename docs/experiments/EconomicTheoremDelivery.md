@@ -196,6 +196,36 @@ does not justify skipping those obligations for type-dependent deviations.
   concerns this equilibrium selection and does not classify other prices,
   strategies or boundary regimes.
 
+## Delivery 05: a positive-cost boundary equilibrium with nonnegative bids
+
+- **Baseline:** `f686c0f`; child
+  `codex/economic-delivery-05-nonnegative-boundary`.
+- **Target:** two independent uniform bidders use
+  `β(v) = (sqrt(1+v^2)-1)/2`. Let `μ` be its actual mean purchase and post the
+  positive price `4-μ`, so the native marginal cost coefficient is exactly one.
+  Prove Bayesian equilibrium in the actual mechanism restricted to nonnegative
+  actions, under the unchanged actual type law.
+- **Reuse:** native report IC, continuous payoff coverage on the nonnegative
+  action set, mechanism action comaps, conditional averaging and the existing
+  measurable/integrable linear-scarcity guards. The real-valued bidder view
+  remains available, with feasible deviations stated explicitly.
+- **Scope:** one actual positive-`K` boundary equilibrium. This is theorem
+  delivery after the closed building-block experiments, not a claim about all
+  boundary prices, unrestricted signed-bid BNE or uniqueness.
+- **Focused result:** nonnegative quadratic-cost report coverage and its
+  auction specialization compile. A generic conditional-payoff identity lives
+  at the Bayesian game layer (3,094-job target); the restricted auction BNE
+  bridge (3,144 jobs) reuses the actual prior and native averaging. Its
+  linear-scarcity wrapper (3,151 jobs) derives the measurable/integrable guards.
+  The existing real interim identity's all-real fixed-payment integrability
+  premise remains explicit, even for restricted actions.
+- **Concrete equilibrium:** `PositiveKBoundary` builds (9,116 jobs). The
+  actual mean satisfies `0 ≤ μ ≤ 1/2`, hence the posted price lies in `[7/2,4]`;
+  its actual `K` is one. Native report IC, zero lowest-type utility and
+  nonnegative original-bid IC yield native Bayesian equilibrium under the
+  original type law against all admitted measurable nonnegative deviations.
+- **Status:** in progress.
+
 ## Subsequent action-domain control
 
 MEC-015 completes the proposed positive-`K` domain control. At price four and a
