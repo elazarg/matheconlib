@@ -29,6 +29,7 @@ import MathEconLibTest.GameTheory.ComplementaryBlocking
 import MathEconLibTest.GameTheory.ConditionalBeliefs
 import MathEconLibTest.GameTheory.ConditionalIncentiveControls
 import MathEconLibTest.GameTheory.ConditionalIncentiveCorrelated
+import MathEconLibTest.GameTheory.CountablePossibility
 import MathEconLibTest.GameTheory.DemandGraphBoundary
 import MathEconLibTest.GameTheory.DemandRegularityControls
 import MathEconLibTest.GameTheory.ExpectedRecodingBoundary
@@ -39,6 +40,7 @@ import MathEconLibTest.GameTheory.InfiniteGain
 import MathEconLibTest.GameTheory.Integrability
 import MathEconLibTest.GameTheory.MatchingPennies
 import MathEconLibTest.GameTheory.MeasurableBayesian
+import MathEconLibTest.GameTheory.NonatomicWitnessBoundary
 import MathEconLibTest.GameTheory.OrderedPayoffs
 import MathEconLibTest.GameTheory.PossibilityInformationBoundary
 import MathEconLibTest.GameTheory.PossibilityLawPreference

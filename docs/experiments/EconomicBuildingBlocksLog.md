@@ -941,3 +941,18 @@ remain evidence, but line-count increases alone do not reject a component.
   existing action witness, positive singleton mass and positive-measure sets.
 - **Next action:** compile the countable consumer and nonatomic boundary, then
   close the identified competition queue if neither reveals another operation.
+- **Focused result:** `CountablePossibility` builds (3,052 jobs) and
+  `NonatomicWitnessBoundary` builds (3,255 jobs). Both files pass separate
+  warning-as-error and line-length checks. The arbitrary-PMF reduction consumes
+  Mathlib's bind support identity and retains a positive-mass component. A
+  geometric incumbent has proved infinite support and is native equilibrium
+  against every PMF deviation in a parity-based stochastic response game.
+- **Nonatomic control:** the existing uniform value law drives native
+  `OutcomeGame.mixed` and `mixedFlattened`, with map and join proving certain
+  success. Every pure continuation also succeeds, while every action singleton
+  has zero mass. Thus positive-atom provenance fails for this actual flattened
+  law; existence of a pure witness and topological support are not refuted.
+- **Scope / next action:** select existing carrier-specific support and
+  composition operations with the common witness lift. No countable closure
+  follows merely from binary closure, and no general nonatomic witness theorem
+  is claimed. Run the final full/source/kernel gate before closing the queue.
