@@ -17,6 +17,7 @@ public import MathEconLib.Auction.AllPurchase.OptimalPricing
 public import MathEconLib.Auction.AllPurchase.OriginalBidIC
 public import MathEconLib.Auction.AllPurchase.QuadraticIncentives
 public import MathEconLib.Auction.AllPurchase.Regularity
+public import MathEconLib.Auction.AllPurchase.RestrictedBayesianEquilibrium
 public import MathEconLib.Auction.AllPurchase.RevenueDecomposition
 public import MathEconLib.Auction.AllPurchase.UniformDistribution
 public import MathEconLib.Auction.AllPurchase.WelfareDecomposition
@@ -26,6 +27,7 @@ public import MathEconLib.Auction.Basic
 public import MathEconLib.Auction.BayesianEquilibrium
 public import MathEconLib.Auction.IdenticalTypes
 public import MathEconLib.Auction.PaymentUniqueness
+public import MathEconLib.Auction.RestrictedBayesianEquilibrium
 public import MathEconLib.Auction.RevenueEquivalence
 public import MathEconLib.Auction.StrictMonotonicity
 public import MathEconLib.Auction.SymmetricIPV
@@ -91,6 +93,7 @@ public import MathEconLib.GameTheory.Strategic.Bayesian.Measurable.Comap
 public import MathEconLib.GameTheory.Strategic.Bayesian.Measurable.Game
 public import MathEconLib.GameTheory.Strategic.Bayesian.Measurable.Interim
 public import MathEconLib.GameTheory.Strategic.Bayesian.Measurable.InterimAtoms
+public import MathEconLib.GameTheory.Strategic.Bayesian.Measurable.InterimComap
 public import MathEconLib.GameTheory.Strategic.Bayesian.Measurable.InterimConverse
 public import MathEconLib.GameTheory.Strategic.Bayesian.Measurable.PureBNE
 public import MathEconLib.GameTheory.Strategic.Bayesian.Outcome

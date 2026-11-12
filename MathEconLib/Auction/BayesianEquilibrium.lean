@@ -76,6 +76,27 @@ theorem incumbentPayoffsIntegrable_bidStrategy
     (Measurable.of_eval A.θ_measurable).aemeasurable).mpr
   exact incumbent i
 
+/-- Fixing own type and bid removes the original own coordinate from the realized payoff. -/
+theorem interimPayoffActionIntegrand_bidStrategy
+    (β : ℝ → ℝ) (measurable : Measurable β)
+    (i : Fin n) (value bid : ℝ) (sample : Ω) :
+    A.bayesianGame.interimPayoffActionIntegrand i value bid (A.bidStrategy β measurable)
+        (drop i (A.θ · sample)) =
+      value * A.rules.outcome (Function.update (fun j => β (A.θ j sample)) i bid) i -
+        A.rules.payment i (Function.update (fun j => β (A.θ j sample)) i bid) := by
+  change A.bayesianGame.payoff i
+    (Function.update (fun j => β (insert i value (drop i (A.θ · sample)) j)) i bid)
+    (insert i value (drop i (A.θ · sample))) = _
+  have sameBids :
+      Function.update (fun j => β (insert i value (drop i (A.θ · sample)) j)) i bid =
+        Function.update (fun j => β (A.θ j sample)) i bid := by
+    funext j
+    by_cases equal : j = i
+    · subst j
+      simp
+    · simp [Function.update_of_ne equal, insert_of_ne _ _ _ equal, drop]
+  rw [bayesianGame_payoff, insert_self, sameBids]
+
 /-- Conditional beliefs under independence recover the native interim quantities for each bid. -/
 theorem interimPayoffAction_bidStrategy [A.IsIPV]
     (allocation : IsUnitIntervalAllocation A.rules (fun outcome i => outcome i))
@@ -96,30 +117,57 @@ theorem interimPayoffAction_bidStrategy [A.IsIPV]
     (A.bayesianGame.measurable_interimPayoffActionIntegrand
       (A.measurable_bayesianGame_payoff payments) i (A.bidStrategy β measurable)).comp
         ((measurable_const (a := (value, bid))).prodMk measurable_id)
-  have actual (sample : Ω) :
-      A.bayesianGame.interimPayoffActionIntegrand i value bid (A.bidStrategy β measurable)
-          (drop i (A.θ · sample)) =
-        value * A.rules.outcome (Function.update (fun j => β (A.θ j sample)) i bid) i -
-          A.rules.payment i (Function.update (fun j => β (A.θ j sample)) i bid) := by
-    change A.bayesianGame.payoff i
-      (Function.update (fun j => β (insert i value (drop i (A.θ · sample)) j)) i bid)
-      (insert i value (drop i (A.θ · sample))) = _
-    have sameBids :
-        Function.update (fun j => β (insert i value (drop i (A.θ · sample)) j)) i bid =
-          Function.update (fun j => β (A.θ j sample)) i bid := by
-      funext j
-      by_cases equal : j = i
-      · subst j
-        simp
-      · simp [Function.update_of_ne equal, insert_of_ne _ _ _ equal, drop]
-    rw [bayesianGame_payoff, insert_self, sameBids]
   unfold BayesianGame.interimPayoffAction
   rw [A.independentBeliefs_opponents,
     integral_map opponentMeasurable.aemeasurable conditionalMeasurable.aestronglyMeasurable]
-  simp_rw [actual]
+  simp_rw [A.interimPayoffActionIntegrand_bidStrategy β measurable]
   rw [integral_sub ((A.integrable_allocation_strat allocation measurable i bid).const_mul value)
     (integrable_payments i bid), integral_const_mul]
   rfl
+
+/-- Every own real type and real bid has integrable payoff under independent conditional beliefs.
+Only the existing allocation bound and fixed-bid payment integrability are used. -/
+theorem integrable_interimPayoffActionIntegrand_bidStrategy [A.IsIPV]
+    (allocation : IsUnitIntervalAllocation A.rules (fun outcome i => outcome i))
+    (β : ℝ → ℝ) (measurable : Measurable β)
+    (payments : ∀ i, Measurable (A.rules.payment i))
+    (integrable_payments : ∀ i bid,
+      Integrable (fun sample => A.rules.payment i
+        (Function.update (fun j => β (A.θ j sample)) i bid)) ℙ)
+    (i : Fin n) (value bid : ℝ) :
+    Integrable (A.bayesianGame.interimPayoffActionIntegrand i value bid
+      (A.bidStrategy β measurable)) (A.independentBeliefs.opponents i value) := by
+  have opponentMeasurable : Measurable (fun sample => drop i (A.θ · sample)) :=
+    (measurable_drop i).comp (Measurable.of_eval A.θ_measurable)
+  have conditionalMeasurable : Measurable (fun opponents =>
+      A.bayesianGame.interimPayoffActionIntegrand i value bid
+        (A.bidStrategy β measurable) opponents) :=
+    (A.bayesianGame.measurable_interimPayoffActionIntegrand
+      (A.measurable_bayesianGame_payoff payments) i (A.bidStrategy β measurable)).comp
+        ((measurable_const (a := (value, bid))).prodMk measurable_id)
+  rw [A.independentBeliefs_opponents]
+  apply (integrable_map_measure conditionalMeasurable.aestronglyMeasurable
+    opponentMeasurable.aemeasurable).mpr
+  change Integrable (fun sample => A.bayesianGame.interimPayoffActionIntegrand
+    i value bid (A.bidStrategy β measurable) (drop i (A.θ · sample))) ℙ
+  simp_rw [A.interimPayoffActionIntegrand_bidStrategy β measurable]
+  exact ((A.integrable_allocation_strat allocation measurable i bid).const_mul value).sub
+    (integrable_payments i bid)
+
+/-- Integrability for every own real type supplies the simultaneous conditional deviation guard. -/
+theorem hasIntegrableInterimDeviations_bidStrategy [A.IsIPV]
+    (allocation : IsUnitIntervalAllocation A.rules (fun outcome i => outcome i))
+    (β : ℝ → ℝ) (measurable : Measurable β)
+    (payments : ∀ i, Measurable (A.rules.payment i))
+    (integrable_payments : ∀ i bid,
+      Integrable (fun sample => A.rules.payment i
+        (Function.update (fun j => β (A.θ j sample)) i bid)) ℙ) :
+    A.bayesianGame.HasIntegrableInterimDeviations A.typeLaw A.independentBeliefs
+      (A.bidStrategy β measurable) := by
+  intro i
+  exact Filter.Eventually.of_forall fun value bid =>
+    A.integrable_interimPayoffActionIntegrand_bidStrategy allocation β measurable payments
+      integrable_payments i value bid
 
 /-- Declared type intervals contain the own-type marginal almost surely. -/
 theorem marginalType_interval_compl [HasBoundedTypes A] (i : Fin n) :

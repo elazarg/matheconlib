@@ -81,6 +81,49 @@ theorem hasUniversalIC_of_continuous_strategy
     exact A.toAuction.q_strat_eq_one_of_highest_lt A.spec.usesStrictHighestBidAllocation
       strictMonoOn.monotoneOn i above
 
+/-- Continuous nonnegative report coverage rejects every feasible nonnegative bid when
+the lowest bid is zero and the marginal quadratic cost is nonnegative. -/
+theorem hasUniversalIC_nonnegative_of_continuous_strategy
+    (β : ℝ → ℝ) (measurable : Measurable β)
+    (strictMonoOn : StrictMonoOn β (Icc A.lowestType A.highestType))
+    (continuous : ContinuousOn β (Icc A.lowestType A.highestType))
+    (lowestBid : β A.lowestType = 0) (marginal : 0 ≤ A.K_linear β)
+    (i : Fin n)
+    (reportIC : BidderProblem.HasTypeDeviationIC
+      (A.toBidderProblem A.spec.isUnitIntervalAllocation β i)) :
+    BidderProblem.HasUniversalIC
+      (A.toBidderProblem A.spec.isUnitIntervalAllocation β i) (Ici 0) := by
+  have integrable (j : Fin n) : Integrable (fun sample => β (A.θ j sample)) ℙ :=
+    A.toAuction.integrable_comp_type_of_monotoneOn β measurable strictMonoOn.monotoneOn j
+  let P := A.toQuadraticCostProblem β measurable integrable i
+  let : BidderProblem.HasTypeDeviationIC P.toBidderProblem := reportIC
+  have lowEqual : P.lowestType = A.lowestType := A.θmin_eq_lowestType i
+  have highEqual : P.highestType = A.highestType := A.θmax_eq_highestType i
+  have intervalEqual : P.typeInterval = Icc A.lowestType A.highestType := by
+    change Icc P.lowestType P.highestType = _
+    rw [lowEqual, highEqual]
+  apply P.hasUniversalIC_nonnegative_of_continuous_strategy
+  · rw [lowEqual, highEqual]
+    exact A.toAuction.lowestType_le_highestType
+  · rw [intervalEqual]
+    exact strictMonoOn.monotoneOn
+  · rw [intervalEqual]
+    exact continuous
+  · rw [lowEqual]
+    exact lowestBid
+  · exact marginal
+  · rw [highEqual]
+    change A.q_strat β i (β A.highestType) = 1
+    have member : A.highestType ∈ Icc A.lowestType A.highestType :=
+      ⟨A.toAuction.lowestType_le_highestType, le_rfl⟩
+    simpa only [Auction.commonCDF_highestType, one_pow] using
+      A.toAuction.q_strat_at_strictMono_eq A.spec.usesStrictHighestBidAllocation
+        strictMonoOn measurable i member
+  · intro bid above
+    rw [highEqual] at above
+    exact A.toAuction.q_strat_eq_one_of_highest_lt A.spec.usesStrictHighestBidAllocation
+      strictMonoOn.monotoneOn i above
+
 /-- The native interior formula makes the prescribed strategy continuous on its type interval. -/
 theorem IsInteriorRegimeStrategy.continuousOn {β : ℝ → ℝ} {i : Fin n}
     (h : A.IsInteriorRegimeStrategy β i) :

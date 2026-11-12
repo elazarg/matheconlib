@@ -196,6 +196,58 @@ does not justify skipping those obligations for type-dependent deviations.
   concerns this equilibrium selection and does not classify other prices,
   strategies or boundary regimes.
 
+## Delivery 05: a positive-cost boundary equilibrium with nonnegative bids
+
+- **Baseline:** `f686c0f`; child
+  `codex/economic-delivery-05-nonnegative-boundary`.
+- **Target:** two independent uniform bidders use
+  `β(v) = (sqrt(1+v^2)-1)/2`. Let `μ` be its actual mean purchase and post the
+  positive price `4-μ`, so the native marginal cost coefficient is exactly one.
+  Prove Bayesian equilibrium in the actual mechanism restricted to nonnegative
+  actions, under the unchanged actual type law.
+- **Reuse:** native report IC, continuous payoff coverage on the nonnegative
+  action set, mechanism action comaps, conditional averaging and the existing
+  measurable/integrable linear-scarcity guards. The real-valued bidder view
+  remains available, with feasible deviations stated explicitly.
+- **Scope:** one actual positive-`K` nonnegative boundary equilibrium and an
+  original-action obstruction for that same strategy. This is theorem delivery
+  after the closed building-block experiments; it does not classify all prices,
+  all equilibria or uniqueness.
+- **Focused result:** nonnegative quadratic-cost report coverage and its
+  auction specialization compile. A generic conditional-payoff identity lives
+  at the Bayesian game layer (3,094-job target); the restricted auction BNE
+  bridge (3,144 jobs) reuses the actual prior and native averaging. Its
+  linear-scarcity wrapper (3,151 jobs) derives the measurable/integrable guards.
+  The existing real interim identity's all-real fixed-payment integrability
+  premise remains explicit, even for restricted actions.
+- **Concrete equilibrium:** `PositiveKBoundary` builds (9,116 jobs). The
+  actual mean satisfies `0 ≤ μ ≤ 1/2`, hence the posted price lies in `[7/2,4]`;
+  its actual `K` is one. Native report IC, zero lowest-type utility and
+  nonnegative original-bid IC yield native Bayesian equilibrium under the
+  original type law against all admitted measurable nonnegative deviations.
+- **Original-action control:** the original real-action strategy fails native
+  BNE (9,121-job target). The negative bid pays utility `1/4` for every type,
+  while prescribed utility is `v^2/4`. The actual marginal interval
+  `Iic (1/2)` has mass `1/4` and bounded realized types have full measure.
+  Native interim recovery therefore contradicts real-action BNE on a
+  positive-mass set, not merely at the null lowest type. A reusable conditional
+  integrability theorem supplies the simultaneous all-action guard; the
+  existing interim identity and this guard share one pointwise payoff lemma.
+- **Complete validation:** complete and explicit builds of all 309 authored
+  modules pass (9,359 jobs). The kernel audit checks 6,531 declarations using
+  only standard axioms. All-source token scanning and re-elaboration of all
+  12 changed Lean files report zero violations and no discarded declarations.
+  All 12 pass strict warning and line-length checks with generated Lake module
+  setups. Header, generated-import and native BIC arithmetic checks pass.
+  Existing unrelated upstream diagnostics remain visible. All nine shared
+  third-party dependency revisions still match the native manifest and their
+  tracked sources are clean. A fresh upstream fetch retains `4afb0d5`;
+  dependency pins and toolchain remain unchanged.
+- **Status:** complete. The actual positive-marginal-cost boundary strategy
+  is native Bayesian Nash with typed nonnegative actions and is not Bayesian
+  Nash with real actions. The same prior and transfers are used. The result
+  concerns this model and strategy, with no uniqueness or all-price claim.
+
 ## Subsequent action-domain control
 
 MEC-015 completes the proposed positive-`K` domain control. At price four and a

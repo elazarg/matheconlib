@@ -19,6 +19,8 @@ A continuous monotone strategy covers its endpoint bid interval. When
 the lowest bid minimizes quadratic cost and endpoint winning probabilities
 agree with the probabilities outside the range, endpoint bids also cover
 every outside bid. Coverage is valid at every real true type.
+For nonnegative bids, a zero lowest bid and nonnegative marginal cost suffice;
+there is no lower outside tail in the feasible action domain.
 -/
 
 @[expose] public section
@@ -96,5 +98,61 @@ theorem hasUniversalIC_of_continuous_strategy (P : QuadraticCostProblem)
   intro v _ bid _
   exact P.payoff_dominated_by_report ordered monotone continuous lowestBid
     winLowest winHighest winBelow winAbove v bid
+
+/-- With nonnegative marginal cost and a zero lowest bid, every nonnegative
+bid is dominated by a report. Only the upper outside tail requires a cost bound. -/
+theorem payoff_dominated_by_report_of_nonneg_bid (P : QuadraticCostProblem)
+    (ordered : P.lowestType ≤ P.highestType)
+    (monotone : MonotoneOn P.strategy P.typeInterval)
+    (continuous : ContinuousOn P.strategy P.typeInterval)
+    (lowestBid : P.strategy P.lowestType = 0) (marginal : 0 ≤ P.K_param)
+    (winHighest : P.winProb (P.strategy P.highestType) = 1)
+    (winAbove : ∀ bid > P.strategy P.highestType, P.winProb bid = 1)
+    (v bid : ℝ) (nonnegative : 0 ≤ bid) :
+    ∃ report ∈ P.typeInterval,
+      P.payoff v bid ≤ P.payoff v (P.strategy report) := by
+  have lowMember : P.lowestType ∈ P.typeInterval := ⟨le_rfl, ordered⟩
+  have highMember : P.highestType ∈ P.typeInterval := ⟨ordered, le_rfl⟩
+  have highNonnegative : 0 ≤ P.strategy P.highestType := by
+    rw [← lowestBid]
+    exact monotone lowMember highMember ordered
+  have costMonotone : MonotoneOn P.cost (Ici 0) := by
+    intro first nonnegFirst second _ less
+    rw [P.cost_eq, P.cost_eq]
+    exact add_le_add
+      (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ nonnegFirst less 2) P.α_pos.le)
+      (mul_le_mul_of_nonneg_left less marginal)
+  by_cases above : P.strategy P.highestType < bid
+  · refine ⟨P.highestType, highMember, ?_⟩
+    simp only [BidderProblem.payoff, winAbove bid above, winHighest, mul_one]
+    exact sub_le_sub_left (costMonotone highNonnegative nonnegative above.le) v
+  have between : bid ∈ Icc (P.strategy P.lowestType) (P.strategy P.highestType) := by
+    rw [lowestBid]
+    exact ⟨nonnegative, le_of_not_gt above⟩
+  obtain ⟨report, validReport, sameBid⟩ := intermediate_value_Icc ordered continuous between
+  exact ⟨report, validReport, by simpa only [sameBid] using le_refl (P.payoff v bid)⟩
+
+/-- Report IC extends to every nonnegative original bid when the lowest bid
+is zero and quadratic cost increases on the nonnegative action domain. -/
+theorem hasUniversalIC_nonnegative_of_continuous_strategy (P : QuadraticCostProblem)
+    [BidderProblem.HasTypeDeviationIC P.toBidderProblem]
+    (ordered : P.lowestType ≤ P.highestType)
+    (monotone : MonotoneOn P.strategy P.typeInterval)
+    (continuous : ContinuousOn P.strategy P.typeInterval)
+    (lowestBid : P.strategy P.lowestType = 0) (marginal : 0 ≤ P.K_param)
+    (winHighest : P.winProb (P.strategy P.highestType) = 1)
+    (winAbove : ∀ bid > P.strategy P.highestType, P.winProb bid = 1) :
+    BidderProblem.HasUniversalIC P.toBidderProblem (Ici 0) := by
+  have typeIC : SingleParameterProblem.HasTypeDeviationIC
+      P.toBidderProblem.toSingleParameterProblem := inferInstance
+  apply BidderProblem.hasUniversalIC_of_toSingleParameterProblem
+  refine typeIC.hasUniversalIC_of_payoff_coverage ?_ ?_
+  · intro v member
+    change 0 ≤ P.strategy v
+    rw [← lowestBid]
+    exact monotone ⟨le_rfl, ordered⟩ member member.1
+  · intro v _ bid admitted
+    exact P.payoff_dominated_by_report_of_nonneg_bid ordered monotone continuous
+      lowestBid marginal winHighest winAbove v bid admitted
 
 end MathEconLib.QuadraticCostProblem

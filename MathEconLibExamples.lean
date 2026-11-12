@@ -11,6 +11,8 @@ public import MathEconLibExamples.AllPurchase.UniformPriceFamily
 public import MathEconLibExamples.AllPurchase.UniformPriceFamilyProfit
 public import MathEconLibExamples.AllPurchase.UniformBoundaryEquilibrium
 public import MathEconLibExamples.AllPurchase.UniformBoundaryProfit
+public import MathEconLibExamples.AllPurchase.PositiveKBoundary
+public import MathEconLibExamples.AllPurchase.PositiveKBoundaryRealObstruction
 
 public import MathEconLibExamples.AllPurchase.Welfare
 public import MathEconLibExamples.Choice.SubstituteEnvelope
@@ -39,6 +41,8 @@ Concrete economic models illustrate the library's definitions and results.
   price `2` uniquely maximizes actual seller profit in this zero-cost family.
 * At cost one, the zero-baseline endpoint equilibrium at price `5/2` earns
   strictly more than every constructed interior-family equilibrium.
+* A positive-marginal-cost boundary strategy is Bayesian Nash under typed
+  nonnegative bids and fails Bayesian Nash under the original real actions.
 * A Becker-inspired crime-choice model gives a threshold rule and deterrence results
   for individuals and aggregate crime under a fixed type distribution.
 * A two-couple marriage market has distinct stable outcomes whose lattice join,
