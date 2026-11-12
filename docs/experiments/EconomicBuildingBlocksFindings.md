@@ -22,8 +22,11 @@ control.
 A competing branch actually replaced native per-player optimality with a
 Mathlib-only guarded predicate, rerouted map proofs through coverage, and changed
 a native choice contraction proof to use that same operation. It passed the
-complete build and integrity checks. It was not selected for collection because
-its measured proof/repair cost exceeded the simplified native baseline. Its
+complete build and integrity checks. The initial selection favored the simpler
+native implementation. Under the revised expressiveness-first criteria, the
+larger footprint does not refute guarded coverage: it establishes real shared
+mathematics, but has not yet shown a benefit from making every native judgment
+use that representation. Its
 working source remains on `codex/experiment-economic-item-05b-guarded-core`.
 The alternatives were changed and compared locally; existing design choices
 were not treated as constraints on the experiment.
@@ -47,12 +50,14 @@ were not treated as constraints on the experiment.
    induction needs none of that output. Both are useful deliverables; their
    costs must be compared at the same requested strength. Global packaging also
    asks more than a theorem about one incumbent.
-4. **A common normal form does not automatically earn proof ownership.**
+4. **A common normal form needs a useful shared operation.**
    Guarded coverage really serves game transport and choice contraction without
-   extra assumptions. Nevertheless the replacement adds 121 nonblank code lines
-   across 18 files, and both representative proofs become longer. These menus
-   already enforce most of the reconstructed guards. This is a negative result
-   for forcing this representation into these owners, not a ban on shared math.
+   extra assumptions. The replacement adds 121 nonblank code lines across 18
+   files, and both representative proofs become longer. That is a cost, not a
+   decisive objection. These menus already enforce most reconstructed guards;
+   the open question is which additional theorem or model benefits from common
+   ownership. Independent ownership remains available without replacing every
+   native predicate.
 5. **Evaluation conventions are mathematical content.** The positive
    infinite-gain fixture is a native mixed equilibrium against every admitted
    integrable deviation. Its accepting deviation has nonnegative integral top
@@ -75,15 +80,52 @@ the revelation and simulation workloads reuse their proof-bearing maps.
 Encoding a concept through an arbitrary value carrier and comparison is not,
 by itself, evidence that this representation should own its downstream proofs.
 
+## Expressiveness-first follow-up
+
+The evaluation criteria are explicit in `ComponentEvaluation.md`: semantic
+adequacy, useful expressiveness, actual reuse, composition and change locality,
+interface quality, then cost. A short proof is evidence about cost; a new model
+or reusable theorem is evidence about capability. Neither counts declarations
+or hypothetical encodings as successful reuse.
+
+- **Reduced incentives:** scalar supporting slopes now serve native envelope
+  IC, allocation monotonicity, utility convexity and payment theory. A multi-unit
+  example exceeds the native globally unit-bounded allocation model. A mechanism
+  with an unused subsidized action proves that truthful-report IC cannot replace
+  universal original-action IC.
+- **Obstruction witnesses:** substitutable contract choice decomposes every
+  joint block into singleton witnesses. The native marriage bridge returns an
+  actual blocking pair from the original block. A complementary market refutes
+  singleton sufficiency without substitutes. Coalition transport reuses a
+  context-dependent witness operation, retaining exact update provenance;
+  coordination refutes its converse. The generic operation remains a prototype
+  until further independent uses justify its public ownership.
+- **Changing choice sets:** native positive-price budgets admit feasible-point
+  recovery even at zero wealth. The demand graph theorem compiles against the
+  actual canonical GameTheory parametric-optimality theorem on a separate shared
+  dependency branch, without copying its proof. Closed feasible graphs and
+  nonempty demand alone fail in a free-good boundary control. Collection keeps
+  independent budget geometry; the shared theorem branch is evidence for a
+  common mathematical owner, without prematurely selecting a package boundary.
+- **Dimensions and potentials:** scalar support extends to linear forms on a
+  real module without topology or an inner product. Potential-difference bounds
+  share one finite-cycle proof between those incentives and native Afriat
+  inequalities on observation indices. A rotational field passes all pairwise
+  monotonicity comparisons but violates a three-point cycle, proving that the
+  stronger potential content is necessary. Direct scalar normalization through
+  opaque linear maps hurt arithmetic automation; the lower operation keeps
+  scalar increments transparent while preserving shared mathematical proofs.
+
 ## What remains informative
 
-Further variations of the same logical packaging now have diminishing returns.
-The next useful test is a different economic dependency path: demand with changing
-price/wealth budgets, including zero wealth under positive prices, or a named
-auction equilibrium theorem that needs the proposed mathematical operation.
-The earlier demand probe is deferred before compilation, not refuted.
+Further variations of the same logical packaging have diminishing returns.
+The changing-budget path has now been tested. Conditional information, welfare
+calibration, law preferences and certificate-conversion provenance are the next
+discriminating paths; their reserved experiments preserve explicit kill
+conditions. A new abstraction must improve those consumers rather than merely
+rename a condition.
 
-The proposed outcome-law experiment has not been run. Its original prediction
+The proposed outcome-law experiment is in draft preparation. Its original prediction
 about still needing a value carrier cannot discriminate between designs: the
 current carrier can already be an outcome law. A useful successor must name a
 law-preference theorem and an actual failed transport or mixture-closure step.
@@ -95,10 +137,14 @@ local replacement whenever a new consumer can discriminate between them.
 
 ## Verification
 
-The selected implementation passes the complete build and an explicit build of
+The first collection passes the complete build and an explicit build of
 all 255 authored modules (9,305 jobs). The project-wide compiled audit checks
 5,870 declarations with only standard axioms; the source-token scan finds no
 holes. Individual experiment gates cover source elaboration, including
 discarded examples. Header/import checks and the 21 integrity, 28 warning-report
 and 11 import-helper harness tests pass. Existing upstream warnings remain
-visible. The ledger records commands, environment adjustments and precise scope.
+visible. The later reduced-incentive, obstruction and budget collection also
+passes full builds; the shared-demand branch covers 267 modules and 5,988
+declarations before its separately checked final boundary control. Newer focused
+gates and pending integration checks are recorded in the ledger; do not read the
+earlier counts as coverage of later unbuilt drafts.

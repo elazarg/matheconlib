@@ -5,7 +5,7 @@ Authors: Elazar Gershuni
 -/
 module
 
-public import Mathlib.Basic.Real.Basic
+public import MathEconLib.ForMathlib.SupportingForms
 public import Mathlib.Order.Monotone.Basic
 import Mathlib.Tactic.Linarith
 
@@ -22,8 +22,8 @@ continuity, or choose a representation of the points as actions or reports.
 namespace MathEconLib
 
 /-- Each assigned slope gives a global affine lower support on the specified set. -/
-def SupportingSlopesOn (U q : ℝ → ℝ) (S : Set ℝ) : Prop :=
-  ∀ x ∈ S, ∀ y ∈ S, (x - y) * q y ≤ U x - U y
+abbrev SupportingSlopesOn (U q : ℝ → ℝ) (S : Set ℝ) : Prop :=
+  PotentialBoundsOn U (fun y x => (x - y) * q y) S
 
 namespace SupportingSlopesOn
 
@@ -31,9 +31,8 @@ namespace SupportingSlopesOn
 less attractive than the utility assigned to the true point. -/
 theorem report_payoff_le {U q : ℝ → ℝ} {S : Set ℝ} (h : SupportingSlopesOn U q S)
     {x y : ℝ} (hx : x ∈ S) (hy : y ∈ S) :
-    x * q y - (y * q y - U y) ≤ U x := by
-  have support := h x hx y hy
-  nlinarith
+    x * q y - (y * q y - U y) ≤ U x :=
+  SupportingFormsOn.report_payoff_le (q := fun y => LinearMap.mulRight ℝ (q y)) h hx hy
 
 /-- Supporting slopes are monotone even without bounds or continuity. -/
 theorem monotoneOn {U q : ℝ → ℝ} {S : Set ℝ} (h : SupportingSlopesOn U q S) :
@@ -42,8 +41,9 @@ theorem monotoneOn {U q : ℝ → ℝ} {S : Set ℝ} (h : SupportingSlopesOn U q
   rcases hxy.eq_or_lt with equal | strict
   · exact equal ▸ le_refl _
   · by_contra! contrary
-    have lower := h x hx y hy
-    have upper := h y hy x hx
+    have pairing := SupportingFormsOn.monotone_pairing
+      (q := fun y => LinearMap.mulRight ℝ (q y)) h hx hy
+    change 0 ≤ (x - y) * q x - (x - y) * q y at pairing
     nlinarith [mul_pos (sub_pos.mpr strict) (sub_pos.mpr contrary)]
 
 end SupportingSlopesOn

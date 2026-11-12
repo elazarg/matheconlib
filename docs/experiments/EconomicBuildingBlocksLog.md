@@ -564,6 +564,37 @@ remain evidence, but line-count increases alone do not reject a component.
 - **Artifacts / baseline:** the collected scalar component from MEC-007;
   prototypes remain ignored until the current build finishes. No category or
   convex-analysis hierarchy is introduced merely to package this condition.
+- **Design observation:** the direct scalar specialization through opaque
+  Mathlib `LinearMap.mulRight` compiles as mathematics but obscures scalar
+  arithmetic from existing IC automation. An independent native consumer
+  suggests a useful lower operation: Afriat inequalities bound utility
+  differences by indexed expenditure increments without any linear structure
+  on observation indices. Test common potential-difference bounds beneath both
+  supporting forms and scalar slopes, reusing the same finite-cycle theorem
+  for a native Afriat expenditure-cycle result. Retain the failed direct
+  normalization observation; the extra layer needs this independent reuse,
+  not merely a shorter scalar proof.
+- **Focused result:** `PotentialBoundsOn` owns finite-permutation telescoping
+  without algebraic assumptions on points. Supporting forms and scalar slopes
+  transparently specialize it; scalar wrappers reuse the linear-form payment,
+  monotone-pairing and convexity theorems through explicitly supplied linear
+  maps. Keeping scalar increments visible restores native IC automation without
+  changing its proofs. Native `AfriatInequalities.potentialBounds` and
+  `sum_cycle_nonneg` reuse the same telescoping proof on observation indices,
+  without positive multipliers or finite observation sets.
+- **Hostile controls:** quadratic utility on `ℝ × ℝ` has truthful canonical
+  payments. The rotation field has zero pairwise pairing everywhere but positive
+  sum on a three-point cycle, so it has no supporting potential. This refutes
+  replacing support by pairwise monotonicity in multiple dimensions.
+- **Commands:** the strict focused build of ReducedIncentiveConsumer,
+  SupportingFormsConsumer, SingleParameter.ConvexUtility and AfriatCycles passes
+  (2,743 jobs). Full build passes 9,321 jobs. The seven-module kernel audit
+  checks 43 declarations with standard axioms only; source elaboration checks
+  all nine changed Lean files with zero violations and no discarded examples.
+  Semantic review confirms orientations and scope; a coordinate-square docstring
+  was clarified to avoid confusing the product norm with the Euclidean norm.
+  **Outcome:** select the small potential/support operations and native Afriat
+  consumer; no convex-analysis hierarchy or universal optimization hub is needed.
 
 ## MEC-011: conditional information, averaging and null signals
 
@@ -610,3 +641,35 @@ remain evidence, but line-count increases alone do not reject a component.
 - **Ownership baseline:** native `QuasilinearEnvironment.totalValue`, native
   `DirectMechanism.IsEfficient`, existing `Choice.maximizers` and Mathlib
   `IsMaxOn`/finite-sum algebra. No new scalarization owner is presumed.
+
+## MEC-013: possibility preferences over outcome laws
+
+- **Date / status:** 2026-11-12; reserved, independent draft preparation.
+- **Question:** Can support-based preferences deliver a useful equilibrium
+  theorem without expected utility, while retaining the actual probability law?
+- **Alternatives:** native law and support operations plus explicit comparisons;
+  a universal preference-over-laws class; expected-value scalarization.
+- **Representative slice:** derive pure-deviation sufficiency from the support
+  of an admitted mixed deviation, retaining its contributing pure action. Test
+  a full-support equilibrium and a preference not representable by expected
+  utility. Reuse the witness operation if it preserves the needed provenance.
+- **Kill conditions:** an actual theorem about native probability operations,
+  not universal encodability. No silent substitution of expected-payoff Nash,
+  no infinite-mixture conclusion from a finite-mixture proof, no copied law
+  carrier and no unproved mixture-closure premise.
+
+## MEC-014: certificate conversion and retained provenance
+
+- **Date / status:** 2026-11-12; reserved, independent draft preparation.
+- **Question:** Does converting a composite simulation preserve the same witness
+  relation as composing the converted obstruction lifts?
+- **Alternatives:** equality of retained provenance; one-way inclusion with
+  equivalent verdict transport; discarding witnesses and comparing only verdicts.
+- **Representative slice:** convert simulations to lifts of admissible bad
+  deviations, including incomparable violations. Prove the sound composition
+  direction and test strictness using a middle stage whose only improving
+  deviation has value two, between target value one and source alternatives
+  of values one and two.
+- **Kill conditions:** preserve judge maps, admissibility, source context and
+  bound direction. Do not claim equality from verdict equivalence or install
+  category structure merely to package composition.
