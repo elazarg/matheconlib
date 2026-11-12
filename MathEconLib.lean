@@ -10,6 +10,7 @@ public import MathEconLib.Auction.AllPurchase
 public import MathEconLib.Auction.AllPurchase.Basic
 public import MathEconLib.Auction.AllPurchase.BayesianEquilibrium
 public import MathEconLib.Auction.AllPurchase.BayesianIntegrability
+public import MathEconLib.Auction.AllPurchase.EquilibriumPriceComparison
 public import MathEconLib.Auction.AllPurchase.ExplicitSolutions
 public import MathEconLib.Auction.AllPurchase.LinearScarcity
 public import MathEconLib.Auction.AllPurchase.OptimalPricing
@@ -19,6 +20,7 @@ public import MathEconLib.Auction.AllPurchase.Regularity
 public import MathEconLib.Auction.AllPurchase.RevenueDecomposition
 public import MathEconLib.Auction.AllPurchase.UniformDistribution
 public import MathEconLib.Auction.AllPurchase.WelfareDecomposition
+public import MathEconLib.Auction.AllPurchase.WithPrice
 public import MathEconLib.Auction.AllocationBounds
 public import MathEconLib.Auction.Basic
 public import MathEconLib.Auction.BayesianEquilibrium
@@ -128,6 +130,7 @@ public import MathEconLib.Matching.Contracts.StableOrder
 public import MathEconLib.Matching.Contracts.WeakSubstitutes
 public import MathEconLib.Mechanism
 public import MathEconLib.Mechanism.Auctions.AllPurchase.Spec
+public import MathEconLib.Mechanism.Auctions.AllPurchase.WithPrice
 public import MathEconLib.Mechanism.Auctions.Allocation
 public import MathEconLib.Mechanism.Auctions.FirstAndSecondPay
 public import MathEconLib.Mechanism.Core.Bayesian

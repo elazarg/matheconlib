@@ -14,3 +14,5 @@ public import MathEconLib.Auction.AllPurchase.OptimalPricing
 public import MathEconLib.Auction.AllPurchase.OriginalBidIC
 public import MathEconLib.Auction.AllPurchase.BayesianEquilibrium
 public import MathEconLib.Auction.AllPurchase.UniformDistribution
+public import MathEconLib.Auction.AllPurchase.WithPrice
+public import MathEconLib.Auction.AllPurchase.EquilibriumPriceComparison

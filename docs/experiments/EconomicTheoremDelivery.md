@@ -112,11 +112,54 @@ does not justify skipping those obligations for type-dependent deviations.
   BNE payoff is computed. No arbitrary-price existence claim or change in
   equilibrium semantics is introduced.
 
+## Delivery 03: equilibria across posted prices
+
+- **Baseline:** `4a1f42c`; child
+  `codex/economic-delivery-03-price-indexed-equilibria`.
+- **Target:** construct actual repriced auctions, retaining allocation, scarcity
+  and the type law while changing transfers. For two independent uniform
+  bidders, construct a native BNE at every price in `(0, 5/2)` and compare actual
+  seller profits across these equilibria.
+- **Reuse:** native interior certificates, original-action IC, conditional
+  averaging and the established profit identity. Compare auctions with common
+  economic primitives explicitly; no new family structure is needed.
+- **Scope:** the positive-price interior regime and zero production cost. A
+  boundary-regime comparison needs its own equilibrium existence proof.
+- **Focused result:** repricing changes each payment by the price difference
+  times own purchases and preserves the actual joint type law. The affine
+  strategy `(5 - 2p)/6 + v/2` supplies native report IC and an interior
+  certificate, hence original-action IC and native BNE throughout `(0, 5/2)`.
+  Its focused strict target passes (9,112 jobs). The generic two-auction profit
+  comparison also passes strictly, conditional on supplied interior certificates
+  and equality of the scarcity intercept, slope and distribution-based moment.
+- **Economic consumer:** expected aggregate purchases are `2(4-p)/3`, actual
+  seller profit at cost zero is `2p(4-p)/3`, and the actual price-two member
+  uniquely maximizes profit in the family at `8/3`. The gap is
+  `(2/3)(p-2)^2`. All three generic two-auction comparison results are consumed;
+  existence at the maximizing price is supplied by the family, rather than
+  assumed from a polynomial optimum. Price two recovers the original auction
+  and strategy. The focused strict consumer target passes (9,113 jobs).
+- **Complete validation:** complete and explicit builds of all 298 authored
+  modules pass (9,348 jobs). The kernel audit checks 6,335 declarations with
+  only standard axioms. All-source forbidden-token scanning and re-elaboration
+  of all eight changed Lean files report zero violations; the source pass
+  finds no discarded declarations. Changed implementation/example files pass
+  strict warning and line-length checks. Header, generated-import and native
+  BIC arithmetic checks pass. Existing unrelated upstream diagnostics remain
+  visible. A fresh upstream fetch retains `4afb0d5`; dependency pins and
+  toolchain remain unchanged.
+- **Status:** complete. Actual equilibria and the unique zero-cost profit
+  maximizer are constructed within the specified interior-price family.
+  Two supplied interior auctions can also be compared from their common
+  primitives. Boundary regimes and other equilibrium families remain outside
+  this delivery's conclusions.
+
 ## Next economic dependency
 
-A comparison of actual equilibria at different posted prices needs a
-price-indexed auction/strategy family on an explicitly admissible regime.
-Construct those equilibria before interpreting a price optimizer as a seller's
-choice across auctions. The existing single-auction profit envelope and the
-new BNE certification supply the proof components; they do not provide such
-a family by themselves.
+The endpoint price `5/2` has candidate strategy `v/2`, zero baseline and `K=0`.
+It fails the strict interior certificate. A thin endpoint equilibrium proof,
+using native original-action IC and the generic Bayesian bridge directly,
+would test whether those operations support a different regime without
+introducing a hierarchy. At production cost one, the common algebraic optimum
+is exactly this endpoint. Establish that actual equilibrium before extending
+the family or making a comparison across regimes.
