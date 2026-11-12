@@ -206,6 +206,13 @@ theorem interior_strategy : model.IsInteriorRegimeStrategy strategy 0 where
   K_neg := K_neg
   lowestTypeUtility := interior_utility
 
+/-- The concrete strategy is Bayesian Nash against all admitted measurable
+type-dependent deviations under the actual joint value law. -/
+theorem strategy_isBNE :
+    model.toAuction.bayesianGame.IsBNE model.typeLaw
+      (model.toAuction.bidStrategy strategy strategy_measurable) :=
+  interior_strategy.isBNE model
+
 /-- The common all-pay benchmark bid is `v²/4`. -/
 theorem allPayBid_eq (v : ℝ) (hv : v ∈ Icc (0 : ℝ) 2) :
     model.allPayBid v = v ^ 2 / 4 := by

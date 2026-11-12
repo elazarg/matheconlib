@@ -12,4 +12,5 @@ public import MathEconLib.Auction.AllPurchase.RevenueDecomposition
 public import MathEconLib.Auction.AllPurchase.WelfareDecomposition
 public import MathEconLib.Auction.AllPurchase.OptimalPricing
 public import MathEconLib.Auction.AllPurchase.OriginalBidIC
+public import MathEconLib.Auction.AllPurchase.BayesianEquilibrium
 public import MathEconLib.Auction.AllPurchase.UniformDistribution

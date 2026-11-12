@@ -61,10 +61,41 @@ new competing design or failure.
   existence, ex-post DSIC, ex-ante BNE or cross-price family claim is part of
   this delivery.
 
-## Next dependency path
+## Delivery 02: Bayesian equilibrium under the actual type law
 
 Package the resulting pointwise original-bid comparisons as ex-ante BNE under
 the actual auction type law. Reuse native conditional beliefs and averaging;
 first prove the interim payoff identity for a nonidentity bid strategy and the
 realized-payoff measurability/integrability guards. Constant-bid optimality alone
 does not justify skipping those obligations for type-dependent deviations.
+
+- **Baseline:** `4479817`; child
+  `codex/economic-delivery-02-bayesian-equilibrium`.
+- **Target:** native `BayesianGame.IsBNE` for the common strategy in the
+  mechanism-induced game, under `Auction.typeLaw`. This quantifies all admitted
+  measurable type-dependent unilateral strategy changes.
+- **Guards:** prove conditional fixed-bid payments are integrable, the actual
+  payoff is jointly measurable, and incumbent realized utility is integrable.
+  Bounded realized types and monotone measurable bids provide the needed
+  boundedness; first moments alone do not justify products of random bids.
+- **Consumer:** the interior original-bid certificate from Delivery 01, then
+  the specified uniform two-bidder example. Keep the original action space and
+  standard integrability-filtered BNE convention.
+- **Native result:** the generic auction bridge identifies actual conditional
+  utility with `q_strat`/`p_strat` for a nonidentity common bid strategy and uses
+  the existing conditional-averaging theorem. The joint type law, true values,
+  signed transfers, incumbent guard and integrability-filtered strategy-deviation
+  convention are retained.
+- **Model guards:** linear scarcity gives measurable raw payments and integrable
+  fixed-bid payments. A strengthened bounded-strategy theorem lives in
+  `Auction.IdenticalTypes`; the old first-moment theorem is its corollary. Bounded
+  factors justify realized-utility products without an L1-times-L1 shortcut.
+- **Focused validation:** generic bridge passes strictly (3,141 jobs), the
+  interior native BNE target passes strictly (9,097 jobs), and the uniform
+  two-bidder example now proves `strategy_isBNE` (9,108 jobs). Semantic review
+  confirms the actual prior, simultaneous interval comparisons, arbitrary
+  admitted type-dependent deviations and all integrability guards.
+- **Status:** focused delivery complete; numerical consumer and full integration
+  gates follow. The general result assumes a supplied interior certificate; the
+  concrete uniform model supplies one. No arbitrary-price existence claim or
+  change in equilibrium semantics is introduced.

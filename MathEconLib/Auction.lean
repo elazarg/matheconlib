@@ -10,6 +10,7 @@ public import MathEconLib.Auction.AllPurchase.Basic
 public import MathEconLib.Auction.AllPurchase.ExplicitSolutions
 public import MathEconLib.Auction.AllPurchase.LinearScarcity
 public import MathEconLib.Auction.Basic
+public import MathEconLib.Auction.BayesianEquilibrium
 public import MathEconLib.Auction.IdenticalTypes
 public import MathEconLib.Auction.PaymentUniqueness
 public import MathEconLib.Auction.RevenueEquivalence
