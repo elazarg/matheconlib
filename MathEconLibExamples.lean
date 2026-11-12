@@ -9,6 +9,7 @@ public import MathEconLibExamples.AllPurchase.UniformTwoBidder
 public import MathEconLibExamples.AllPurchase.UniformTwoBidderBayesianPayoff
 public import MathEconLibExamples.AllPurchase.UniformPriceFamily
 public import MathEconLibExamples.AllPurchase.UniformPriceFamilyProfit
+public import MathEconLibExamples.AllPurchase.UniformBoundaryEquilibrium
 
 public import MathEconLibExamples.AllPurchase.Welfare
 public import MathEconLibExamples.Choice.SubstituteEnvelope

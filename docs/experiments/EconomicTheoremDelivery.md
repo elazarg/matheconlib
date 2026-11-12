@@ -154,6 +154,27 @@ does not justify skipping those obligations for type-dependent deviations.
   primitives. Boundary regimes and other equilibrium families remain outside
   this delivery's conclusions.
 
+## Delivery 04: the zero-baseline endpoint equilibrium
+
+- **Baseline:** `11feabe`; child
+  `codex/economic-delivery-04-boundary-equilibrium`.
+- **Target:** actual native BNE at price `5/2`, with purchases `v/2`, zero
+  lowest-type utility and `K=0`. Prove that this strategy does not satisfy the
+  strict interior certificate, and compare its actual seller profit at cost
+  one with every constructed interior-family member.
+- **Reuse:** factor the existing original-action coverage proof into an auction
+  operation taking continuity and the cost-minimizing lowest bid explicitly.
+  Derive those premises from interior certificates for existing clients; supply
+  them directly at the endpoint. Keep native equilibrium and integrability
+  semantics and the actual repriced mechanism.
+- **Scope:** a single boundary endpoint and its comparison with the constructed
+  interior family. A global boundary-regime existence theorem is separate.
+- **Focused result:** the generic auction coverage operation and the existing
+  interior specialization pass strictly (9,094 jobs). The actual repriced
+  endpoint supplies native boundary utility, all-real-bid IC and BNE, and proves
+  `not_interior` for every bidder. Its strict target passes (9,112 jobs).
+- **Status:** in progress.
+
 ## Next economic dependency
 
 The endpoint price `5/2` has candidate strategy `v/2`, zero baseline and `K=0`.
