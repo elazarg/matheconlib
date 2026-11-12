@@ -141,6 +141,7 @@ public import MathEconLib.RevealedPreference
 public import MathEconLib.RevealedPreference.Afriat
 public import MathEconLib.RevealedPreference.AfriatGeometry
 public import MathEconLib.RevealedPreference.Basic
+public import MathEconLib.RevealedPreference.BudgetRegularity
 public import MathEconLib.RevealedPreference.Choice
 public import MathEconLib.RevealedPreference.GARP
 public import MathEconLib.SingleParameter

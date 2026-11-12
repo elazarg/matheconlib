@@ -76,6 +76,15 @@ theorem dot_sub {L : ℕ} (p x y : Bundle L) : dot p (x - y) = dot p x - dot p y
 /-- Coordinatewise nonnegativity of a commodity bundle. -/
 def Nonnegative {L : ℕ} (x : Bundle L) : Prop := ∀ i, 0 ≤ x i
 
+/-- Nonnegative bundles affordable at the supplied prices and wealth.
+Negative wealth is allowed in the data and gives an empty feasible set at nonnegative prices. -/
+def linearBudgetSet {L : ℕ} (price : Bundle L) (wealth : ℝ) : Set (Bundle L) :=
+  {bundle | Nonnegative bundle ∧ dot price bundle ≤ wealth}
+
+@[simp] theorem mem_linearBudgetSet {L : ℕ} (price : Bundle L) (wealth : ℝ) (bundle : Bundle L) :
+    bundle ∈ linearBudgetSet price wealth ↔ Nonnegative bundle ∧ dot price bundle ≤ wealth :=
+  Iff.rfl
+
 /--
 The strict commodity dominance order: `x` weakly dominates `z` in every
 coordinate and the two bundles are unequal.  In finite dimension this is
@@ -136,7 +145,7 @@ theorem expenditureGap_self (D : Dataset L T) (s : T) : expenditureGap D s s = 0
 
 /-- A nonnegative candidate bundle lying in observation `t`'s budget set. -/
 def Affordable (D : Dataset L T) (t : T) (y : Bundle L) : Prop :=
-  Nonnegative y ∧ expenditure D t y ≤ expenditure D t (D.choice t)
+  y ∈ linearBudgetSet (D.price t) (expenditure D t (D.choice t))
 
 theorem affordable_choice (D : Dataset L T) (t : T) : Affordable D t (D.choice t) := by
   exact ⟨D.choice_nonneg t, le_rfl⟩
@@ -244,6 +253,7 @@ theorem exists_strictDominating_affordable
     simpa [expenditure, z, priceSum] using
       dot_add_constant (D.price s) (D.choice t) ε
   refine ⟨z, hdom, hnonneg, ?_⟩
+  change expenditure D s z ≤ expenditure D s (D.choice s)
   rw [hdot, hεsum, expenditureGap_eq]
   rw [expenditureGap_eq] at hcheap
   linarith
