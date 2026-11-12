@@ -127,8 +127,8 @@ Note that, in a partial order, this excludes incomparable rewards as well as str
 Also note that states are only compared if they are reachable through a single application of the
 deviation relation. The predicate checks this relation as supplied, without adding paths of
 successive deviations or its transitive closure. -/
-def IsDeviationOptimal [LE V] (P : EquilibriumProblem S I V) (s : S) : Prop :=
-  ∀ i s', P.deviation i s s' → P.value i s' ≤ P.value i s
+abbrev IsDeviationOptimal [LE V] (P : EquilibriumProblem S I V) (s : S) : Prop :=
+  P.IsDeviationOptimalWith (fun _ x y ↦ x ≤ y) s
 
 /-- Deviation optimality holds exactly when every admissible deviation weakly lowers the
 reward. -/
@@ -153,11 +153,8 @@ lemma isDeviationOptimal_iff_not_lt [LinearOrder V] (P : EquilibriumProblem S I 
   simp only [isDeviationOptimal_iff, not_lt]
 
 /-- A valid incumbent whose reward weakly dominates every admissible deviation. -/
-structure IsEquilibrium [LE V] (P : EquilibriumProblem S I V) (s : S) : Prop where
-  /-- The incumbent is an admissible equilibrium candidate. -/
-  valid : P.valid s
-  /-- Every admissible deviation weakly lowers the deviator's reward. -/
-  deviation_le : P.IsDeviationOptimal s
+abbrev IsEquilibrium [LE V] (P : EquilibriumProblem S I V) (s : S) : Prop :=
+  P.IsEquilibriumWith (fun _ x y ↦ x ≤ y) s
 
 /-- Equilibrium consists of candidate validity and deviation optimality. -/
 lemma isEquilibrium_iff [LE V] (P : EquilibriumProblem S I V) (s : S) :
@@ -170,12 +167,12 @@ lemma IsEquilibrium.of_deviation_subset [LE V] {s : S} (h : P.IsEquilibrium s)
     (hd : ∀ i s t, Q.deviation i s t → P.deviation i s t)
     (hv : Q.value = P.value) (hvalid : ∀ s, P.valid s → Q.valid s) :
     Q.IsEquilibrium s :=
-  ⟨hvalid s h.valid, h.deviation_le.of_deviation_subset hd hv⟩
+  ⟨hvalid s h.valid, IsDeviationOptimal.of_deviation_subset h.deviation_le hd hv⟩
 
 /-- Equilibrium excludes strictly profitable admissible deviations. -/
 lemma IsEquilibrium.not_lt [Preorder V] {s : S} (h : P.IsEquilibrium s)
     {i : I} {s' : S} (hd : P.deviation i s s') : ¬ P.value i s < P.value i s' :=
-  h.deviation_le.not_lt hd
+  IsDeviationOptimal.not_lt h.deviation_le hd
 
 /-- An equilibrium problem in which every state is a valid candidate. -/
 def ofDeviation (deviation : I → S → S → Prop) (value : I → S → V) :
@@ -237,7 +234,7 @@ def refine (P : EquilibriumProblem S I V) (condition : S → Prop) :
 /-- The explicit order comparison recovers the existing equilibrium predicate exactly. -/
 @[simp] theorem isEquilibriumWith_le_iff [LE V] (P : EquilibriumProblem S I V) (s : S) :
     P.IsEquilibriumWith (fun _ x y ↦ x ≤ y) s ↔ P.IsEquilibrium s :=
-  ⟨fun h ↦ ⟨h.valid, h.deviation_le⟩, fun h ↦ ⟨h.valid, h.deviation_le⟩⟩
+  Iff.rfl
 
 /-- The explicit order comparison also recovers deviation optimality without candidate validity. -/
 @[simp] theorem isDeviationOptimalWith_le_iff [LE V]
@@ -397,15 +394,13 @@ theorem transportWith (f : GameMorphism P Q) (C : I → V → V → Prop)
 
 /-- A deviation-lifting map preserves deviation optimality. -/
 theorem transport_isDeviationOptimal [LE V] (f : GameMorphism P Q) {s : S}
-    (h : P.IsDeviationOptimal s) : Q.IsDeviationOptimal (f.toFun s) := by
-  intro j t ht
-  obtain ⟨s', hs', rfl⟩ := f.deviation_lifts j s t ht
-  simpa only [f.value_eq] using h (f.deviatorMap j) s' hs'
+    (h : P.IsDeviationOptimal s) : Q.IsDeviationOptimal (f.toFun s) :=
+  f.transport_isDeviationOptimalWith _ _ (fun _ _ _ _ comparison ↦ comparison) h
 
 /-- A deviation-lifting map sends equilibria to equilibria. -/
 theorem transport [LE V] (f : GameMorphism P Q) {s : S} (h : P.IsEquilibrium s) :
     Q.IsEquilibrium (f.toFun s) :=
-  ⟨f.valid_preserves s h.valid, f.transport_isDeviationOptimal h.deviation_le⟩
+  f.transportWith _ _ (fun _ _ _ _ comparison ↦ comparison) h
 
 /-- The identity map of an equilibrium problem. -/
 def id (P : EquilibriumProblem S I V) : GameMorphism P P where
@@ -470,14 +465,13 @@ theorem pullbackWith (f : GameComorphism P Q) (C : I → V → V → Prop)
 
 /-- Deviation optimality pulls back along a deviation-preserving map. -/
 theorem pullback_isDeviationOptimal [LE V] (f : GameComorphism P Q) {s : S}
-    (h : Q.IsDeviationOptimal (f.toFun s)) : P.IsDeviationOptimal s := by
-  intro i s' hs'
-  simpa only [f.value_eq] using h (f.deviatorMap i) (f.toFun s') (f.deviation_maps i s s' hs')
+    (h : Q.IsDeviationOptimal (f.toFun s)) : P.IsDeviationOptimal s :=
+  f.pullback_isDeviationOptimalWith _ _ (fun _ _ _ _ comparison ↦ comparison) h
 
 /-- Equilibrium pulls back along a deviation-preserving map. -/
 theorem pullback [LE V] (f : GameComorphism P Q) {s : S}
     (h : Q.IsEquilibrium (f.toFun s)) : P.IsEquilibrium s :=
-  ⟨f.valid_reflects s h.valid, f.pullback_isDeviationOptimal h.deviation_le⟩
+  f.pullbackWith _ _ (fun _ _ _ _ comparison ↦ comparison) h
 
 /-- The identity deviation-preserving map. -/
 def id (P : EquilibriumProblem S I V) : GameComorphism P P where

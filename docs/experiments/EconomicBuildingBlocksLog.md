@@ -194,3 +194,93 @@ earlier GameTheory experiment ledger.
   before attributing that cost to records versus mathematical operations.
   Retain both compiled routes as evidence. Whole-project integration remains
   the investigation's final gate.
+
+## MEC-005 / source E3: who owns optimality proofs?
+
+- **Date / status:** 2026-11-12; reserved, in progress.
+- **Question:** Does a Mathlib-only guarded optimality operation earn ownership
+  of reusable proofs across equilibrium and attained choice, against the best
+  native direct/record baseline?
+- **Alternatives:** first canonicalize ordered equilibrium as a transparent
+  specialization of explicit comparison (independent native control); then
+  redefine actual per-player optimality through guarded menu optimality and
+  use its coverage theorem in game transport and a native choice contraction.
+  Keep both revisions reviewable, including an unsuccessful guarded rival.
+- **Representative slice:** existing Bayesian revelation clients, morphism
+  transport, native attained-bundle contraction/IRC, invalid deviation targets,
+  integrability filters, and an invalid incumbent with no judges.
+- **Kill conditions:** no loss of incumbent validity, no added target-validity
+  restriction, and no hidden changes to menus or comparisons. Charge all
+  bridging lemmas, repaired consumers and the second-use proof. Separate native
+  canonicalization gains from gains requiring a mathematical guarded layer.
+  A longer or semantically distorted implementation may refute proof ownership
+  without refuting the usefulness of the standalone operation.
+- **Baseline / artifacts:** collecting `483576e`; child
+  `codex/experiment-economic-item-05-optimality-foundations`. Compile serially;
+  no worktrees. Initial native transport body is three nonblank lines; attained
+  choice contraction body is six. No speed or compression result is assumed.
+- **Native control result:** ordered `IsDeviationOptimal` and `IsEquilibrium`
+  now transparently specialize their explicit-comparison owners. Both ordered
+  map transports reuse the corresponding generic comparison transport. The
+  factored direct revelation client drops its two representation conversions
+  and becomes a single application, matching the ordinary record client's
+  three-line declaration. Core source changes total 13 additions/19 deletions;
+  two internal method calls require explicit namespaces after abbreviation.
+  No downstream proof repairs are required. A new empty-judge fixture retains
+  rejection of an invalid incumbent despite vacuous deviation optimality.
+  `lake --iofail build MathEconLib.GameTheory.Equilibrium.Problem` passes;
+  complete `lake build` passes 9,302 jobs including API pins, examples and
+  tests. Existing upstream warnings/info remain visible. Compiled axiom checks
+  cover 189 declarations in the core, validity and revelation controls, with
+  only standard axioms; source checks pass. Retain this independent control
+  before trying the guarded rival; it already removes duplicated ownership.
+- **Guarded rival:** child `codex/experiment-economic-item-05b-guarded-core`
+  actually replaces native `IsOptimalWith` by a guarded-menu specialization.
+  Both map transports and native attained-choice contraction consume the same
+  Mathlib-only coverage operation. Preference maxima and score maxima have
+  exact iff bridges; they are not claimed to be definitionally identical to
+  their prior definitions. No theorem hypotheses, deviation menus, incumbent
+  guards or integrability conventions change. Empty judges and invalid targets
+  remain explicit controls.
+- **Measured result:** see `OptimalityFoundationComparison.md`. Excluding block
+  comments/blank lines, the replacement adds 121 code lines across 18 files,
+  including the 59-line leaf, all bridges and downstream repairs. Excluding
+  the opening `by`, each explicit map transport body grows from three to seven
+  lines; choice contraction grows from five to nine. The initial rough count
+  of six choice lines used a different boundary and is corrected here. Actual
+  sharing succeeds in two areas without added assumptions, but proof economy
+  does not improve against the independently simplified native baseline.
+- **Validation / selection:** full `lake build` passes 9,303 jobs, including
+  API pins, examples and tests. Focused leaf/core strict builds pass. Compiled
+  integrity checks cover 653 declarations across all 17 changed authored
+  modules, with only standard axioms. Changed-source elaboration checks pass
+  all 18 files, including 25 discarded declarations and zero violations.
+  Keep the full alternative on its branch; select native
+  canonicalization for collection. This is evidence against forcing this
+  guarded representation on these consumers, not against every independently
+  useful mathematical operation or future foundational change.
+
+## MEC-006 / source E5: chained dominated-action reductions
+
+- **Date / status:** 2026-11-12; reserved, preparation in ignored templates.
+- **Question:** Does a composed simulation shorten two-round and arbitrary
+  finite-round equilibrium transport against reusable direct per-round
+  equivalences, rather than against duplicated direct payoff arguments?
+- **Alternatives:** the six-field `GameSimulation` and composition from pinned
+  branch `13f5a84`; native pointwise domination equivalences composed with
+  `Iff.trans`. Supply identical global domination witnesses for the paired
+  comparison; separately acknowledge the direct theorem's pointwise scope.
+- **Representative slice:** a two-player two-action game first eliminates a
+  globally dominated row, then a column dominated only after that restriction.
+  The lifted final profile is an equilibrium. A bad retained row must fail
+  domination and must not lift its final equilibrium.
+- **Kill conditions:** preserve all simulation fields, validity, value maps,
+  admitted deviations and included-profile scope. Share economic witnesses.
+  Give both routes reusable composition/induction; do not compare a full
+  certificate against a verdict implication without naming the stronger output.
+  Charge the pinned support materialization separately from marginal clients.
+- **Baseline / artifacts:** selected native control `ac2024a`; planned child
+  `codex/experiment-economic-item-06-chained-reductions`. The old simulations
+  branch has diverging foundations; materialize only the required exact source
+  slice in a test namespace, with documented proof adaptations. No unrelated
+  simulation/error/reflection API is required or silently ported.

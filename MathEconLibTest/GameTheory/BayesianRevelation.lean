@@ -101,8 +101,6 @@ theorem direct_comparison_route (C : I → V → V → Prop)
 /-- A factored direct proof reuses its comparison theorem for ordinary BNE. -/
 theorem direct_reused_route [LE V] [IsProbabilityMeasure μ] (h : (G).IsBNE μ s) :
     (D).IsBNE μ (truthful M u s) :=
-  (EquilibriumProblem.isEquilibriumWith_le_iff _ _).mp
-    (direct_comparison_route M u μ s _
-      ((EquilibriumProblem.isEquilibriumWith_le_iff _ _).mpr h))
+  direct_comparison_route M u μ s _ h
 
 end MathEconLibTest.GameTheory.BayesianRevelation
