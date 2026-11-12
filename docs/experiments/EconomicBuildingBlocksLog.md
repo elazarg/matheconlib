@@ -253,8 +253,34 @@ earlier GameTheory experiment ledger.
 - **Validation / selection:** full `lake build` passes 9,303 jobs, including
   API pins, examples and tests. Focused leaf/core strict builds pass. Compiled
   integrity checks cover 653 declarations across all 17 changed authored
-  modules, with only standard axioms. Changed-source elaboration checks are
-  still running. Keep the full alternative on its branch; select native
+  modules, with only standard axioms. Changed-source elaboration checks pass
+  all 18 files, including 25 discarded declarations and zero violations.
+  Keep the full alternative on its branch; select native
   canonicalization for collection. This is evidence against forcing this
   guarded representation on these consumers, not against every independently
   useful mathematical operation or future foundational change.
+
+## MEC-006 / source E5: chained dominated-action reductions
+
+- **Date / status:** 2026-11-12; reserved, preparation in ignored templates.
+- **Question:** Does a composed simulation shorten two-round and arbitrary
+  finite-round equilibrium transport against reusable direct per-round
+  equivalences, rather than against duplicated direct payoff arguments?
+- **Alternatives:** the six-field `GameSimulation` and composition from pinned
+  branch `13f5a84`; native pointwise domination equivalences composed with
+  `Iff.trans`. Supply identical global domination witnesses for the paired
+  comparison; separately acknowledge the direct theorem's pointwise scope.
+- **Representative slice:** a two-player two-action game first eliminates a
+  globally dominated row, then a column dominated only after that restriction.
+  The lifted final profile is an equilibrium. A bad retained row must fail
+  domination and must not lift its final equilibrium.
+- **Kill conditions:** preserve all simulation fields, validity, value maps,
+  admitted deviations and included-profile scope. Share economic witnesses.
+  Give both routes reusable composition/induction; do not compare a full
+  certificate against a verdict implication without naming the stronger output.
+  Charge the pinned support materialization separately from marginal clients.
+- **Baseline / artifacts:** selected native control `ac2024a`; planned child
+  `codex/experiment-economic-item-06-chained-reductions`. The old simulations
+  branch has diverging foundations; materialize only the required exact source
+  slice in a test namespace, with documented proof adaptations. No unrelated
+  simulation/error/reflection API is required or silently ported.

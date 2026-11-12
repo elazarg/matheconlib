@@ -53,8 +53,10 @@ There is no performance claim from these counts or cached build timings.
 
 The guarded variant passes complete `lake build` (9,303 jobs). Its new leaf and
 core pass focused warning-as-error builds. Unrelated warnings already present
-in upstream remain visible. Integrity reports are recorded in the experiment
-ledger when complete.
+in upstream remain visible. Compiled integrity checks cover 653 declarations
+in all 17 changed authored modules. Source elaboration covers all 18 changed
+files, including 25 discarded declarations; both audits pass. The experiment
+ledger records their scope.
 
 ## What this supports
 
