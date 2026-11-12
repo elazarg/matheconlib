@@ -21,8 +21,12 @@ import MathEconLibTest.Competition.Cournot
 import MathEconLibTest.ForMathlib.Order.Refinement
 import MathEconLibTest.GameTheory.ActionMaps
 import MathEconLibTest.GameTheory.BayesianRevelation
+import MathEconLibTest.GameTheory.BlockingWitness
+import MathEconLibTest.GameTheory.BlockingWitnessConsumer
 import MathEconLibTest.GameTheory.CandidateValidity
 import MathEconLibTest.GameTheory.ChainedReductions
+import MathEconLibTest.GameTheory.CoalitionWitnessConsumer
+import MathEconLibTest.GameTheory.ComplementaryBlocking
 import MathEconLibTest.GameTheory.ConditionalBeliefs
 import MathEconLibTest.GameTheory.ExplicitComparisonValidity
 import MathEconLibTest.GameTheory.ExplicitComparisons

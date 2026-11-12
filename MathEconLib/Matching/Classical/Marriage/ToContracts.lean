@@ -310,6 +310,17 @@ theorem blocks_singleton_graphOf_iff
     · exact
         (mkt.mem_choiceM_insert_graphOf_iff (hIR.1 m) hnewM).mpr hm
 
+omit [Finite M] [Finite W] in
+/-- A contract-set block of an individually rational matching contains a native blocking pair.
+The resulting pair belongs to the original proposal, even when that proposal is infinite. -/
+theorem exists_blockingPair_mem_of_blocks_graphOf
+    {μ : M ≃. W} (hIR : mkt.IndividuallyRational μ) {Z : Set (M × W)}
+    (hZ : mkt.toContractsMarket.Blocks (mkt.graphOf μ) Z) :
+    ∃ m w, (m, w) ∈ Z ∧ mkt.IsBlockingPair μ m w := by
+  obtain ⟨⟨m, w⟩, member, blocks⟩ :=
+    Market.Blocks.exists_singleton mkt.toContractsMarket mkt.substitutable_toContractsMarket hZ
+  exact ⟨m, w, member, (mkt.blocks_singleton_graphOf_iff hIR).mp blocks⟩
+
 /-- Classical stability is exactly stability of the matching graph in the
 induced contracts market. -/
 theorem isStableMatching_iff_stable_graphOf (μ : M ≃. W) :

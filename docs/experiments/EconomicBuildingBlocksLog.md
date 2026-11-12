@@ -10,7 +10,7 @@ remain evidence, but line-count increases alone do not reject a component.
 
 ## MEC-007: supporting slopes as a reusable incentive interface
 
-- **Date / status:** 2026-11-12; reserved, in progress.
+- **Date / status:** 2026-11-12; focused validation complete; batch integration pending.
 - **Question:** Can an action-free supporting-slope condition own incentive
   mathematics for both native single-good problems and multi-unit quantities,
   while preserving the distinction between report and universal deviations?
@@ -55,7 +55,7 @@ remain evidence, but line-count increases alone do not reject a component.
 
 ## MEC-008: blocking witnesses and typed proposal reductions
 
-- **Date / status:** 2026-11-12; reserved, in progress.
+- **Date / status:** 2026-11-12; focused validation complete; batch integration pending.
 - **Question:** Which reusable operation belongs beneath coalition/contract
   stability when proposals differ from states? Does preserving positive
   blocking witnesses earn more reuse than merely packaging stable predicates?
@@ -75,6 +75,42 @@ remain evidence, but line-count increases alone do not reject a component.
 - **Baseline / branch:** the selected MEC-007 implementation; planned child
   `codex/experiment-economic-item-08-blocking-witnesses`. Public ownership of a
   new interface is conditional on actual witness reuse, not expressibility.
+- **Useful result:** native `Market.Blocks.singleton_of_mem` extracts a
+  singleton block for every member of a blocking set under substitutes.
+  `Blocks.exists_singleton` retains membership in the original proposal and
+  replaces the inline native pairwise-to-stable proof. The marriage bridge
+  `exists_blockingPair_mem_of_blocks_graphOf` composes it with the existing
+  dictionary, retaining incumbent IR and proposal membership without finite
+  agent or finite proposal assumptions.
+- **Optional component:** test-only `WitnessLift` separates states from
+  proposals and retains a state-dependent relation between blocking witnesses.
+  `covers`, `comp` and `transport` are used by contract singleton reduction,
+  marriage witness extraction and unilateral-to-collective gain lifting.
+  Native IR is transported separately; the matching candidate subtype retains
+  the necessary IR certificate. No reward carrier or artificial order appears.
+- **Expressiveness finding:** matching membership initially worked with an
+  unrooted witness relation. Exact coalition updates require the incumbent in
+  that relation. `no_unrooted_exact_update` refutes exact update characterization
+  by a state-independent relation for the fixed proposal/profile types. The
+  interface was broadened accordingly. This does not rule out richer proposal
+  encodings or weaker unrooted provenance.
+- **Negative controls:** an actual complementary contract market is pairwise
+  stable but jointly blocked and fails substitutes. A coordination game has
+  no unilateral strict gain but has a collective gain. Thus witness lifting
+  is correctly unilateral-gain to collective-gain, yielding no-collective to
+  no-unilateral absence transport; it does not assert the converse. The native
+  strong-Nash/strict-blocking iff retains precisely local comparability.
+- **Validation / selection:** contract core, complementarity and coalition
+  targets pass strict builds. Marriage and witness consumers pass normal Lake
+  builds and independent warning-as-error source checks; their target builds
+  replay only the pre-existing `Choice.Induced` reducibility warning. Semantic
+  review passes. Retain strengthened native witness APIs and the optional
+  prototype for further reuse/coherence tests. Full integration remains a
+  batch gate; no universal blocking record or category instance is adopted.
+- **Integrity:** compiled checks cover 167 declarations across both native
+  modules and all four prototype/control modules, using only standard axioms.
+  The optional interface is evidence for reusable positive witness transport;
+  direct existential composition remains an equally admissible implementation.
 
 ## MEC-001: native demand regularity and a shared maximizer operation
 
