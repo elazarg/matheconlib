@@ -173,14 +173,21 @@ does not justify skipping those obligations for type-dependent deviations.
   interior specialization pass strictly (9,094 jobs). The actual repriced
   endpoint supplies native boundary utility, all-real-bid IC and BNE, and proves
   `not_interior` for every bidder. Its strict target passes (9,112 jobs).
+- **Economic consumer:** the endpoint's actual aggregate quantity is one and
+  its actual profit at production cost one is `3/2`. Every constructed interior
+  family member earns strictly less at that cost, with exact gap
+  `(2/3)(p-5/2)^2`. The scalar optimum is connected to the independently
+  evaluated endpoint, without an interior certificate there. The focused
+  strict profit target passes (9,115 jobs). The interior family's quantity also
+  gives its explicit profit formula at every production cost; the old zero-cost
+  result is a specialization.
 - **Status:** in progress.
 
 ## Next economic dependency
 
-The endpoint price `5/2` has candidate strategy `v/2`, zero baseline and `K=0`.
-It fails the strict interior certificate. A thin endpoint equilibrium proof,
-using native original-action IC and the generic Bayesian bridge directly,
-would test whether those operations support a different regime without
-introducing a hierarchy. At production cost one, the common algebraic optimum
-is exactly this endpoint. Establish that actual equilibrium before extending
-the family or making a comparison across regimes.
+A zero-baseline candidate with positive `K` would discriminate between original
+real bids and a nonnegative purchase restriction. The native carrier permits
+negative purchases. Test the resulting deviation explicitly before extending
+boundary-existence claims. A failure of pointwise IC only at a null lowest type
+would not by itself refute ex-ante BNE; an ex-ante control needs a deviation
+profitable on a set of positive probability or an integrated payoff comparison.

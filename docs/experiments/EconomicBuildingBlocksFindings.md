@@ -237,6 +237,15 @@ averaging and actual-profit identification. The construction does not turn
 those reusable proofs into a general equilibrium-existence theorem, and its
 interior regime does not settle other purchase regimes.
 
+The zero-baseline endpoint adds a further consumer of the same coverage and
+averaging operations. It is Bayesian Nash with `K=0` and provably lacks the
+strict interior certificate. The reusable coverage theorem consequently takes
+continuity and a cost-minimizing lowest bid as local premises; the interior
+corollary derives those premises from its stronger hypotheses. Regime-specific
+derivation certificates remain useful without becoming preconditions on every
+equilibrium. At production cost one the endpoint strictly dominates the
+constructed interior family, so that distinction has an actual profit consumer.
+
 ## Verification
 
 At the close of the component experiments, complete and explicit builds cover 283
