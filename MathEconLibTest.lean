@@ -28,6 +28,7 @@ import MathEconLibTest.GameTheory.ChainedReductions
 import MathEconLibTest.GameTheory.CoalitionWitnessConsumer
 import MathEconLibTest.GameTheory.ComplementaryBlocking
 import MathEconLibTest.GameTheory.ConditionalBeliefs
+import MathEconLibTest.GameTheory.DemandGraphBoundary
 import MathEconLibTest.GameTheory.DemandRegularityControls
 import MathEconLibTest.GameTheory.ExplicitComparisonValidity
 import MathEconLibTest.GameTheory.ExplicitComparisons
@@ -37,6 +38,7 @@ import MathEconLibTest.GameTheory.Integrability
 import MathEconLibTest.GameTheory.MatchingPennies
 import MathEconLibTest.GameTheory.MeasurableBayesian
 import MathEconLibTest.GameTheory.OrderedPayoffs
+import MathEconLibTest.GameTheory.ParametricDemandConsumer
 import MathEconLibTest.GameTheory.ReducedIncentiveConsumer
 import MathEconLibTest.GameTheory.ReductionChains
 import MathEconLibTest.GameTheory.ReductionSupport

@@ -15,6 +15,14 @@ maxSynthPendingDepth = 3
 linter.style.longLine = true
 
 [[require]]
+name = "GameTheory"
+path = "../GameTheory"
+
+[[require]]
+name = "fixed-point-theorems"
+path = "../GameTheory/.lake/packages/fixed-point-theorems"
+
+[[require]]
 name = "mathlib"
 scope = "leanprover-community"
 rev = "v4.35.0"
