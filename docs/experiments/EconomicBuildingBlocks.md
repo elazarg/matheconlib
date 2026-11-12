@@ -13,7 +13,7 @@ their initial gates (283 modules and 6,224 audited declarations). Four native
 theorem deliveries then exercised the selected components through actual
 Bayesian equilibria and profit comparisons. The final action-domain,
 admissibility and atomic/nonatomic controls close the identified competition
-queue. The final gate covers 304 modules and 6,478 kernel-audited declarations;
+queue. The experiment-closure gate covers 304 modules and 6,478 audited declarations;
 [the closure record](BuildingBlockClosure.md) states the outcomes, validation
 and reopening conditions.
 Useful expressiveness and actual reuse governed selection; increased proof

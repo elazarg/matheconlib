@@ -209,9 +209,10 @@ does not justify skipping those obligations for type-dependent deviations.
   action set, mechanism action comaps, conditional averaging and the existing
   measurable/integrable linear-scarcity guards. The real-valued bidder view
   remains available, with feasible deviations stated explicitly.
-- **Scope:** one actual positive-`K` boundary equilibrium. This is theorem
-  delivery after the closed building-block experiments, not a claim about all
-  boundary prices, unrestricted signed-bid BNE or uniqueness.
+- **Scope:** one actual positive-`K` nonnegative boundary equilibrium and an
+  original-action obstruction for that same strategy. This is theorem delivery
+  after the closed building-block experiments; it does not classify all prices,
+  all equilibria or uniqueness.
 - **Focused result:** nonnegative quadratic-cost report coverage and its
   auction specialization compile. A generic conditional-payoff identity lives
   at the Bayesian game layer (3,094-job target); the restricted auction BNE
@@ -232,7 +233,20 @@ does not justify skipping those obligations for type-dependent deviations.
   positive-mass set, not merely at the null lowest type. A reusable conditional
   integrability theorem supplies the simultaneous all-action guard; the
   existing interim identity and this guard share one pointwise payoff lemma.
-- **Status:** in progress.
+- **Complete validation:** complete and explicit builds of all 309 authored
+  modules pass (9,359 jobs). The kernel audit checks 6,531 declarations using
+  only standard axioms. All-source token scanning and re-elaboration of all
+  12 changed Lean files report zero violations and no discarded declarations.
+  All 12 pass strict warning and line-length checks with generated Lake module
+  setups. Header, generated-import and native BIC arithmetic checks pass.
+  Existing unrelated upstream diagnostics remain visible. All nine shared
+  third-party dependency revisions still match the native manifest and their
+  tracked sources are clean. A fresh upstream fetch retains `4afb0d5`;
+  dependency pins and toolchain remain unchanged.
+- **Status:** complete. The actual positive-marginal-cost boundary strategy
+  is native Bayesian Nash with typed nonnegative actions and is not Bayesian
+  Nash with real actions. The same prior and transfers are used. The result
+  concerns this model and strategy, with no uniqueness or all-price claim.
 
 ## Subsequent action-domain control
 

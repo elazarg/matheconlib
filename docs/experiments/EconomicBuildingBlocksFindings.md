@@ -248,6 +248,15 @@ derivation certificates remain useful without becoming preconditions on every
 equilibrium. At production cost one the endpoint strictly dominates the
 constructed interior family, so that distinction has an actual profit consumer.
 
+Delivery 05 applies the existing action restriction to a genuine stochastic
+positive-marginal-cost boundary equilibrium. Continuous nonnegative coverage,
+conditional action translation and native averaging certify the square-root
+strategy under typed nonnegative bids. Simultaneous conditional integrability
+then lets native interim recovery refute that same strategy's real-action BNE
+on a positive-mass interval. The prior and transfers are preserved. These are
+ordinary operation/theorem extensions on the settled semantics; no additional
+regime certificate or equilibrium definition is required.
+
 ## Final building-block controls
 
 MEC-015 changes only the original action domain through a typed native comap.
