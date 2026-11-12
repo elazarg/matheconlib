@@ -6,6 +6,7 @@ Authors: Daniel Lyng, Victor H. Aguiar
 module
 
 public import MathEconLibExamples.AllPurchase.UniformTwoBidder
+public import MathEconLibExamples.AllPurchase.UniformTwoBidderBayesianPayoff
 
 public import MathEconLibExamples.AllPurchase.Welfare
 public import MathEconLibExamples.Choice.SubstituteEnvelope
@@ -28,6 +29,8 @@ Concrete economic models illustrate the library's definitions and results.
 
 * Matching pennies has a unique mixed Nash equilibrium: Both players randomize uniformly.
 * Matching pennies has no pure Nash equilibrium.
+* The uniform two-bidder all-purchase strategy is Bayesian Nash; every admitted
+  unilateral strategy deviation has expected utility at most `13/36`.
 * A Becker-inspired crime-choice model gives a threshold rule and deterrence results
   for individuals and aggregate crime under a fixed type distribution.
 * A two-couple marriage market has distinct stable outcomes whose lattice join,

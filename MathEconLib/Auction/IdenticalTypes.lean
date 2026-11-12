@@ -18,6 +18,7 @@ namespace MathEconLib
 @[expose] public section
 
 open MeasureTheory ProbabilityTheory Set
+open scoped ENNReal
 
 variable {Ω : Type} [MeasureSpace Ω] [IsProbabilityMeasure (ℙ : Measure Ω)]
 variable {n : ℕ} [NeZero n]
@@ -34,14 +35,14 @@ theorem integral_comp_type_eq [HasIdenticalTypes A]
     (∫ ω, f (A.θ i ω) ∂ℙ) = ∫ ω, f (A.θ j ω) ∂ℙ :=
   ((HasIdenticalTypes.θ_identical i j).comp hf).integral_eq
 
-/-- A measurable strategy monotone on the bounded common type interval is integrable at
- every bidder's realized type. Endpoint bids provide a uniform integrable bound. -/
-theorem integrable_comp_type_of_monotoneOn [HasIdenticalTypes A] [HasBoundedTypes A]
+/-- Endpoint values essentially bound a measurable function monotone on the
+common type interval. -/
+theorem memLp_top_comp_type_of_monotoneOn [HasIdenticalTypes A] [HasBoundedTypes A]
     (f : ℝ → ℝ) (hf : Measurable f)
     (hmono : MonotoneOn f (Icc A.lowestType A.highestType)) (j : Fin n) :
-    Integrable (fun ω => f (A.θ j ω)) ℙ := by
-  apply (integrable_const (max |f A.lowestType| |f A.highestType|)).mono'
-    (hf.comp (A.θ_measurable j)).aestronglyMeasurable
+    MemLp (fun ω => f (A.θ j ω)) ∞ ℙ := by
+  apply memLp_top_of_bound (hf.comp (A.θ_measurable j)).aestronglyMeasurable
+    (max |f A.lowestType| |f A.highestType|)
   apply ae_of_all
   intro ω
   have hmem : A.θ j ω ∈ Icc A.lowestType A.highestType := by
@@ -52,6 +53,14 @@ theorem integrable_comp_type_of_monotoneOn [HasIdenticalTypes A] [HasBoundedType
   rw [Real.norm_eq_abs]
   exact abs_le.mpr ⟨(neg_le_neg (le_max_left _ _)).trans ((neg_abs_le _).trans hlo),
     hhi.trans ((le_abs_self _).trans (le_max_right _ _))⟩
+
+/-- A measurable strategy monotone on the bounded common type interval is integrable at
+every bidder's realized type. -/
+theorem integrable_comp_type_of_monotoneOn [HasIdenticalTypes A] [HasBoundedTypes A]
+    (f : ℝ → ℝ) (hf : Measurable f)
+    (hmono : MonotoneOn f (Icc A.lowestType A.highestType)) (j : Fin n) :
+    Integrable (fun ω => f (A.θ j ω)) ℙ :=
+  MemLp.integrable le_top (A.memLp_top_comp_type_of_monotoneOn f hf hmono j)
 
 /-- **Linearity + symmetry**: for identically distributed types,
 `E[Σ_{j≠i} f(V_j)] = (n−1) · E[f(V₀)]`. -/

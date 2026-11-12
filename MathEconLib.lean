@@ -8,6 +8,8 @@ public import MathEconLib.Auction.Affiliation.MonotoneCondExp
 public import MathEconLib.Auction.Affiliation.WinnersCurse
 public import MathEconLib.Auction.AllPurchase
 public import MathEconLib.Auction.AllPurchase.Basic
+public import MathEconLib.Auction.AllPurchase.BayesianEquilibrium
+public import MathEconLib.Auction.AllPurchase.BayesianIntegrability
 public import MathEconLib.Auction.AllPurchase.ExplicitSolutions
 public import MathEconLib.Auction.AllPurchase.LinearScarcity
 public import MathEconLib.Auction.AllPurchase.OptimalPricing
@@ -19,6 +21,7 @@ public import MathEconLib.Auction.AllPurchase.UniformDistribution
 public import MathEconLib.Auction.AllPurchase.WelfareDecomposition
 public import MathEconLib.Auction.AllocationBounds
 public import MathEconLib.Auction.Basic
+public import MathEconLib.Auction.BayesianEquilibrium
 public import MathEconLib.Auction.IdenticalTypes
 public import MathEconLib.Auction.PaymentUniqueness
 public import MathEconLib.Auction.RevenueEquivalence

@@ -61,10 +61,62 @@ new competing design or failure.
   existence, ex-post DSIC, ex-ante BNE or cross-price family claim is part of
   this delivery.
 
-## Next dependency path
+## Delivery 02: Bayesian equilibrium under the actual type law
 
 Package the resulting pointwise original-bid comparisons as ex-ante BNE under
 the actual auction type law. Reuse native conditional beliefs and averaging;
 first prove the interim payoff identity for a nonidentity bid strategy and the
 realized-payoff measurability/integrability guards. Constant-bid optimality alone
 does not justify skipping those obligations for type-dependent deviations.
+
+- **Baseline:** `4479817`; child
+  `codex/economic-delivery-02-bayesian-equilibrium`.
+- **Target:** native `BayesianGame.IsBNE` for the common strategy in the
+  mechanism-induced game, under `Auction.typeLaw`. This quantifies all admitted
+  measurable type-dependent unilateral strategy changes.
+- **Guards:** prove conditional fixed-bid payments are integrable, the actual
+  payoff is jointly measurable, and incumbent realized utility is integrable.
+  Bounded realized types and monotone measurable bids provide the needed
+  boundedness; first moments alone do not justify products of random bids.
+- **Consumer:** the interior original-bid certificate from Delivery 01, then
+  the specified uniform two-bidder example. Keep the original action space and
+  standard integrability-filtered BNE convention.
+- **Native result:** the generic auction bridge identifies actual conditional
+  utility with `q_strat`/`p_strat` for a nonidentity common bid strategy and uses
+  the existing conditional-averaging theorem. The joint type law, true values,
+  signed transfers, incumbent guard and integrability-filtered strategy-deviation
+  convention are retained.
+- **Model guards:** linear scarcity gives measurable raw payments and integrable
+  fixed-bid payments. A strengthened bounded-strategy theorem lives in
+  `Auction.IdenticalTypes`; the old first-moment theorem is its corollary. Bounded
+  factors justify realized-utility products without an L1-times-L1 shortcut.
+- **Focused validation:** generic bridge passes strictly (3,141 jobs), the
+  interior native BNE target passes strictly (9,097 jobs), and the uniform
+  two-bidder example now proves `strategy_isBNE` (9,108 jobs). Semantic review
+  confirms the actual prior, simultaneous interval comparisons, arbitrary
+  admitted type-dependent deviations and all integrability guards.
+- **Numerical consumer:** `UniformTwoBidderBayesianPayoff` computes each bidder's
+  actual ex-ante utility as `13/36` and bounds every admitted measurable
+  unilateral strategy profile by that value. It uses native interim averaging,
+  the actual marginal pushforward and the existing uniform second moment. Its
+  focused strict target passes (9,109 jobs).
+- **Complete validation:** complete and explicit builds of all 293 authored
+  modules pass (9,343 jobs). The project-wide kernel audit checks 6,261
+  declarations using only standard axioms; all-source token scanning and
+  re-elaboration of all 10 changed Lean files report zero violations. Changed
+  implementation/example files pass strict warning/line-length checks. Header,
+  generated-import and native BIC arithmetic checks pass. Dependency pins,
+  toolchain and the standard deviation-integrability convention are unchanged.
+- **Status:** complete. The general result assumes a supplied interior
+  certificate; the concrete uniform model supplies one and its actual native
+  BNE payoff is computed. No arbitrary-price existence claim or change in
+  equilibrium semantics is introduced.
+
+## Next economic dependency
+
+A comparison of actual equilibria at different posted prices needs a
+price-indexed auction/strategy family on an explicitly admissible regime.
+Construct those equilibria before interpreting a price optimizer as a seller's
+choice across auctions. The existing single-auction profit envelope and the
+new BNE certification supply the proof components; they do not provide such
+a family by themselves.
