@@ -255,6 +255,26 @@ theorem Stable.pairwiseStable {A : Set X} (h : M.Stable A) :
     M.PairwiseStable A :=
   ⟨h.1, fun z => h.2 {z}⟩
 
+/-- Every member of a blocking set is itself a blocking contract under substitutes.
+The contracts remain new, and each involved side still accepts the retained contract.
+No individual-rationality, consistency or finiteness hypothesis is needed. -/
+theorem Blocks.singleton_of_mem (hsub : M.Substitutable)
+    {A Z : Set X} {z : X} (hZ : M.Blocks A Z) (hz : z ∈ Z) :
+    M.Blocks A {z} := by
+  have subset : insert z A ⊆ A ∪ Z :=
+    Set.insert_subset (Or.inr hz) Set.subset_union_left
+  refine M.blocks_singleton_iff.mpr ⟨Set.disjoint_left.mp hZ.2.1 hz, ?_, ?_⟩
+  · exact (hsub.1 (M.buyer z)).mem_of_subset subset
+      (hZ.2.2.1 _ (M.mem_buyerSide.mpr ⟨hz, rfl⟩)) (Set.mem_insert _ _)
+  · exact (hsub.2 (M.seller z)).mem_of_subset subset
+      (hZ.2.2.2 _ (M.mem_sellerSide.mpr ⟨hz, rfl⟩)) (Set.mem_insert _ _)
+
+/-- A nonempty blocking proposal supplies a singleton blocking witness from that proposal. -/
+theorem Blocks.exists_singleton (hsub : M.Substitutable)
+    {A Z : Set X} (hZ : M.Blocks A Z) : ∃ z ∈ Z, M.Blocks A {z} := by
+  obtain ⟨z, hz⟩ := hZ.1
+  exact ⟨z, hz, Blocks.singleton_of_mem M hsub hZ hz⟩
+
 /-- Substitutability reduces every blocking set to a blocking contract.
 This is the implication used in HKContractDesign2017, Proposition 2 (p. 81),
 proved there as Lemma 2 in Appendix A (p. 91);
@@ -262,23 +282,8 @@ the present proof requires neither IRC nor finiteness. -/
 theorem PairwiseStable.stable_of_substitutable (hsub : M.Substitutable)
     {A : Set X} (h : M.PairwiseStable A) : M.Stable A := by
   refine ⟨h.1, fun Z hZ => ?_⟩
-  obtain ⟨⟨z, hz⟩, hdisj, hB, hS⟩ := hZ
-  have hAZ : A ⊆ A ∪ Z := fun y hy => Or.inl hy
-  have hzAZ : z ∈ A ∪ Z := Set.mem_union_right A hz
-  refine h.2 z (M.blocks_singleton_iff.mpr
-    ⟨Set.disjoint_left.mp hdisj hz, ?_, ?_⟩)
-  · -- Buyers: shrink the menu from `A ∪ Z` to `insert z A`.
-    have hmem : z ∈ M.choiceB (M.buyer z) (A ∪ Z) :=
-      hB (M.buyer z) (M.mem_buyerSide.mpr ⟨hz, rfl⟩)
-    have h1 : z ∈ M.choiceB (M.buyer z) (insert z (A ∪ Z)) := by
-      rwa [Set.insert_eq_of_mem hzAZ]
-    exact (hsub.1 (M.buyer z)).mem_insert_of_subset hAZ h1
-  · -- sellers: the mirror argument
-    have hmem : z ∈ M.choiceS (M.seller z) (A ∪ Z) :=
-      hS (M.seller z) (M.mem_sellerSide.mpr ⟨hz, rfl⟩)
-    have h1 : z ∈ M.choiceS (M.seller z) (insert z (A ∪ Z)) := by
-      rwa [Set.insert_eq_of_mem hzAZ]
-    exact (hsub.2 (M.seller z)).mem_insert_of_subset hAZ h1
+  obtain ⟨z, _, blocks⟩ := Blocks.exists_singleton M hsub hZ
+  exact h.2 z blocks
 
 /-- Under substitutability, pairwise stability and stability coincide. -/
 theorem pairwiseStable_iff_stable_of_substitutable (hsub : M.Substitutable)
