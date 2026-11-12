@@ -874,7 +874,7 @@ remain evidence, but line-count increases alone do not reject a component.
 
 ## MEC-016: admissibility of extracted pure witnesses
 
-- **Date / status:** 2026-11-12; reserved before implementation.
+- **Date / status:** 2026-11-12; complete, including full and source gates.
 - **Question:** Does extracting a supported pure improvement from an admitted
   mixture preserve admissibility under a mixed-action menu?
 - **Alternatives:** unrestricted pure-deviation sufficiency; explicit support-
@@ -890,6 +890,38 @@ remain evidence, but line-count increases alone do not reject a component.
   A supported but inadmissible witness cannot certify equilibrium transport.
 - **Next action:** compile the counterexample and the explicit admissibility
   repair using existing support operations.
+- **Focused result:** `MathEconLibTest.GameTheory.RestrictedMixedMenu` builds
+  (3,055 jobs) and its source passes warning-as-error and line-length checks.
+  The native mean-budget problem has an admitted incumbent and pure deviation,
+  rejects every admitted pure move, but fails equilibrium under the admitted
+  fair lottery. Its successful supported pure action is excluded by the budget.
+  The original mean menu is explicitly not support-hereditary.
+- **Positive repair:** a guarded witness lift retains mixed admissibility,
+  positive component mass and pure admissibility. It proves pure sufficiency
+  under a local support-heredity premise. The intentionally stronger ex-post
+  quantity budget satisfies that premise and yields native equilibrium of the
+  same incumbent through the repaired theorem. Support-heredity is sufficient;
+  the underlying contract is an admissible bad pure witness, not a necessary
+  universal axiom on menus or probability carriers.
+- **Diagnostic boundary:** whole-target `--iofail` also rejects existing
+  dependency deprecations in finite distributions/probability measures. The
+  changed fixture passes its separate strict source check; existing unrelated
+  warnings remain visible. Full and source gates run before collection.
+- **Operation completed:** native `FinDist.Support` now proves the right-unit
+  identity `finMixture weights pure = weights`. Both budget response problems
+  evaluate exactly the raw law; the positive repair uses this identity to
+  consume the mixture theorem. Thus only their admissibility conditions change.
+  The support module and the fixture both pass strict source checks. This is
+  ordinary completion of the existing probability operation, not another
+  carrier or class competition.
+- **Gate / outcome:** the final explicit all-source build passes 9,352 jobs
+  across all 302 authored modules. The kernel audit checks 6,435 declarations
+  with standard axioms only; all-source token scanning and re-elaboration of
+  all three changed Lean files report zero violations and no discarded
+  declarations. Header, generated-import and native BIC checks pass. Select
+  admissible witness coverage as the transport contract, with support-heredity
+  as a sufficient constructor. The mean-budget counterexample refutes the
+  unrestricted pure-sufficiency extension; no universal menu class is needed.
 
 ## MEC-017: atomic and nonatomic mixture provenance
 

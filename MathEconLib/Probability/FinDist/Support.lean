@@ -61,4 +61,12 @@ theorem finMixture_pure [DecidableEq A] (action : A) (continuation : A → FinDi
   simp only [pure_pmf]
   simp
 
+/-- Mixing pure outcomes according to a law recovers that law. -/
+@[simp] theorem finMixture_pure_right [DecidableEq A] (weights : FinDist A) :
+    finMixture weights pure = weights := by
+  apply FinDist.ext
+  intro outcome
+  rw [finMixture_pmf]
+  simp
+
 end MathEconLib.Probability.FinDist
