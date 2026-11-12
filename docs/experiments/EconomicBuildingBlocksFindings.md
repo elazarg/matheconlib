@@ -12,6 +12,11 @@ independent reuse take priority over proof length. Assumptions live on the
 operation requiring them. Domain data has its own owner; common mathematics
 earns a shared owner through actual consumers.
 
+[The theorem-delivery ledger](EconomicTheoremDelivery.md) tracks subsequent
+native applications. Its first path upgrades the existing interior-strategy
+report certificate to all original real bids, using explicit payoff coverage
+and derived regularity, with the uniform auction as an independent consumer.
+
 | Building block | Concrete reuse and owner | Boundary established |
 | --- | --- | --- |
 | Explicit rooted comparison and ordered specialization | native `GameTheory/Equilibrium/Problem`; revelation, mixed and Bayesian games | incumbent validity and deviation admissibility have different roles |
@@ -207,7 +212,7 @@ are not another architecture experiment.
 
 ## Verification
 
-The final native collection passes complete and explicit builds of all 283
+At the close of the component experiments, complete and explicit builds cover 283
 authored modules (9,333 jobs). The project-wide kernel audit checks 6,224
 declarations with only standard axioms. The source-token scan covers every
 authored file with zero violations. Changed sources were re-elaborated at each

@@ -268,12 +268,12 @@ theorem bundledProfit_eq_interior_optimum :
 
 /-! ## Edition welfare at privately optimal purchases -/
 
-/-- The prescribed quantity maximizes the bidder's prize-aware interim utility over all real
-purchases, with the net payment written explicitly. -/
+/-- The general interior-strategy certificate rejects all real purchases, with net payment
+written explicitly. The independent direct all-bid proof remains available as `universalIC`. -/
 theorem prize_aware_best_response (i : Fin 2) (v : ℝ) (hv : v ∈ Icc (0 : ℝ) 2)
     (b : ℝ) :
     v * model.q_strat strategy i b - (b ^ 2 - b / 3) ≤ v ^ 2 / 4 + 1 / 36 := by
-  have h := (universalIC i).universalIC v hv b (Set.mem_univ b)
+  have h := (interior_strategy.hasUniversalIC_at model i).universalIC v hv b (Set.mem_univ b)
   change (problem i).payoff v b ≤ (problem i).U v at h
   rw [utility_eq i v hv] at h
   change v * model.q_strat strategy i b - model.p_strat strategy i b ≤ _ at h

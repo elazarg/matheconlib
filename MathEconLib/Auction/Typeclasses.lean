@@ -82,6 +82,14 @@ noncomputable def highestType [HasIdenticalTypes A] : ℝ := A.θmax 0
     A.θmax i = A.highestType := by
   rw [HasIdenticalTypes.θmax_eq]; rfl
 
+/-- Bounded realized types witness that the common declared interval is nonempty. -/
+lemma lowestType_le_highestType [HasIdenticalTypes A] [HasBoundedTypes A] :
+    A.lowestType ≤ A.highestType := by
+  obtain ⟨sample⟩ := nonempty_of_isProbabilityMeasure (ℙ : Measure Ω)
+  have bounds := HasBoundedTypes.θ_in (A := A) 0 sample
+  rw [A.θmin_eq_lowestType, A.θmax_eq_highestType] at bounds
+  exact bounds.1.trans bounds.2
+
 /-! ### Common CDF (needs HasIdenticalTypes) -/
 
 -- Compatibility name; Mathlib now supplies the instance.

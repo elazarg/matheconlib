@@ -9,7 +9,7 @@ worktree is created and existing sibling checkouts are left alone.
 
 The supplied comparisons and the follow-up supporting-form, blocking, demand,
 information, calibration, law-preference and provenance paths have completed
-their gates. The final native collection covers 283 authored modules and 6,224
+their gates. That experiment collection covers 283 authored modules and 6,224
 kernel-audited declarations. Useful expressiveness and actual reuse governed
 selection; increased proof length was treated as a cost rather than a veto.
 
@@ -20,6 +20,8 @@ The [log](EconomicBuildingBlocksLog.md) preserves original questions and failed,
 narrowed and supporting observations. The working guarded-foundation and shared-
 demand alternatives remain on named evidence branches. Basic abstractions remain
 replaceable when another concrete consumer discriminates between designs.
+Subsequent native consumers and their validation are recorded separately in
+[the theorem-delivery ledger](EconomicTheoremDelivery.md).
 
 ## Starting point
 

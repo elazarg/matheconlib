@@ -11,9 +11,13 @@ public import MathEconLib.Auction.AllPurchase.Basic
 public import MathEconLib.Auction.AllPurchase.ExplicitSolutions
 public import MathEconLib.Auction.AllPurchase.LinearScarcity
 public import MathEconLib.Auction.AllPurchase.OptimalPricing
+public import MathEconLib.Auction.AllPurchase.OriginalBidIC
+public import MathEconLib.Auction.AllPurchase.QuadraticIncentives
+public import MathEconLib.Auction.AllPurchase.Regularity
 public import MathEconLib.Auction.AllPurchase.RevenueDecomposition
 public import MathEconLib.Auction.AllPurchase.UniformDistribution
 public import MathEconLib.Auction.AllPurchase.WelfareDecomposition
+public import MathEconLib.Auction.AllocationBounds
 public import MathEconLib.Auction.Basic
 public import MathEconLib.Auction.IdenticalTypes
 public import MathEconLib.Auction.PaymentUniqueness
@@ -48,6 +52,7 @@ public import MathEconLib.Choice.WeakPreferences
 public import MathEconLib.Competition.Cournot.Linear
 public import MathEconLib.ForMathlib.AbsolutelyContinuous
 public import MathEconLib.ForMathlib.ApproximateSelection
+public import MathEconLib.ForMathlib.CDF
 public import MathEconLib.ForMathlib.Data.PartialMatching
 public import MathEconLib.ForMathlib.Data.SetFiber
 public import MathEconLib.ForMathlib.FinsetUpdate
@@ -155,6 +160,7 @@ public import MathEconLib.RevealedPreference.BudgetRegularity
 public import MathEconLib.RevealedPreference.Choice
 public import MathEconLib.RevealedPreference.GARP
 public import MathEconLib.SingleParameter
+public import MathEconLib.SingleParameter.ActionCoverage
 public import MathEconLib.SingleParameter.Basic
 public import MathEconLib.SingleParameter.ConvexUtility
 public import MathEconLib.SingleParameter.EnvelopeIC

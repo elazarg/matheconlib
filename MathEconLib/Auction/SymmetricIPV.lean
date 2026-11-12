@@ -161,13 +161,6 @@ section QStratCdfPow
 variable [HasIndependentTypes A] [HasIdenticalTypes A]
     [HasBoundedTypes A] [HasAtomlessTypes A]
 
-omit [HasIndependentTypes A] [HasAtomlessTypes A] in
-private lemma lowestType_le_highestType : A.lowestType ≤ A.highestType := by
-  have ⟨ω⟩ := nonempty_of_isProbabilityMeasure (ℙ : Measure Ω)
-  have h := HasBoundedTypes.θ_in (A := A) 0 ω
-  rw [A.θmin_eq_lowestType, A.θmax_eq_highestType] at h
-  exact h.1.trans h.2
-
 omit [HasIndependentTypes A] in
 /-- For identically distributed, bounded, atomless types and a weakly increasing strategy `σ`, the
 probability that bidder `j` bids strictly below `b` is the probability that a type is at most the
