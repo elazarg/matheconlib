@@ -72,6 +72,8 @@ actual consumers justify their cost. These comparisons do not establish a
 universal equilibrium hub or reduce matching, choice and mechanism design to
 one predicate. Nor do they show that equilibrium records are merely vocabulary:
 the revelation and simulation workloads reuse their proof-bearing maps.
+Encoding a concept through an arbitrary value carrier and comparison is not,
+by itself, evidence that this representation should own its downstream proofs.
 
 ## What remains informative
 
@@ -90,3 +92,13 @@ No general existence or infinite-mixture theorem follows from the present work.
 These limits keep the general field-level conclusions provisional while making
 the next experiment concrete. Foundational alternatives remain available for
 local replacement whenever a new consumer can discriminate between them.
+
+## Verification
+
+The selected implementation passes the complete build and an explicit build of
+all 255 authored modules (9,305 jobs). The project-wide compiled audit checks
+5,870 declarations with only standard axioms; the source-token scan finds no
+holes. Individual experiment gates cover source elaboration, including
+discarded examples. Header/import checks and the 21 integrity, 28 warning-report
+and 11 import-helper harness tests pass. Existing upstream warnings remain
+visible. The ledger records commands, environment adjustments and precise scope.

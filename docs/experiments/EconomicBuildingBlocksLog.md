@@ -262,7 +262,7 @@ earlier GameTheory experiment ledger.
 
 ## MEC-006 / source E5: chained dominated-action reductions
 
-- **Date / status:** 2026-11-12; focused comparison complete; final integration running.
+- **Date / status:** 2026-11-12; complete, including final integration.
 - **Question:** Does a composed simulation shorten two-round and arbitrary
   finite-round equilibrium transport against reusable direct per-round
   equivalences, rather than against duplicated direct payoff arguments?
@@ -320,5 +320,38 @@ earlier GameTheory experiment ledger.
   fewer dependency jobs). Compiled integrity checks cover 107 declarations
   with only standard axioms. Independent semantic/fairness review passes.
   All three source elaboration checks pass (no discarded examples; the 107
-  named declarations are covered by the compiled check). Whole-project
-  integration remains in progress.
+  named declarations are covered by the compiled check). Final integration
+  passes as recorded below.
+
+## Selected-branch integration gate
+
+- **Date / source:** 2026-11-12; reduction child `b1e7517`, collected with the
+  native optimality specialization. A final fetch confirms both upstream main
+  and fork main still point to `b0c6f35`.
+- **Build:** regenerated Git-based umbrellas, then complete `lake build` passes
+  9,305 jobs including library, API pins, examples and tests. An explicit
+  `lake --rehash --no-ansi build` on all 255 authored modules discovered by the
+  proof-integrity driver's `discover_sources` also passes 9,305 jobs. This
+  includes sources independently of umbrella reachability.
+- **Integrity:** `lake env lean --run scripts/CheckProofIntegrity.lean REPORT`
+  with that complete module list checks 5,870 declarations in 255 modules:
+  only `propext`, `Classical.choice` and `Quot.sound`, zero violations.
+  The driver's source-token scan finds zero holes across all 255 sources.
+  Source elaboration was checked on the experiment sources at their individual
+  gates; the guarded rival additionally checked all 18 changed files, including
+  25 discarded declarations. This records project-wide compiled coverage and
+  scoped source re-elaboration, not a fresh elaboration of every unchanged file.
+- **Repository checks:** `scripts/check-headers.sh` and
+  `scripts/update-imports.sh --check` pass. Integrity-checker tests pass 21 cases;
+  warning-report tests pass 28. The import-helper harness passes 11 cases under
+  WSL using a temporary LF-normalized helper copy, matching the Linux CI input.
+  The initial native invocation selected Windows' WSL `bash` with Windows path
+  syntax; the Node harness needed Git's `usr/bin` on PATH for `unzip`. These
+  environment fixes changed no tracked scripts.
+- **Diagnostics / hygiene:** existing upstream warnings and intentional test
+  info are visible in full builds; focused authored targets have no added
+  diagnostics. Only local dependency-cache overrides were used, after checking
+  exact manifest revisions; package configuration and manifest are untouched.
+  Generated Python caches and unselected guarded build artifacts were moved to
+  ignored scratch storage. The user's root Markdown inputs and pre-existing
+  simulations worktree remain untouched. No upstream publication occurred.
