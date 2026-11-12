@@ -146,4 +146,3 @@ theorem geometric_equilibrium :
   exact ⟨trivial, fun _ alternative _ => all alternative⟩
 
 end MathEconLibTest.AbstractionExperiments.CountablePossibility
-
