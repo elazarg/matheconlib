@@ -47,6 +47,10 @@ def budgetSet (D : Dataset L T) (t : T) : Set (Bundle L) :=
 @[simp] theorem mem_budgetSet (D : Dataset L T) (t : T) (y : Bundle L) :
     y ∈ budgetSet D t ↔ Affordable D t y := Iff.rfl
 
+/-- Observed budgets specialize the same price-and-wealth feasibility operation. -/
+theorem budgetSet_eq_linearBudgetSet (D : Dataset L T) (t : T) :
+    budgetSet D t = linearBudgetSet (D.price t) (expenditure D t (D.choice t)) := rfl
+
 /-- All utility maximizers, packaged in the library's existing choice carrier. -/
 def utilityChoice (u : Utility L) : Choice.ChoiceFunction (Bundle L) where
   toFun := Choice.maximizers (Preferences.Preference.ofUtility u)
