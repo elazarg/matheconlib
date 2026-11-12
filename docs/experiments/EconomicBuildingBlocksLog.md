@@ -907,6 +907,13 @@ remain evidence, but line-count increases alone do not reject a component.
   dependency deprecations in finite distributions/probability measures. The
   changed fixture passes its separate strict source check; existing unrelated
   warnings remain visible. Full and source gates run before collection.
+- **Operation completed:** native `FinDist.Support` now proves the right-unit
+  identity `finMixture weights pure = weights`. Both budget response problems
+  evaluate exactly the raw law; the positive repair uses this identity to
+  consume the mixture theorem. Thus only their admissibility conditions change.
+  The support module and the fixture both pass strict source checks. This is
+  ordinary completion of the existing probability operation, not another
+  carrier or class competition.
 
 ## MEC-017: atomic and nonatomic mixture provenance
 

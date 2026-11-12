@@ -159,7 +159,7 @@ theorem fair_exPost_excluded : ¬ exPostAllowed fair := by
 /-- Native deterministic continuations retain the selected action's outcome. -/
 def exPostResponse : EquilibriumProblem (FinDist Bool) Unit (FinDist Bool) where
   deviation _ _ alternative := exPostAllowed alternative
-  value _ weights := FinDist.finMixture weights FinDist.pure
+  value _ weights := weights
   valid := exPostAllowed
 
 /-- The repaired theorem certifies the valid incumbent for the stronger budget. -/
@@ -175,8 +175,7 @@ theorem exPost_incumbent_equilibrium :
         · have impossible := allowed true (by simp)
           norm_num [quantity] at impossible)
   intro _ alternative permitted
-  change possibilityLE good (FinDist.finMixture alternative FinDist.pure)
-    (FinDist.finMixture (FinDist.pure false) FinDist.pure)
-  simpa only [FinDist.finMixture_pure] using comparisons alternative permitted
+  change possibilityLE good alternative incumbent
+  simpa only [FinDist.finMixture_pure_right] using comparisons alternative permitted
 
 end MathEconLibTest.AbstractionExperiments.RestrictedMixedMenu
