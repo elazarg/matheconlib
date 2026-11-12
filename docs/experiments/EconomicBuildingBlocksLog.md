@@ -4,6 +4,33 @@ This log belongs to the fork-local investigation described in
 `EconomicBuildingBlocks.md`. Item identifiers here are independent of the
 earlier GameTheory experiment ledger.
 
+Evaluation now follows `ComponentEvaluation.md`: useful expressiveness, actual
+reuse and composition take priority over proof length. Earlier measurements
+remain evidence, but line-count increases alone do not reject a component.
+
+## MEC-007: supporting slopes as a reusable incentive interface
+
+- **Date / status:** 2026-11-12; reserved, in progress.
+- **Question:** Can an action-free supporting-slope condition own incentive
+  mathematics for both native single-good problems and multi-unit quantities,
+  while preserving the distinction between report and universal deviations?
+- **Alternatives:** native action/strategy-based IC and its existing reduced
+  form; a mathematical condition on a type set and functions `U` and `q`.
+- **Representative slice:** prove exact native envelope/type-deviation
+  equivalence, derive native monotonicity and utility convexity from the same
+  operation, and validate an unbounded-quantity truthful model excluded by the
+  native allocation range. Retain a profitable unused-action control showing
+  that reduced IC does not imply universal IC.
+- **Kill conditions:** no hidden allocation bound, interval nonemptiness,
+  continuity or surjectivity in the supporting condition. Use existing native
+  analytic/payment results where applicable. Useful additional models and
+  downstream reuse outweigh a longer proof; do not call a missing hypothesis
+  an API improvement.
+- **Artifacts / baseline:** collecting `d6b4268`; child
+  `codex/experiment-economic-item-07-reduced-incentives`. Search Mathlib before
+  introducing a supporting-slope predicate; public ownership remains open
+  until consumers compile.
+
 ## MEC-001: native demand regularity and a shared maximizer operation
 
 - **Date / status:** 2026-11-12; deferred before compilation after revised experiment inputs.
