@@ -6,15 +6,16 @@ Authors: Bo Cowgill
 module
 
 public import MathEconLib.SingleParameter.Basic
+public import MathEconLib.ForMathlib.SupportingSlopes
 import Mathlib.Tactic.Linarith
 
 /-!
 # Incentive Compatibility for Single-Parameter Problems
 
-This file defines three levels of incentive compatibility for a
-`SingleParameterProblem`.
+This file defines two equivalent report-based incentive conditions for a
+`SingleParameterProblem` and a strengthening that considers every feasible action.
 
-From weakest to strongest, they are:
+The two report-based presentations are equivalent:
 
 1. `HasEnvelopeIC`: a comparison between the utilities and allocations of two
    types;
@@ -25,7 +26,10 @@ From weakest to strongest, they are:
 
 The corresponding implication chain is
 
-`HasUniversalIC → HasTypeDeviationIC → HasEnvelopeIC`.
+`HasUniversalIC → HasTypeDeviationIC ↔ HasEnvelopeIC`.
+
+Only the forward direction of the equivalence is an instance, to avoid cycles
+in typeclass search. Envelope IC is the supporting-slope condition on `U` and `q`.
 
 This file also defines individual rationality. Participation is kept separate
 from incentive compatibility: IC compares available actions, while individual
@@ -51,10 +55,9 @@ variable {Action : Type u} (P : SingleParameterProblem Action)
 The inequality says that the utility difference between the types is at least
 the type difference multiplied by the allocation assigned to `v'`.
 
-This is the weakest IC condition used by the single-parameter development. -/
+This is the action-free presentation of type-deviation IC for quasilinear utility. -/
 class HasEnvelopeIC (P : SingleParameterProblem Action) : Prop where
-  envelopeIC : ∀ v ∈ P.typeInterval, ∀ v' ∈ P.typeInterval,
-    (v - v') * P.q v' ≤ P.U v - P.U v'
+  envelopeIC : SupportingSlopesOn P.U P.q P.typeInterval
 
 /-- **Type-deviation incentive compatibility** says that type `v` weakly
 prefers its own strategy action to the strategy action assigned to any other
@@ -86,6 +89,20 @@ instance instHasEnvelopeICOfHasTypeDeviationIC
     have h := hIC.typeDeviationIC v hv v' hv'
     simp only [payoff, q, U] at h ⊢
     linarith
+
+/-- The supporting-slope presentation also implies report-deviation IC.
+This direction is explicit so typeclass search has no implication cycle. -/
+theorem hasTypeDeviationIC_of_hasEnvelopeIC [hIC : HasEnvelopeIC P] :
+    HasTypeDeviationIC P where
+  typeDeviationIC v hv v' hv' := by
+    have h := hIC.envelopeIC v hv v' hv'
+    simp only [payoff, q, U] at h ⊢
+    linarith
+
+/-- For quasilinear utility, envelope and report-deviation IC are equivalent. -/
+theorem hasEnvelopeIC_iff_hasTypeDeviationIC : HasEnvelopeIC P ↔ HasTypeDeviationIC P :=
+  ⟨fun h => @hasTypeDeviationIC_of_hasEnvelopeIC Action P h,
+    fun h => @instHasEnvelopeICOfHasTypeDeviationIC Action P h⟩
 
 /-- Universal IC implies type-deviation IC because the strategy action of any
 other type is one of the feasible actions. -/

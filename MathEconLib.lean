@@ -65,6 +65,8 @@ public import MathEconLib.ForMathlib.ProbabilityMeasure
 public import MathEconLib.ForMathlib.Quasiconvex
 public import MathEconLib.ForMathlib.Schauder
 public import MathEconLib.ForMathlib.StochasticOrder
+public import MathEconLib.ForMathlib.SupportingSlopes
+public import MathEconLib.ForMathlib.SupportingSlopes.Convexity
 public import MathEconLib.GameTheory.Equilibrium.Problem
 public import MathEconLib.GameTheory.Strategic.Basic
 public import MathEconLib.GameTheory.Strategic.Bayesian.Finite
@@ -143,6 +145,7 @@ public import MathEconLib.RevealedPreference.Choice
 public import MathEconLib.RevealedPreference.GARP
 public import MathEconLib.SingleParameter
 public import MathEconLib.SingleParameter.Basic
+public import MathEconLib.SingleParameter.ConvexUtility
 public import MathEconLib.SingleParameter.EnvelopeIC
 public import MathEconLib.SingleParameter.IC
 public import MathEconLib.SingleParameter.Payment

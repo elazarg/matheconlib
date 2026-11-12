@@ -67,13 +67,8 @@ theorem lipschitz [HasEnvelopeIC P] :
 
 /-- The induced allocation is monotone on the type interval. -/
 theorem q_monotoneOn [HasEnvelopeIC P] :
-    MonotoneOn P.q P.typeInterval := fun x hx y hy hxy => by
-  rcases hxy.lt_or_eq with hlt | rfl
-  · by_contra! h
-    have h1 := HasEnvelopeIC.envelopeIC x hx y hy
-    have h2 := HasEnvelopeIC.envelopeIC y hy x hx
-    nlinarith [mul_pos (show 0 < y - x by linarith) (show 0 < P.q x - P.q y by linarith)]
-  · rfl
+    MonotoneOn P.q P.typeInterval :=
+  SupportingSlopesOn.monotoneOn (HasEnvelopeIC.envelopeIC (P := P))
 
 /-- At an interior point where `q` is continuous, the derivative of `U`
 equals `q`. -/
