@@ -9,7 +9,7 @@ public import MathEconLib.GameTheory.Strategic.Outcome
 public import MathEconLib.Probability.FinDist.Simplex
 public import MathEconLib.Probability.FinDist.Support
 public import MathEconLib.Probability.FinDist.Expect
-public import MathEconLibTest.GameTheory.BlockingWitness
+public import MathEconLib.ForMathlib.WitnessLift
 public import Mathlib.Tactic.NormNum
 
 /-!
@@ -28,7 +28,7 @@ the observed comparisons; the relation still has an elementary Boolean score.
 
 namespace MathEconLibTest.AbstractionExperiments.PossibilityLawPreference
 
-open MathEconLib.Probability MathEconLib.GameTheory
+open MathEconLib MathEconLib.Probability MathEconLib.GameTheory
 open scoped BigOperators
 
 variable {O A : Type*} [Fintype O] [Fintype A]

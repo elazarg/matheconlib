@@ -98,8 +98,9 @@ or hypothetical encodings as successful reuse.
   actual blocking pair from the original block. A complementary market refutes
   singleton sufficiency without substitutes. Coalition transport reuses a
   context-dependent witness operation, retaining exact update provenance;
-  coordination refutes its converse. The generic operation remains a prototype
-  until further independent uses justify its public ownership.
+  coordination refutes its converse. Subsequent law-support and simulation uses
+  justify a small optional common witness owner, now consumed by native matching
+  adapters as well.
 - **Changing choice sets:** native positive-price budgets admit feasible-point
   recovery even at zero wealth. The demand graph theorem compiles against the
   actual canonical GameTheory parametric-optimality theorem on a separate shared
@@ -138,6 +139,14 @@ or hypothetical encodings as successful reuse.
   allowing Boolean scoring. An ex-ante possibility equilibrium can still fail
   conditional optimality at a positive-mass type, so the expected-utility
   information theorem cannot be generalized by replacing its comparison alone.
+- **Witness composition:** the optional operation retains an actual intermediate
+  obstruction, source context and provenance. Matching reads its original
+  membership and singleton block; coalitions keep exact updates; mixed failures
+  keep supported actions. Converting a composite simulation preserves a sound
+  endpoint bound but can admit witnesses that cannot pass through the specified
+  middle stage. The proved relation is strict inclusion, with compatible verdict
+  transport. Richer proof data therefore earns a role independently of shorter
+  clients; no category or universal equilibrium owner is required.
 
 ## What remains informative
 

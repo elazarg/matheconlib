@@ -5,7 +5,7 @@ Authors: Elazar Gershuni
 -/
 module
 
-public import MathEconLibTest.GameTheory.BlockingWitness
+public import MathEconLib.ForMathlib.WitnessLift
 public import MathEconLibTest.GameTheory.ReductionSupport
 
 /-!
@@ -23,7 +23,7 @@ than can pass through the prescribed intermediate deviations.
 
 namespace MathEconLibTest.GameTheory.ReductionSupport
 
-open MathEconLib.GameTheory MathEconLibTest.AbstractionExperiments
+open MathEconLib MathEconLib.GameTheory
 
 universe u v w x y z
 
@@ -75,7 +75,7 @@ theorem toBadDeviationLift_comp_related (g : GameSimulation Q R) (f : GameSimula
     {s : S} {r : K × U} {p : I × S}
     (sequential : (g.toBadDeviationLift.comp f.toBadDeviationLift).related s r p) :
     (g.comp f).toBadDeviationLift.related s r p := by
-  obtain ⟨q, ⟨judgeG, targetAdmitted, _, boundG⟩,
+  obtain ⟨q, _, ⟨judgeG, targetAdmitted, _, boundG⟩,
     ⟨judgeF, _, sourceAdmitted, boundF⟩⟩ := sequential
   refine ⟨judgeF.trans (congrArg f.deviatorMap judgeG), targetAdmitted, sourceAdmitted, ?_⟩
   change R.value r.1 r.2 ≤
@@ -142,7 +142,7 @@ theorem direct_accepts_one :
 /-- Passing through the intermediate deviation requires a source value at least two. -/
 theorem sequential_rejects_one :
     ¬ (second.toBadDeviationLift.comp first.toBadDeviationLift).related 0 ((), 1) ((), 1) := by
-  rintro ⟨⟨judge, t⟩, secondRelated, firstRelated⟩
+  rintro ⟨⟨judge, t⟩, _, secondRelated, firstRelated⟩
   have middleEndpoint : t = 2 := secondRelated.2.2.1.2
   have bound : t ≤ 1 := firstRelated.2.2.2
   rw [middleEndpoint] at bound
@@ -151,7 +151,8 @@ theorem sequential_rejects_one :
 /-- Both lifts still cover the actual target obstruction, using the source deviation at two. -/
 theorem sequential_accepts_two :
     (second.toBadDeviationLift.comp first.toBadDeviationLift).related 0 ((), 1) ((), 2) :=
-  ⟨((), 2), ⟨rfl, ⟨rfl, rfl⟩, ⟨rfl, rfl⟩, by decide⟩,
+  ⟨((), 2), ⟨⟨rfl, rfl⟩, by decide⟩,
+    ⟨rfl, ⟨rfl, rfl⟩, ⟨rfl, rfl⟩, by decide⟩,
     ⟨rfl, ⟨rfl, rfl⟩, ⟨rfl, Or.inr rfl⟩, le_rfl⟩⟩
 
 /-- Conversion preserves composite state maps but does not preserve the provenance relation. -/

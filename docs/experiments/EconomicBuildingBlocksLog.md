@@ -778,4 +778,23 @@ remain evidence, but line-count increases alone do not reject a component.
   was not silently applied to proposals.
 - **Baseline command:** `lake --iofail build
   MathEconLibTest.GameTheory.SimulationWitnessCoherence` passes (415 jobs).
-  Preserve this implementation before testing the stronger public composition.
+  The baseline kernel audit checks 23 declarations with standard axioms only;
+  preserve it at `ae890ea` before the stronger public composition.
+- **Ownership result:** the small `ForMathlib.WitnessLift` now has independent
+  matching, coalition, finite-law and simulation consumers. Its public
+  composition retains an actual intermediate obstruction as well as the two
+  witness relations; relation-level associativity is proved constructively.
+  Optional native contract and marriage modules return these certificates for
+  arbitrary markets. The marriage consumer reads both original membership and
+  the intermediate singleton-block proof. Native verdict predicates retain
+  their domain semantics and existing existential APIs remain directly usable.
+- **Refinement survives:** the simulation inclusion and strictness control still
+  pass with the stronger composition. The old test-owned definition is removed;
+  all consumers import the common owner. This selects a small optional operation
+  with richer provenance, without category instances or exact conversion laws.
+  Its extra code is justified by retained evidence and actual native consumers,
+  rather than a reduction in proof lines.
+- **Focused command:** `lake build` of BlockingWitnessConsumer,
+  CoalitionWitnessConsumer, PossibilityInformationBoundary and
+  SimulationWitnessCoherence passes (3,073 jobs). Full project, explicit module
+  coverage, strict-file and source/kernel audits run before collection.

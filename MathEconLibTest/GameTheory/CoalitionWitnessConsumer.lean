@@ -5,7 +5,7 @@ Authors: Elazar Gershuni
 -/
 module
 
-public import MathEconLibTest.GameTheory.BlockingWitness
+public import MathEconLib.ForMathlib.WitnessLift
 public import MathEconLib.GameTheory.Strategic.Basic
 public import MathEconLibTest.GameTheory.StrongNashComparability
 
@@ -22,7 +22,7 @@ Nash requires the separate local-comparability hypothesis.
 
 namespace MathEconLibTest.AbstractionExperiments.CoalitionWitnessConsumer
 
-open MathEconLib.GameTheory
+open MathEconLib MathEconLib.GameTheory
 
 variable {I : Type*} {A : I → Type*} {V : Type*} [Preorder V] [DecidableEq I]
   (G : StrategicGame I A V)

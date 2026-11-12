@@ -70,6 +70,7 @@ public import MathEconLib.ForMathlib.SupportingForms
 public import MathEconLib.ForMathlib.SupportingForms.Convexity
 public import MathEconLib.ForMathlib.SupportingSlopes
 public import MathEconLib.ForMathlib.SupportingSlopes.Convexity
+public import MathEconLib.ForMathlib.WitnessLift
 public import MathEconLib.GameTheory.Equilibrium.Problem
 public import MathEconLib.GameTheory.Strategic.Basic
 public import MathEconLib.GameTheory.Strategic.Bayesian.Finite
@@ -90,6 +91,7 @@ public import MathEconLib.GameTheory.Strategic.Outcome
 public import MathEconLib.Matching
 public import MathEconLib.Matching.Classical.Marriage
 public import MathEconLib.Matching.Classical.Marriage.Basic
+public import MathEconLib.Matching.Classical.Marriage.BlockingWitnesses
 public import MathEconLib.Matching.Classical.Marriage.DeferredAcceptance
 public import MathEconLib.Matching.Classical.Marriage.DeferredAcceptanceComputable
 public import MathEconLib.Matching.Classical.Marriage.DeferredAcceptanceFixedPoints
@@ -102,6 +104,7 @@ public import MathEconLib.Matching.Classical.Marriage.Preferences
 public import MathEconLib.Matching.Classical.Marriage.StableOrder
 public import MathEconLib.Matching.Classical.Marriage.ToContracts
 public import MathEconLib.Matching.Contracts.Basic
+public import MathEconLib.Matching.Contracts.BlockingWitnesses
 public import MathEconLib.Matching.Contracts.Completion
 public import MathEconLib.Matching.Contracts.FixedPointConvergence
 public import MathEconLib.Matching.Contracts.JointPreservation
