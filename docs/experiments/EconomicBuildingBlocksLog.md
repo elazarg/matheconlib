@@ -890,6 +890,23 @@ remain evidence, but line-count increases alone do not reject a component.
   A supported but inadmissible witness cannot certify equilibrium transport.
 - **Next action:** compile the counterexample and the explicit admissibility
   repair using existing support operations.
+- **Focused result:** `MathEconLibTest.GameTheory.RestrictedMixedMenu` builds
+  (3,055 jobs) and its source passes warning-as-error and line-length checks.
+  The native mean-budget problem has an admitted incumbent and pure deviation,
+  rejects every admitted pure move, but fails equilibrium under the admitted
+  fair lottery. Its successful supported pure action is excluded by the budget.
+  The original mean menu is explicitly not support-hereditary.
+- **Positive repair:** a guarded witness lift retains mixed admissibility,
+  positive component mass and pure admissibility. It proves pure sufficiency
+  under a local support-heredity premise. The intentionally stronger ex-post
+  quantity budget satisfies that premise and yields native equilibrium of the
+  same incumbent through the repaired theorem. Support-heredity is sufficient;
+  the underlying contract is an admissible bad pure witness, not a necessary
+  universal axiom on menus or probability carriers.
+- **Diagnostic boundary:** whole-target `--iofail` also rejects existing
+  dependency deprecations in finite distributions/probability measures. The
+  changed fixture passes its separate strict source check; existing unrelated
+  warnings remain visible. Full and source gates run before collection.
 
 ## MEC-017: atomic and nonatomic mixture provenance
 

@@ -45,6 +45,7 @@ import MathEconLibTest.GameTheory.PossibilityLawPreference
 import MathEconLibTest.GameTheory.ReducedIncentiveConsumer
 import MathEconLibTest.GameTheory.ReductionChains
 import MathEconLibTest.GameTheory.ReductionSupport
+import MathEconLibTest.GameTheory.RestrictedMixedMenu
 import MathEconLibTest.GameTheory.RevelationConsumer
 import MathEconLibTest.GameTheory.SimulationWitnessCoherence
 import MathEconLibTest.GameTheory.StateOutcomeEvaluation
