@@ -262,7 +262,7 @@ earlier GameTheory experiment ledger.
 
 ## MEC-006 / source E5: chained dominated-action reductions
 
-- **Date / status:** 2026-11-12; reserved, preparation in ignored templates.
+- **Date / status:** 2026-11-12; focused comparison complete; final integration running.
 - **Question:** Does a composed simulation shorten two-round and arbitrary
   finite-round equilibrium transport against reusable direct per-round
   equivalences, rather than against duplicated direct payoff arguments?
@@ -284,3 +284,41 @@ earlier GameTheory experiment ledger.
   branch has diverging foundations; materialize only the required exact source
   slice in a test namespace, with documented proof adaptations. No unrelated
   simulation/error/reflection API is required or silently ported.
+- **Artifacts / provenance:** `MathEconLibTest/GameTheory/ReductionSupport.lean`
+  materializes the six-field simulation, identity/composition and dominated
+  action reduction statements from `Equilibrium/Simulation.lean` and
+  `Strategic/Reduction.lean` at `13f5a84`. Its transport proof directly chains
+  the same bounds, and its pointwise equivalence directly uses `isNash_iff`;
+  these two proof adaptations avoid branch-only comparison APIs. They add no
+  hypotheses. `ReductionChains.lean` supplies direct implication/equivalence
+  induction and full certificate induction, with equal composite state maps.
+  `ChainedReductions.lean` supplies the hostile economic example and both routes.
+- **Observations:** the retained row globally dominates the omitted row. The
+  retained column dominates only after that restriction; its full-game claim
+  is refuted. Both routes consume the literal same global witnesses and prove
+  the same included-profile equivalence. Retaining the bad row explicitly
+  violates domination; the resulting singleton game's equilibrium is not an
+  original equilibrium. Reflection uses the native action comorphism, not a
+  nonexistent reflection property of every simulation.
+- **Measurements:** 78 nonblank code lines excluding block comments for pinned
+  support, 35 for the chain comparison and 115 for the economic fixture. The
+  record equivalence uses three lines including its signature, plus two lines
+  for each of its two named certificates; direct equivalence uses five. Both
+  routes share economic witnesses and native action-comorphism reflection.
+  The 60–120 line estimate fits the fixture but not the charged support and
+  induction. No timing advantage is claimed.
+- **Scope / result:** direct implications and equivalences compose through
+  arbitrary finite chains. Full simulations compose too and retain richer
+  data: deviator/value maps, deviation witnesses and validity transport. State
+  and judge types may change; the generic certificate-chain theorem fixes one
+  value preorder, while binary composition supports different value carriers.
+  Thus n-round verdict induction is not exclusive evidence for records, and
+  the richer certificate is not compared as if it were merely an implication.
+  The pointwise direct theorem permits weaker scope than a globally packaged
+  simulation; the paired example deliberately gives both the global hypothesis.
+- **Validation:** all three focused targets pass `lake --iofail build` (868 or
+  fewer dependency jobs). Compiled integrity checks cover 107 declarations
+  with only standard axioms. Independent semantic/fairness review passes.
+  All three source elaboration checks pass (no discarded examples; the 107
+  named declarations are covered by the compiled check). Whole-project
+  integration remains in progress.
