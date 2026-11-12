@@ -181,7 +181,20 @@ does not justify skipping those obligations for type-dependent deviations.
   strict profit target passes (9,115 jobs). The interior family's quantity also
   gives its explicit profit formula at every production cost; the old zero-cost
   result is a specialization.
-- **Status:** in progress.
+- **Complete validation:** complete and explicit builds of all 300 authored
+  modules pass (9,350 jobs). The kernel audit checks 6,367 declarations using
+  only standard axioms. All-source forbidden-token scanning and re-elaboration
+  of all five changed Lean files report zero violations; no discarded
+  declarations occur in the source pass. Changed implementation/example targets
+  pass strict warning and line-length checks. Header, generated-import and
+  native BIC arithmetic checks pass. Existing unrelated upstream diagnostics
+  remain visible. A fresh upstream fetch retains `4afb0d5`; dependency pins
+  and toolchain remain unchanged.
+- **Status:** complete. The actual endpoint is native Bayesian Nash and lacks
+  the strict interior certificate. Its profit at cost one strictly dominates
+  every constructed interior-family equilibrium at that same cost. The result
+  concerns this equilibrium selection and does not classify other prices,
+  strategies or boundary regimes.
 
 ## Next economic dependency
 
@@ -191,3 +204,6 @@ negative purchases. Test the resulting deviation explicitly before extending
 boundary-existence claims. A failure of pointwise IC only at a null lowest type
 would not by itself refute ex-ante BNE; an ex-ante control needs a deviation
 profitable on a set of positive probability or an integrated payoff comparison.
+An atom at the lowest type is a proposed minimal control. Compare actual
+nonnegative actions, restricted by the existing action-comap operation, with
+the original real-action game while retaining the same prior and transfers.
