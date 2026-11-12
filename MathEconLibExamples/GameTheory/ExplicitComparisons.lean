@@ -34,8 +34,10 @@ def problem : EquilibriumProblem Bool Unit Bool where
 def prefersTrue (_ : Unit) (x y : Bool) : Prop := x = false ∨ y = true
 
 /-- Choosing the preferred alternative is an ordinal equilibrium. -/
-theorem true_isEquilibriumWith : problem.IsEquilibriumWith prefersTrue true :=
-  ⟨trivial, fun _ _ _ ↦ Or.inr rfl⟩
+theorem true_isEquilibriumWith : problem.IsEquilibriumWith prefersTrue true := by
+  refine ⟨trivial, ?_⟩
+  rw [EquilibriumProblem.isDeviationOptimalWith_iff]
+  exact fun _ _ _ ↦ Or.inr rfl
 
 /-- The selected comparison is complete on these two alternatives. -/
 theorem prefersTrue_total (s t : Bool) : prefersTrue () s t ∨ prefersTrue () t s := by
@@ -75,7 +77,8 @@ theorem true_isEquilibrium : numericalProblem.IsEquilibrium true :=
 
 /-- Numerical evaluation rejects the inferior alternative. -/
 theorem false_not_isEquilibrium : ¬ numericalProblem.IsEquilibrium false :=
-  fun h ↦ (by decide : ¬ (1 : Nat) ≤ 0) (h.deviation_le () true trivial)
+  fun h ↦ (by decide : ¬ (1 : Nat) ≤ 0)
+    ((h.deviation_le ()).compares (t := true) trivial)
 
 /-- An irrelevant Boolean tag leaves the chosen consequence unchanged. -/
 def taggedProblem : EquilibriumProblem (Bool × Bool) Unit Bool where
@@ -93,8 +96,10 @@ def forgetTag : GameMorphism taggedProblem problem where
 
 /-- The tagged preferred alternative is optimal irrespective of the irrelevant tag. -/
 theorem tagged_true_isEquilibriumWith (tag : Bool) :
-    taggedProblem.IsEquilibriumWith prefersTrue (true, tag) :=
-  ⟨trivial, fun _ _ _ ↦ Or.inr rfl⟩
+    taggedProblem.IsEquilibriumWith prefersTrue (true, tag) := by
+  refine ⟨trivial, ?_⟩
+  rw [EquilibriumProblem.isDeviationOptimalWith_iff]
+  exact fun _ _ _ ↦ Or.inr rfl
 
 /-- Apply the existing deviation-lifting morphism with explicit comparison preservation. -/
 theorem true_isEquilibriumWith_of_transport : problem.IsEquilibriumWith prefersTrue true :=
@@ -128,8 +133,10 @@ theorem restricted_true_isEquilibriumWith_of_subset :
 
 /-- Restriction creates an equilibrium at `false`, although it fails in the numerical original. -/
 theorem restricted_false_isEquilibriumWith :
-    restrictedProblem.IsEquilibriumWith prefersTrue false :=
-  ⟨trivial, fun _ _ ht ↦ Or.inl ht.symm⟩
+    restrictedProblem.IsEquilibriumWith prefersTrue false := by
+  refine ⟨trivial, ?_⟩
+  rw [EquilibriumProblem.isDeviationOptimalWith_iff]
+  exact fun _ _ ht ↦ Or.inl ht.symm
 
 /-- Equality has no asymmetric strict improvement, even between distinct alternatives. -/
 theorem equality_no_strictImprovement (s : Bool) :
@@ -141,7 +148,7 @@ theorem equality_no_strictImprovement (s : Bool) :
 /-- Absence of a strict improvement does not imply weak equilibrium for incomplete comparisons. -/
 theorem equality_not_isEquilibriumWith :
     ¬ problem.IsEquilibriumWith (fun _ x y ↦ x = y) false :=
-  fun h ↦ Bool.noConfusion (h.deviation_le () true trivial)
+  fun h ↦ Bool.noConfusion ((h.deviation_le ()).compares (t := true) trivial)
 
 end MathEconLibExamples.GameTheory.ExplicitComparisons
 

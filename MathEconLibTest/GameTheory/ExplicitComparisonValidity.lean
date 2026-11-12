@@ -27,8 +27,9 @@ namespace MathEconLibTest.GameTheory.ExplicitComparisonValidity
 
 /-- With no deviations, even an invalid incumbent is optimal under arbitrary comparisons. -/
 theorem invalid_isDeviationOptimalWith (R : Unit → Nat → Nat → Prop) :
-    noDeviations.IsDeviationOptimalWith R false :=
-  fun _ _ h ↦ h.elim
+    noDeviations.IsDeviationOptimalWith R false := by
+  apply (noDeviations.isDeviationOptimalWith_iff R false).mpr
+  exact fun _ _ h ↦ h.elim
 
 /-- Deviation optimality cannot certify equilibrium without candidate validity. -/
 theorem invalid_not_isEquilibriumWith (R : Unit → Nat → Nat → Prop) :
@@ -52,7 +53,8 @@ example : improvingDeviation.valid true ∧
 theorem improving_invalid_target_not_isEquilibriumWith :
     ¬ improvingDeviation.IsEquilibriumWith (fun _ x y ↦ x ≤ y) true := by
   intro h
-  have hle : (1 : Nat) ≤ 0 := h.deviation_le () false ⟨rfl, rfl⟩
+  have hle : (1 : Nat) ≤ 0 :=
+    (h.deviation_le ()).compares (t := false) ⟨rfl, rfl⟩
   exact Nat.not_succ_le_zero 0 hle
 
 /-- Ordered recovery includes the validity of the source equilibrium. -/

@@ -119,6 +119,7 @@ theorem exAntePayoff_eq_zero : game.exAntePayoff prior () strategy = 0 :=
 
 /-- Equal action-independent payoffs satisfy deviation optimality. -/
 theorem strategy_isDeviationOptimal : (game.bneProblem prior).IsDeviationOptimal strategy := by
+  rw [EquilibriumProblem.isDeviationOptimal_iff]
   intro i s' _hs'
   exact le_rfl
 
@@ -206,8 +207,9 @@ theorem strategy_isNash : game.mixedExtension.IsNash strategy := by
   exact integral_nonpos (fun a => neg_nonpos.mpr (abs_nonneg _))
 
 /-- Every admissible mixed deviation weakly lowers the incumbent payoff integral. -/
-theorem strategy_isDeviationOptimal : game.mixedNashProblem.IsDeviationOptimal strategy :=
-  fun i σ' h => strategy_isNash.deviation_le i σ' h.1
+theorem strategy_isDeviationOptimal : game.mixedNashProblem.IsDeviationOptimal strategy := by
+  rw [EquilibriumProblem.isDeviationOptimal_iff]
+  exact fun i σ' h => (strategy_isNash.deviation_le i).compares (t := σ') h.1
 
 /-- The pure zero action receives shifted utility one. -/
 lemma shiftedPayoff_dirac_zero :

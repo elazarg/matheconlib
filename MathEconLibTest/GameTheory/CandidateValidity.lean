@@ -69,8 +69,9 @@ def noDeviations : EquilibriumProblem Bool Unit Nat where
   valid s := s = true
 
 /-- The invalid state satisfies all admissible-deviation inequalities. -/
-theorem invalid_isDeviationOptimal : noDeviations.IsDeviationOptimal false :=
-  fun _ _ h => h.elim
+theorem invalid_isDeviationOptimal : noDeviations.IsDeviationOptimal false := by
+  apply (noDeviations.isDeviationOptimal_iff false).mpr
+  exact fun _ _ h => h.elim
 
 /-- An invalid incumbent is not an equilibrium even when no deviations are admitted. -/
 theorem invalid_not_isEquilibrium : ¬ noDeviations.IsEquilibrium false :=
@@ -86,7 +87,8 @@ def improvingDeviation : EquilibriumProblem Bool Unit Nat where
 theorem improving_invalid_target_not_isEquilibrium :
     ¬ improvingDeviation.IsEquilibrium true := by
   intro h
-  have hle : (1 : Nat) ≤ 0 := h.deviation_le () false ⟨rfl, rfl⟩
+  have hle : (1 : Nat) ≤ 0 :=
+    (h.deviation_le ()).compares (t := false) ⟨rfl, rfl⟩
   exact Nat.not_succ_le_zero 0 hle
 
 /-- States at least two are valid; deviations lower the state and values are half the state. -/
@@ -104,6 +106,7 @@ def descendingTarget : EquilibriumProblem ℕ Unit ℕ where
 /-- State two is a valid source candidate and every downward deviation weakly lowers its value. -/
 theorem source_isEquilibrium : descendingSource.IsEquilibrium 2 := by
   refine ⟨Nat.le_refl 2, ?_⟩
+  apply (descendingSource.isDeviationOptimal_iff 2).mpr
   intro _ t ht
   change t < 2 at ht
   change t / 2 ≤ 2 / 2
@@ -154,6 +157,7 @@ theorem stricterTarget_not_isEquilibrium :
 theorem stricterTarget_isEquilibrium : stricterTarget.IsEquilibrium 2 := by
   rw [stricterTarget, EquilibriumProblem.isEquilibrium_refine_iff]
   refine ⟨⟨show 1 ≤ 2 by decide, ?_⟩, by decide⟩
+  apply (descendingTarget.isDeviationOptimal_iff 2).mpr
   intro _ t ht
   exact Nat.le_of_lt ht
 

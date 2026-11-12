@@ -67,7 +67,8 @@ theorem optimal_isBNE : game.IsBNE μ optimal := by
   constructor
   · intro i
     simp [game, BayesianGame.measurableActionProfile, optimal]
-  · intro i s' _hs'
+  · apply (EquilibriumProblem.isDeviationOptimalWith_iff _ _ _).mpr
+    intro i s' _hs'
     cases i
     change game.exAntePayoff μ () s' ≤ game.exAntePayoff μ () optimal
     rw [exAntePayoff_optimal]
@@ -76,7 +77,7 @@ theorem optimal_isBNE : game.IsBNE μ optimal := by
 /-- Choosing zero is not a Bayesian Nash equilibrium because choosing one strictly improves it. -/
 theorem zero_not_isBNE : ¬ game.IsBNE μ zeroStrategy := by
   intro h
-  have hdev := h.deviation_le () optimal
+  have hdev := (h.deviation_le ()).compares (t := optimal)
     ⟨fun j hj ↦ False.elim (hj (Subsingleton.elim _ _)), (optimal_isBNE μ).integrable ()⟩
   change game.exAntePayoff μ () optimal ≤ game.exAntePayoff μ () zeroStrategy at hdev
   simp only [exAntePayoff_optimal, exAntePayoff_zeroStrategy] at hdev
@@ -112,7 +113,8 @@ theorem restricted_isBNE :
   constructor
   · intro i
     simp [BayesianGame.comapActions, game, restrictedMap]
-  · intro i s' _hs'
+  · apply (EquilibriumProblem.isDeviationOptimalWith_iff _ _ _).mpr
+    intro i s' _hs'
     change (game.comapActions (fun i ↦ (restrictedMap i).1)).exAntePayoff μ i s' ≤
       (game.comapActions (fun i ↦ (restrictedMap i).1)).exAntePayoff μ i zeroStrategy
     simp [BayesianGame.exAntePayoff, BayesianGame.comapActions, game, restrictedMap]

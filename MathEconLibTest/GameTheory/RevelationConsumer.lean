@@ -84,8 +84,10 @@ theorem truthful_by_direct : (D).IsBNE prior (truthful indirect utility strategy
 
 theorem source_with_error (error : ℝ) (nonnegative : 0 ≤ error) :
     ((G).bneProblem prior).IsEquilibriumWith (fun _ x y ↦ x ≤ y + error) strategy := by
-  refine ⟨original_isBNE.integrable, fun i alternative allowed ↦ ?_⟩
-  exact (original_isBNE.deviation_le i alternative allowed).trans
+  refine ⟨original_isBNE.integrable, ?_⟩
+  rw [EquilibriumProblem.isDeviationOptimalWith_iff]
+  intro i alternative allowed
+  exact ((original_isBNE.deviation_le i).compares allowed).trans
     (le_add_of_nonneg_right nonnegative)
 
 theorem truthful_error_by_record (error : ℝ) (nonnegative : 0 ≤ error) :

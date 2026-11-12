@@ -84,11 +84,14 @@ def naturalProblem : EquilibriumProblem Nat Unit Nat where
   value _ n := n
   valid _ := True
 
-example : naturalProblem.IsEquilibriumWith (fun _ x y ↦ y ≤ x) 0 :=
-  ⟨trivial, fun _ n _ ↦ Nat.zero_le n⟩
+example : naturalProblem.IsEquilibriumWith (fun _ x y ↦ y ≤ x) 0 := by
+  refine ⟨trivial, ?_⟩
+  rw [EquilibriumProblem.isDeviationOptimalWith_iff]
+  exact fun _ n _ ↦ Nat.zero_le n
 
 example : ¬ naturalProblem.IsEquilibrium 0 :=
-  fun h ↦ (by decide : ¬ (1 : Nat) ≤ 0) (h.deviation_le () 1 trivial)
+  fun h ↦ (by decide : ¬ (1 : Nat) ≤ 0)
+    ((h.deviation_le ()).compares (t := 1) trivial)
 
 /-! Ordered recovery also recovers both existing transport routes with only an `LE` instance. -/
 
@@ -123,6 +126,7 @@ def indexedComparison (i : Bool) (x y : Nat) : Prop := if i then y ≤ x else x 
 theorem indexed_zero_isEquilibriumWith :
     indexedProblem.IsEquilibriumWith indexedComparison 0 := by
   refine ⟨trivial, ?_⟩
+  rw [EquilibriumProblem.isDeviationOptimalWith_iff]
   intro i n _
   cases i <;> simp [indexedComparison, indexedProblem]
 

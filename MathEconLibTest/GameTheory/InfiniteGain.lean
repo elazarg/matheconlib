@@ -253,7 +253,7 @@ the current comparison API, without a new equilibrium carrier. -/
 theorem extended_rejects_incumbent :
     ¬ extendedProblem.IsEquilibriumWith nonnegativeComparison incumbent := by
   intro optimal
-  have comparison := optimal.deviation_le false deviated ⟨trueAction, rfl⟩
+  have comparison := (optimal.deviation_le false).compares (t := deviated) ⟨trueAction, rfl⟩
   change (∫⁻ action, ENNReal.ofReal (game.payoff false action) ∂profileLaw deviated) ≤
     ∫⁻ action, ENNReal.ofReal (game.payoff false action) ∂profileLaw incumbent at comparison
   rw [deviation_infinite_gain, incumbent_nonnegative_integral_zero] at comparison

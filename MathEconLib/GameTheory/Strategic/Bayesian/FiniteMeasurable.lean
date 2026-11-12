@@ -162,6 +162,7 @@ theorem isBNEFin_iff_isBNE [NormedAddCommGroup V] [NormedSpace ℝ V]
   constructor
   · intro h
     refine ⟨fun i => d.integrable_toMeasure _, ?_⟩
+    rw [EquilibriumProblem.isDeviationOptimalWith_iff]
     intro i s' hs'
     have hstrategy_eq : s' = G.toMeasurableStrategy (update s i (s' i).1) := by
       funext j
@@ -178,7 +179,7 @@ theorem isBNEFin_iff_isBNE [NormedAddCommGroup V] [NormedSpace ℝ V]
     exact h i (s' i).1
   · intro h i f
     rw [G.exAntePayoffFin_eq_exAntePayoff, G.exAntePayoffFin_eq_exAntePayoff]
-    apply h.deviation_le i _
+    apply (h.deviation_le i).compares
     refine ⟨?_, d.integrable_toMeasure _⟩
     intro j hji
     apply Subtype.ext

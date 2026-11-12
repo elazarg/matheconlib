@@ -51,6 +51,7 @@ public import MathEconLib.ForMathlib.ApproximateSelection
 public import MathEconLib.ForMathlib.Data.PartialMatching
 public import MathEconLib.ForMathlib.Data.SetFiber
 public import MathEconLib.ForMathlib.FinsetUpdate
+public import MathEconLib.ForMathlib.GuardedOptimality
 public import MathEconLib.ForMathlib.IndepFun
 public import MathEconLib.ForMathlib.Kakutani
 public import MathEconLib.ForMathlib.MeasureTheory

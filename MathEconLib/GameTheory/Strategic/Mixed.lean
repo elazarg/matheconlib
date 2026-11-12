@@ -193,9 +193,10 @@ unilateral deviations with integrable deviator payoffs. -/
         G.mixedExtension.payoff i (Function.update σ i τ) ≤ G.mixedExtension.payoff i σ := by
   constructor
   · intro h
-    exact ⟨h.integrable, fun i τ hint ↦ h.deviation_le i _ ⟨⟨τ, rfl⟩, hint⟩⟩
+    exact ⟨h.integrable, fun i τ hint ↦ (h.deviation_le i).compares ⟨⟨τ, rfl⟩, hint⟩⟩
   · rintro ⟨hint, h⟩
     refine ⟨hint, ?_⟩
+    rw [EquilibriumProblem.isDeviationOptimalWith_iff]
     rintro i σ' ⟨⟨τ, rfl⟩, hτ⟩
     exact h i τ hτ
 
@@ -203,8 +204,10 @@ unilateral deviations with integrable deviator payoffs. -/
 integrable. -/
 lemma IsMixedNash.of_isNash [NormedAddCommGroup V] [NormedSpace ℝ V] [CompleteSpace V]
     [Fintype I] [DecidableEq I] [LE V] {G : StrategicGame I A V} {σ : MixedStrategy A}
-    (hσ : G.mixedExtension.IsNash σ) (hint : G.MixedPayoffsIntegrable σ) : G.IsMixedNash σ :=
-  ⟨hint, fun i σ' hdev ↦ hσ.deviation_le i σ' hdev.1⟩
+    (hσ : G.mixedExtension.IsNash σ) (hint : G.MixedPayoffsIntegrable σ) : G.IsMixedNash σ := by
+  refine ⟨hint, ?_⟩
+  rw [EquilibriumProblem.isDeviationOptimalWith_iff]
+  exact fun i _ hdev ↦ (hσ.deviation_le i).compares hdev.1
 
 /-- When every unilateral payoff is integrable, mixed Nash equilibrium is Nash equilibrium of the
 integral extension. -/

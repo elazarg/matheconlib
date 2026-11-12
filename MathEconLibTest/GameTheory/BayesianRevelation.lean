@@ -92,7 +92,8 @@ theorem record_comparison_route (C : I → V → V → Prop)
 theorem direct_comparison_route (C : I → V → V → Prop)
     (h : ((G).bneProblem μ).IsEquilibriumWith C s) :
     ((D).bneProblem μ).IsEquilibriumWith C (truthful M u s) := by
-  rw [EquilibriumProblem.isEquilibriumWith_iff] at h ⊢
+  rw [EquilibriumProblem.isEquilibriumWith_iff,
+    EquilibriumProblem.isDeviationOptimalWith_iff] at h ⊢
   refine ⟨h.1, ?_⟩
   intro i reports deviation
   exact h.2 i (liftReports M u s reports)

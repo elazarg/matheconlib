@@ -10,6 +10,7 @@ Preference-induced choice, independent of agents and markets.
 -/
 public import MathEconLib.Choice.Map
 public import MathEconLib.Choice.FiniteOption
+public import MathEconLib.ForMathlib.GuardedOptimality
 public import Mathlib.Data.Set.Finite.Lemmas
 public import Mathlib.Data.Set.Finite.Powerset
 public import Mathlib.Data.Set.Subsingleton
@@ -634,12 +635,16 @@ theorem ofOptionLinearOrder_eq_empty_iff (pref : LinearOrder (Option α)) (Y : S
 theorem ofBundleOrder_eq_of_choice_subset_of_hasBundleOptimum (pref : LinearOrder β)
     (bundle : β ↪ Set α) {Y Z : Set α} (hY : HasBundleOptimum pref bundle Y)
     (hchoice : ofBundleOrder pref bundle Y ⊆ Z) (hZY : Z ⊆ Y) :
-    ofBundleOrder pref bundle Z = ofBundleOrder pref bundle Y :=
-  let ⟨b, hb, hmax⟩ := hY
+    ofBundleOrder pref bundle Z = ofBundleOrder pref bundle Y := by
+  obtain ⟨b, hb, hmax⟩ := hY
   have hselected := ofBundleOrder_eq_of_max pref bundle hb hmax
-  have hbZ : bundle b ⊆ Z := fun _ hx ↦ hchoice (hselected.symm ▸ hx)
-  (ofBundleOrder_eq_of_max pref bundle hbZ (fun _ hc ↦ hmax (hc.trans hZY))).trans
-    hselected.symm
+  have large : IsOptimalOn (fun c ↦ bundle c ⊆ Y) pref.le {c | bundle c ⊆ Y} b :=
+    ⟨hb, fun _ hc ↦ ⟨hc, hmax hc⟩⟩
+  have small : IsOptimalOn (fun c ↦ bundle c ⊆ Z) pref.le {c | bundle c ⊆ Z} b :=
+    large.of_coverage (fun _ _ accepted ↦ hchoice (hselected.symm ▸ accepted))
+      (fun c hc ↦ ⟨c, hc.trans hZY, fun _ ↦ hc, id⟩)
+  exact (ofBundleOrder_eq_of_max pref bundle small.1
+    (fun c hc ↦ (small.2 c hc).2)).trans hselected.symm
 
 /-- Option-induced choice satisfies IRC on all menus exactly when every menu attains.
 An unattained menu has an acceptable singleton whose choice changes after rejected alternatives

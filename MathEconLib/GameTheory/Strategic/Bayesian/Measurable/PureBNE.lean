@@ -97,9 +97,11 @@ theorem isBNE_iff [LE V] (G : BayesianGame I Θ A V) (μ : Measure (∀ i, Θ i)
       G.IncumbentPayoffsIntegrable μ s := by
   constructor
   · intro h
-    exact ⟨fun i s' hagree hint => h.deviation_le i s' ⟨hagree, hint⟩, h.integrable⟩
+    exact ⟨fun i _ hagree hint => (h.deviation_le i).compares ⟨hagree, hint⟩, h.integrable⟩
   · rintro ⟨h, hint⟩
-    exact ⟨hint, fun i s' hs' => h i s' hs'.1 hs'.2⟩
+    refine ⟨hint, ?_⟩
+    rw [EquilibriumProblem.isDeviationOptimalWith_iff]
+    exact fun i s' hs' => h i s' hs'.1 hs'.2
 
 end MathEconLib.GameTheory.BayesianGame
 

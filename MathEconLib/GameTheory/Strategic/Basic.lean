@@ -122,9 +122,10 @@ theorem IsNash.comapActions [LE V] [DecidableEq ι] {B : ι → Type*}
     G.IsNash a ↔ ∀ i s, G.payoff i (Function.update a i s) ≤ G.payoff i a := by
   constructor
   · intro h i s
-    exact h.deviation_le i _ ⟨s, rfl⟩
+    exact (h.deviation_le i).compares ⟨s, rfl⟩
   · intro h
     refine ⟨trivial, ?_⟩
+    rw [EquilibriumProblem.isDeviationOptimalWith_iff]
     intro i a' hd
     obtain ⟨s, hs⟩ := hd
     change G.payoff i a' ≤ G.payoff i a

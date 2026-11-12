@@ -234,3 +234,27 @@ earlier GameTheory experiment ledger.
   cover 189 declarations in the core, validity and revelation controls, with
   only standard axioms; source checks pass. Retain this independent control
   before trying the guarded rival; it already removes duplicated ownership.
+- **Guarded rival:** child `codex/experiment-economic-item-05b-guarded-core`
+  actually replaces native `IsOptimalWith` by a guarded-menu specialization.
+  Both map transports and native attained-choice contraction consume the same
+  Mathlib-only coverage operation. Preference maxima and score maxima have
+  exact iff bridges; they are not claimed to be definitionally identical to
+  their prior definitions. No theorem hypotheses, deviation menus, incumbent
+  guards or integrability conventions change. Empty judges and invalid targets
+  remain explicit controls.
+- **Measured result:** see `OptimalityFoundationComparison.md`. Excluding block
+  comments/blank lines, the replacement adds 121 code lines across 18 files,
+  including the 59-line leaf, all bridges and downstream repairs. Excluding
+  the opening `by`, each explicit map transport body grows from three to seven
+  lines; choice contraction grows from five to nine. The initial rough count
+  of six choice lines used a different boundary and is corrected here. Actual
+  sharing succeeds in two areas without added assumptions, but proof economy
+  does not improve against the independently simplified native baseline.
+- **Validation / selection:** full `lake build` passes 9,303 jobs, including
+  API pins, examples and tests. Focused leaf/core strict builds pass. Compiled
+  integrity checks cover 653 declarations across all 17 changed authored
+  modules, with only standard axioms. Changed-source elaboration checks are
+  still running. Keep the full alternative on its branch; select native
+  canonicalization for collection. This is evidence against forcing this
+  guarded representation on these consumers, not against every independently
+  useful mathematical operation or future foundational change.

@@ -7,6 +7,7 @@ module
 
 public import MathEconLib.Preferences.Representation.Finite
 public import MathEconLib.Preferences.Refinement
+public import MathEconLib.ForMathlib.GuardedOptimality
 public import Mathlib.Order.Preorder.Finite
 
 /-!
@@ -70,6 +71,11 @@ def maximizers (pref : Preference α) (S : Set α) : Set α :=
 
 @[simp] theorem mem_maximizers (pref : Preference α) {S : Set α} {a : α} :
     a ∈ maximizers pref S ↔ a ∈ S ∧ ∀ b ∈ S, pref.le b a := Iff.rfl
+
+/-- Feasible preference maxima are guarded optimality with membership as its domain. -/
+theorem mem_maximizers_iff_isOptimalOn (pref : Preference α) {S : Set α} {a : α} :
+    a ∈ maximizers pref S ↔ IsOptimalOn (fun b ↦ b ∈ S) pref.le S a :=
+  (isOptimalOn_mem_iff _ _ _).symm
 
 /-- Value-induced maximizers are feasible `IsMaxOn` witnesses. `IsMaxOn` alone does not
 require the candidate to belong to the feasible set. -/
