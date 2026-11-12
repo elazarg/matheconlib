@@ -828,3 +828,77 @@ remain evidence, but line-count increases alone do not reject a component.
   menus, general conditional consistency and package ownership retain their
   stated limits. This is empirical diminishing returns, not a completeness
   theorem about all possible economic abstractions.
+
+## MEC-015: action domains at positive marginal cost
+
+- **Date / status:** 2026-11-12; reserved before implementation.
+- **Question:** Can the existing action-comap operation express the economically
+  material difference between real bids and nonnegative purchases, without
+  changing equilibrium semantics or generalizing every auction carrier?
+- **Alternatives:** typed action restriction through native mechanism/game
+  comaps; treating a nonnegative convention as prose over real actions;
+  generalizing the auction carrier before a restriction consumer needs it.
+- **Representative slice:** the same all-purchase mechanism at price four,
+  scarcity `3-B`, and a prior concentrated on zero valuations. At the all-zero
+  incumbent, compare all measurable nonnegative deviations with the admitted
+  real deviation `-1/2`. Keep the original transfers, allocation and prior.
+- **Kill conditions:** both conclusions must concern native Bayesian games and
+  `IsBNE`, with actual ex-ante payoff and integrability guards. Restricted
+  equilibrium must quantify every admitted measurable nonnegative deviation.
+  A pointwise failure confined to a null type is insufficient. Do not infer
+  that positive `K` rules out all signed-bid equilibria or all other strategies.
+- **Next action:** compile the native action restriction and opposite
+  equilibrium verdicts, then audit the remaining experiment queue for genuine
+  design discriminators rather than extending theorem delivery indefinitely.
+- **Focused result:** `MathEconLibTest.Mechanism.AllPurchaseActionDomain`
+  passes `lake --iofail build` (3,148 jobs). Actual net payment against zero
+  opponents is `b^2+b`. The real zero strategy is not native BNE: an admitted,
+  integrable deviation earns `1/4` at the mass-one prior atom. The included zero
+  strategy is native BNE against every measurable nonnegative deviation under
+  the same prior. Every strategy has integrable payoff under this prior, so
+  filtering cannot explain the difference. Native comap identities preserve
+  allocation, transfers and the incumbent; the existing inclusion comorphism
+  has the correct one-way direction.
+- **Boundary / cost:** the restricted object inhabits the general mechanism and
+  Bayesian-game APIs. Real-bid `Auction` and `AllPurchaseSpec` are not silently
+  generalized, and their entire analysis is not automatically transported.
+  The consumer needs no new equilibrium or probability class. Full and source
+  gates run before collection.
+
+## MEC-016: admissibility of extracted pure witnesses
+
+- **Date / status:** 2026-11-12; reserved before implementation.
+- **Question:** Does extracting a supported pure improvement from an admitted
+  mixture preserve admissibility under a mixed-action menu?
+- **Alternatives:** unrestricted pure-deviation sufficiency; explicit support-
+  hereditary admissibility plus native support and witness operations; a new
+  universal mixture/admissibility class.
+- **Representative slice:** quantities zero and two, expected-quantity budget
+  one. Admit the zero incumbent and its pure deviation; exclude pure quantity
+  two while admitting their fair lottery. Possibility of the high outcome is
+  the law preference. Then prove guarded pure sufficiency and a witness lift
+  when every supported component of an admitted mixture is admitted as pure.
+- **Kill conditions:** use actual native finite laws and expected quantities,
+  not an empty pure menu. Preserve incumbent validity and the mixed menu.
+  A supported but inadmissible witness cannot certify equilibrium transport.
+- **Next action:** compile the counterexample and the explicit admissibility
+  repair using existing support operations.
+
+## MEC-017: atomic and nonatomic mixture provenance
+
+- **Date / status:** 2026-11-12; reserved before implementation.
+- **Question:** Which support-witness contract survives countable mixing, and
+  can it be extended unchanged to nonatomic mixtures?
+- **Alternatives:** existing Mathlib PMF bind support and native law outcomes;
+  one positive-atom provenance law for all probability carriers; carrier-
+  specific support or positive-measure evidence without a universal class.
+- **Representative slice:** a genuinely infinite-support PMF response consumer
+  with possibility preferences, using the actual bind support theorem. Contrast
+  a nonatomic native mixed outcome game with successful flattened law but zero
+  mass on every original action singleton.
+- **Kill conditions:** no conclusion about countable closure from binary
+  closure alone. Use existing probability carriers, native outcome semantics
+  and an actual infinite-support law. Preserve the difference between an
+  existing action witness, positive singleton mass and positive-measure sets.
+- **Next action:** compile the countable consumer and nonatomic boundary, then
+  close the identified competition queue if neither reveals another operation.
