@@ -112,6 +112,28 @@ does not justify skipping those obligations for type-dependent deviations.
   BNE payoff is computed. No arbitrary-price existence claim or change in
   equilibrium semantics is introduced.
 
+## Delivery 03: equilibria across posted prices
+
+- **Baseline:** `4a1f42c`; child
+  `codex/economic-delivery-03-price-indexed-equilibria`.
+- **Target:** construct actual repriced auctions, retaining allocation, scarcity
+  and the type law while changing transfers. For two independent uniform
+  bidders, construct a native BNE at every price in `(0, 5/2)` and compare actual
+  seller profits across these equilibria.
+- **Reuse:** native interior certificates, original-action IC, conditional
+  averaging and the established profit identity. Compare auctions with common
+  economic primitives explicitly; no new family structure is needed.
+- **Scope:** the positive-price interior regime and zero production cost. A
+  boundary-regime comparison needs its own equilibrium existence proof.
+- **Focused result:** repricing changes each payment by the price difference
+  times own purchases and preserves the actual joint type law. The affine
+  strategy `(5 - 2p)/6 + v/2` supplies native report IC and an interior
+  certificate, hence original-action IC and native BNE throughout `(0, 5/2)`.
+  Its focused strict target passes (9,112 jobs). The generic two-auction profit
+  comparison also passes strictly, conditional on supplied interior certificates
+  and equality of the scarcity intercept, slope and distribution-based moment.
+- **Status:** in progress.
+
 ## Next economic dependency
 
 A comparison of actual equilibria at different posted prices needs a
