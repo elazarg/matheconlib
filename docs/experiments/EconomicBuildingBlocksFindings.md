@@ -123,6 +123,14 @@ or hypothetical encodings as successful reuse.
   positive-marginal consumer works despite missing joint atoms. This supports
   kernels, integration and a.e. judgments as separate operations; mere judge
   reindexing cannot perform their aggregation.
+- **Utility and welfare calibration:** ordinary strict-monotone order reflection
+  preserves all pure menus and ties. Explicit reciprocal welfare weights preserve
+  native efficiency under independent affine value recodings. Unweighted welfare
+  can reverse despite identical individual outcome choices. Fixed monetary units
+  and expected-lottery preferences require more structure: valuation-only scaling
+  can reverse buying, and two ordinally equivalent utilities give opposite expected
+  lottery comparisons. Common transfer factors preserve balance; private factors
+  can destroy it. A scale hierarchy was unnecessary for these consumers.
 
 ## What remains informative
 

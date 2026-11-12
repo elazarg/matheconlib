@@ -130,6 +130,7 @@ public import MathEconLib.Mechanism.Core.SolutionConcepts
 public import MathEconLib.Mechanism.Core.Strategic
 public import MathEconLib.Mechanism.Core.Utility
 public import MathEconLib.Mechanism.Core.UtilityCompatibility
+public import MathEconLib.Mechanism.Core.WeightedWelfare
 public import MathEconLib.Preferences
 public import MathEconLib.Preferences.Basic
 public import MathEconLib.Preferences.Complete

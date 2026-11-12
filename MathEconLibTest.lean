@@ -32,6 +32,7 @@ import MathEconLibTest.GameTheory.ConditionalIncentiveControls
 import MathEconLibTest.GameTheory.ConditionalIncentiveCorrelated
 import MathEconLibTest.GameTheory.DemandGraphBoundary
 import MathEconLibTest.GameTheory.DemandRegularityControls
+import MathEconLibTest.GameTheory.ExpectedRecodingBoundary
 import MathEconLibTest.GameTheory.ExplicitComparisonValidity
 import MathEconLibTest.GameTheory.ExplicitComparisons
 import MathEconLibTest.GameTheory.FiniteBayesian
@@ -66,6 +67,7 @@ import MathEconLibTest.Mechanism.Games
 import MathEconLibTest.Mechanism.PostedPriceGames
 import MathEconLibTest.Mechanism.TruthfulNash
 import MathEconLibTest.Mechanism.Utility
+import MathEconLibTest.Mechanism.WeightedWelfareConsumer
 import MathEconLibTest.Namespace
 import MathEconLibTest.Preferences.Basic
 import MathEconLibTest.Preferences.Complete
