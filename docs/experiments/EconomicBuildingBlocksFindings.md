@@ -30,6 +30,9 @@ and bounds all admitted measurable unilateral strategy deviations by it.
 | Supporting linear forms and scalar slopes | `ForMathlib/SupportingForms`, `SupportingSlopes`; IC, monotonicity, optional convexity, payments | pairwise monotonicity loses potential content in multiple dimensions |
 | Feasible-point recovery and parametric maximizers | native budget regularity; canonical GameTheory parametric-optimality theorem | closed feasibility alone does not give a closed demand graph |
 | Finite law composition and support decomposition | native `FinDist` operations and `FinDist/Support`; pure-deviation and finite-existence theorems | support arguments can work without expected utility; finite scope is explicit |
+| Typed action inclusion | existing mechanism/game comaps; actual all-purchase Bayesian control | preserving transfers and prior does not preserve equilibrium when admissible actions change |
+| Admissible mixture witnesses | native support plus the optional witness lift; mean and ex-post quantity budgets | a supported improving pure action may be inadmissible; support-heredity is sufficient, not necessary |
+| Atomic and nonatomic composition | Mathlib PMF bind support; native probability-measure map/join | infinite discrete support retains positive atoms; nonatomic mixing can lose that provenance while retaining pure witnesses |
 | Conditional kernels, averaging and a.e. comparisons | existing native Bayesian machinery plus `InterimAtoms` | null-type beliefs are extra data; arbitrary law preference does not inherit expectation-based recovery |
 | Ordinal representation and calibrated aggregation | existing preferences/choice; order reflection and native weighted welfare | pure ordinal choice, expected utility, welfare and monetary units require different invariance assumptions |
 
@@ -202,13 +205,12 @@ value carrier could not discriminate between designs: the current carrier can
 already be an outcome law. No infinite-mixture or general conditional-consistency
 theorem follows from the finite results.
 
-Remaining pressure points have explicit scope: restricted mixed-deviation menus
-need admissibility of extracted pure witnesses; countable mixtures and infinite
-paths need their own closure and measurability evidence; conditional consistency
-of other law preferences needs substantive hypotheses. The shared mathematics
-package boundary is still a separate ownership decision. No approximate-only
-existence theorem follows from the exact revelation example, and no executable
-algorithm follows from the real-valued finite-law proofs.
+The final controls in MEC-015–017 address action restrictions, restricted mixed
+menus and discrete/nonatomic provenance. They do not infer infinite-path laws
+or conditional consistency of a new preference from static support arguments.
+The shared mathematics package boundary remains a separate ownership decision.
+No approximate-only existence theorem follows from the exact revelation
+example, and no executable algorithm follows from the real-valued law proofs.
 
 Foundational alternatives remain available for local replacement when a new
 consumer discriminates between them. Additional theorem families by themselves
@@ -246,9 +248,39 @@ derivation certificates remain useful without becoming preconditions on every
 equilibrium. At production cost one the endpoint strictly dominates the
 constructed interior family, so that distinction has an actual profit consumer.
 
+## Final building-block controls
+
+MEC-015 changes only the original action domain through a typed native comap.
+The same included incumbent, prior and transfer rule give opposite actual
+Bayesian-equilibrium verdicts. Every payoff is integrable at the prior atom,
+so neither filtering nor null-type behavior explains the difference. The
+restricted consumer uses the general mechanism/game API; the entire real-bid
+auction analysis is not automatically transferred to a new carrier.
+
+MEC-016 refutes pure sufficiency under a genuine mean-quantity budget, with a
+valid incumbent and nonempty admitted pure menu. A guarded witness lift repairs
+transport when the extracted pure obstruction remains admitted. Support-heredity
+is one sufficient construction. A deliberately stronger ex-post budget supplies
+a native positive consumer with the same raw-law evaluation. The missing
+finite-mixture right-unit identity now lives with native finite support facts.
+
+MEC-017 supplies the countable evidence separately: a geometric PMF has proved
+infinite support, and native law-valued response equilibrium uses Mathlib bind
+support against every PMF deviation. The nonatomic control uses actual native
+mixing and flattening: success is certain and every pure continuation succeeds,
+but every action singleton has zero mass. Thus existence of a witness,
+positive atomic provenance and topological support must remain distinct.
+
+The [closure record](BuildingBlockClosure.md) classifies the remaining scope.
+The identified competitions have no further discriminating native consumer on
+this workload. Further theorem delivery alone does not justify another
+foundation experiment. Preserve the inconclusive certificate-compression
+prediction, nondiscriminating original law-carrier criterion and working rival
+foundations rather than reporting every historical hypothesis as confirmed.
+
 ## Verification
 
-At the close of the component experiments, complete and explicit builds cover 283
+At the original component gate, complete and explicit builds cover 283
 authored modules (9,333 jobs). The project-wide kernel audit checks 6,224
 declarations with only standard axioms. The source-token scan covers every
 authored file with zero violations. Changed sources were re-elaborated at each
@@ -261,3 +293,13 @@ harnesses passed 21 integrity, 28 warning-report and 11 import-helper tests at
 the earlier gate. Existing upstream warnings remain visible. The separate shared-
 demand branch also passed its full build and 267-module kernel gate before its
 separately checked final boundary control. The ledger records exact scope.
+
+The final MEC-015–017 closure gate includes the intervening theorem deliveries:
+complete and explicit builds pass 9,354 jobs across 304 authored modules.
+The kernel audit checks 6,478 declarations with only standard axioms. The
+all-source token scan has zero violations. All six Lean files changed in the
+final three experiments re-elaborate with zero violations and no discarded
+declarations, and pass strict warning/line-length checks using generated Lake
+module setups. Header, generated-import and native BIC checks pass. Dependency
+pins and toolchain remain unchanged. The identified experiment queue is closed;
+no uniquely best foundation or completeness across the field is asserted.

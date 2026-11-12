@@ -67,6 +67,9 @@ maps and deviation witnesses.
 | Information transformations | interim/ex-ante comparison with null-signal control | MEC-011 integrated; MEC-013 refutes arbitrary-law atomic recovery |
 | Scales and identification | welfare, monetary comparisons and ordinal/EU boundary | MEC-012 passes; weights and order reflection suffice |
 | Certificate conversion | converting a composite certificate versus composing conversions | MEC-014 integrated: strict provenance inclusion; guarded witness composition |
+| Original action domains | same prior/transfers with real versus nonnegative bids | MEC-015: native opposite BNE verdicts through typed comap |
+| Restricted mixed menus | mean-budget improvement with excluded pure component | MEC-016: counterexample and guarded repair with concrete ex-post budget |
+| Countable and nonatomic laws | infinite-support PMF response and native nonatomic flattening | MEC-017: validated positive atomic result and nonatomic provenance boundary |
 
 Stop a direction after representative consumers use established operations or
 a counterexample narrows the proposal. Finite experiments cannot prove that no
@@ -79,3 +82,8 @@ bid incentives, and existing conditional averaging supplies native Bayesian
 equilibrium. Essential boundedness is reused by both the old first-moment API
 and the new realized-payment product guards. These extensions add useful proof
 depth without another equilibrium definition or inference hierarchy.
+
+The final three controls exhaust the identified building-block competition
+queue on this workload. [The closure record](BuildingBlockClosure.md) preserves
+the original inconclusive predictions and distinguishes further theorem work
+and package ownership from an untested architectural claim.

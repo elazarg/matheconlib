@@ -9,9 +9,15 @@ worktree is created and existing sibling checkouts are left alone.
 
 The supplied comparisons and the follow-up supporting-form, blocking, demand,
 information, calibration, law-preference and provenance paths have completed
-their gates. That experiment collection covers 283 authored modules and 6,224
-kernel-audited declarations. Useful expressiveness and actual reuse governed
-selection; increased proof length was treated as a cost rather than a veto.
+their initial gates (283 modules and 6,224 audited declarations). Four native
+theorem deliveries then exercised the selected components through actual
+Bayesian equilibria and profit comparisons. The final action-domain,
+admissibility and atomic/nonatomic controls close the identified competition
+queue. The final gate covers 304 modules and 6,478 kernel-audited declarations;
+[the closure record](BuildingBlockClosure.md) states the outcomes, validation
+and reopening conditions.
+Useful expressiveness and actual reuse governed selection; increased proof
+length was treated as a cost rather than a veto.
 
 The [findings and component map](EconomicBuildingBlocksFindings.md) describe
 what was selected, the proved limits and the empirical stopping point. The

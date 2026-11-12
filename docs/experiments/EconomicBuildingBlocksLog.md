@@ -925,7 +925,7 @@ remain evidence, but line-count increases alone do not reject a component.
 
 ## MEC-017: atomic and nonatomic mixture provenance
 
-- **Date / status:** 2026-11-12; reserved before implementation.
+- **Date / status:** 2026-11-12; complete, including final collection gates.
 - **Question:** Which support-witness contract survives countable mixing, and
   can it be extended unchanged to nonatomic mixtures?
 - **Alternatives:** existing Mathlib PMF bind support and native law outcomes;
@@ -941,3 +941,34 @@ remain evidence, but line-count increases alone do not reject a component.
   existing action witness, positive singleton mass and positive-measure sets.
 - **Next action:** compile the countable consumer and nonatomic boundary, then
   close the identified competition queue if neither reveals another operation.
+- **Focused result:** `CountablePossibility` builds (3,052 jobs) and
+  `NonatomicWitnessBoundary` builds (3,255 jobs). Both files pass separate
+  warning-as-error and line-length checks. The arbitrary-PMF reduction consumes
+  Mathlib's bind support identity and retains a positive-mass component. A
+  geometric incumbent has proved infinite support and is native equilibrium
+  against every PMF deviation in a parity-based stochastic response game.
+- **Nonatomic control:** the existing uniform value law drives native
+  `OutcomeGame.mixed` and `mixedFlattened`, with map and join proving certain
+  success. Every pure continuation also succeeds, while every action singleton
+  has zero mass. Thus positive-atom provenance fails for this actual flattened
+  law; existence of a pure witness and topological support are not refuted.
+- **Scope / next action:** select existing carrier-specific support and
+  composition operations with the common witness lift. No countable closure
+  follows merely from binary closure, and no general nonatomic witness theorem
+  is claimed. Run the final full/source/kernel gate before closing the queue.
+- **Final gate / outcome:** complete and explicit builds pass 9,354 jobs
+  across all 304 authored modules. The kernel audit checks 6,478 declarations
+  with only standard axioms. All-source token scanning and re-elaboration of
+  all six Lean files changed across MEC-015–017 report zero violations and no
+  discarded declarations. All six pass warning-as-error and line-length checks
+  using Lake's generated module setups. The standalone aggregate strict check
+  encountered a dependency lookup issue; the generated setup matches the
+  passing Lake build and needs no source or dependency change. Header,
+  generated-import and native BIC arithmetic checks pass. A fresh upstream
+  fetch retains `4afb0d5`; dependency pins and toolchain are unchanged.
+- **Stopping result:** the identified building-block competition queue is
+  exhausted on this workload. Existing carrier-specific support/composition
+  and the optional common witness operation cover the final consumers. No new
+  discriminating native consumer emerged. Retain proved boundaries, working
+  rivals and inconclusive original predictions; further theorem delivery or
+  deployment ownership alone does not reopen the competition.

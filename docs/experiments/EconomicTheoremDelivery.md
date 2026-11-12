@@ -196,14 +196,14 @@ does not justify skipping those obligations for type-dependent deviations.
   concerns this equilibrium selection and does not classify other prices,
   strategies or boundary regimes.
 
-## Next economic dependency
+## Subsequent action-domain control
 
-A zero-baseline candidate with positive `K` would discriminate between original
-real bids and a nonnegative purchase restriction. The native carrier permits
-negative purchases. Test the resulting deviation explicitly before extending
-boundary-existence claims. A failure of pointwise IC only at a null lowest type
-would not by itself refute ex-ante BNE; an ex-ante control needs a deviation
-profitable on a set of positive probability or an integrated payoff comparison.
-An atom at the lowest type is a proposed minimal control. Compare actual
-nonnegative actions, restricted by the existing action-comap operation, with
-the original real-action game while retaining the same prior and transfers.
+MEC-015 completes the proposed positive-`K` domain control. At price four and a
+mass-one zero-value prior, the actual negative-bid gain excludes the real zero
+strategy from native BNE. The included zero strategy is native BNE under typed
+nonnegative actions, with the same transfers and prior; every payoff in the
+comparison is integrable. The native mechanism action comap supplies the
+restriction. The [experiment log](EconomicBuildingBlocksLog.md) records its
+full gate. This resolves the domain competition without classifying all
+boundary-price equilibrium families; that larger classification remains
+ordinary theorem delivery on an explicitly chosen action domain.

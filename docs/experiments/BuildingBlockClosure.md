@@ -4,19 +4,22 @@ The user requested exhaustion of the building-block experiments, rather than
 indefinite theorem delivery. The evidence and scope remain those of the
 supplied hypotheses and representative native consumers.
 
+**Status: closed.** The identified competition queue is exhausted on this
+workload; all final integration and integrity gates pass.
+
 ## Final competition queue
 
 | Experiment | Discriminating question | Status |
 | --- | --- | --- |
 | MEC-015 | Does a typed action restriction preserve the model while changing equilibrium? | Complete: native opposite BNE verdicts |
 | MEC-016 | Does support extraction preserve admissibility under a mean-budget menu? | Complete: counterexample and guarded repair |
-| MEC-017 | Does positive-atom provenance survive countable and nonatomic mixing? | Reserved |
+| MEC-017 | Does positive-atom provenance survive countable and nonatomic mixing? | Complete: infinite discrete consumer and nonatomic counterexample |
 
 Each entry is reserved with alternatives and kill conditions in the experiment
 log. Integrate and compile one item at a time on its named child branch. The
-queue is complete when every prediction has a compiled hostile consumer and a
-positive repair or explicit refutation, and the project/source/kernel gates
-pass. Add an item only when a result exposes another concrete discriminator.
+queue is now complete: every queued prediction has a compiled hostile consumer
+and a positive repair or explicit refutation, and the project/source/kernel
+gates pass. Add an item only when a result exposes another concrete discriminator.
 
 ## Competitions already resolved on this workload
 
@@ -54,3 +57,47 @@ pass. Add an item only when a result exposes another concrete discriminator.
 
 Exhausting this queue is an empirical stopping point for the identified
 building-block competitions, not a completeness theorem about economics.
+
+## Synthesis of the final controls
+
+- Typed action inclusion preserves actual outcomes, transfers and the prior,
+  while the changed deviation domain can reverse native Bayesian equilibrium.
+  The existing mechanism comap supplies the construction. This does not make
+  the real-bid auction analysis automatically apply to nonnegative carriers.
+- A supported pure improvement may be inadmissible under a mean budget.
+  Transport requires an admissible obstruction witness. Support-heredity is
+  one sufficient local constructor, not a necessary universal menu law. An
+  explicit ex-post budget supplies a concrete positive repair, with identical
+  raw-law evaluation on both sides.
+- Mathlib PMF bind support covers genuinely infinite discrete mixtures. Native
+  nonatomic map/join instead refutes the positive-singleton-mass contract,
+  even when every pure continuation succeeds. Kernels, atomic support and
+  positive-measure information have distinct contracts.
+
+These results reinforce domain-owned data, explicit comparison/evaluation
+policies, local hypotheses on operations, and optional proof-bearing transport.
+The common operations earn their role through native consumers; no tested new
+capability requires making one equilibrium record or probability class own all
+of choice, matching, mechanism design and information.
+
+## Preserve the strength of the evidence
+
+MEC-003's proposed certificate compression remains undemonstrated despite the
+settled integrability semantics. The original E6 value-carrier criterion was
+nondiscriminating and was replaced by useful law-preference theorems and
+controls. MEC-001 was deferred before compilation and resumed as MEC-009.
+The guarded-core rival compiled, shared actual proofs and remains a working
+alternative; its larger footprint alone did not refute it. The common-math
+demand branch likewise demonstrates actual canonical reuse without selecting
+a permanent package owner.
+
+## Final verification
+
+Complete and explicit builds pass 9,354 jobs across all 304 authored modules.
+The kernel audit checks 6,478 declarations with only standard axioms. Every
+authored source passes the forbidden-token scan. All six Lean files changed
+by the final three experiments re-elaborate with zero violations and no
+discarded declarations, and pass strict warning/line-length checks with the
+generated Lake module setups. Header, generated-import and native BIC checks
+pass. Existing unrelated upstream diagnostics remain visible; dependency pins,
+toolchain and user-owned input files are unchanged.
