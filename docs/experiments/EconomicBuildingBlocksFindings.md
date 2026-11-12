@@ -5,6 +5,31 @@ economics. The source hypotheses, measurements and commands are in
 `EconomicBuildingBlocksLog.md`; the detailed native/guarded comparison is in
 `OptimalityFoundationComparison.md`.
 
+## Selected component map
+
+The selection follows `ComponentEvaluation.md`: useful models/theorems and
+independent reuse take priority over proof length. Assumptions live on the
+operation requiring them. Domain data has its own owner; common mathematics
+earns a shared owner through actual consumers.
+
+| Building block | Concrete reuse and owner | Boundary established |
+| --- | --- | --- |
+| Explicit rooted comparison and ordered specialization | native `GameTheory/Equilibrium/Problem`; revelation, mixed and Bayesian games | incumbent validity and deviation admissibility have different roles |
+| Proof-bearing maps and simulations | native revelation comorphism and measured simulation evidence | exact comparison, domination bounds, retained witnesses and verdicts have different information content |
+| Context-dependent witness lifting | `ForMathlib/WitnessLift`; optional native matching adapters, coalition/law/simulation consumers | states and proposals may have different types; composition retains actual intermediate obstructions |
+| Potential-difference bounds | `ForMathlib/PotentialBounds`; supporting forms and native Afriat cycles | finite telescoping needs no linear structure on observation indices |
+| Supporting linear forms and scalar slopes | `ForMathlib/SupportingForms`, `SupportingSlopes`; IC, monotonicity, optional convexity, payments | pairwise monotonicity loses potential content in multiple dimensions |
+| Feasible-point recovery and parametric maximizers | native budget regularity; canonical GameTheory parametric-optimality theorem | closed feasibility alone does not give a closed demand graph |
+| Finite law composition and support decomposition | native `FinDist` operations and `FinDist/Support`; pure-deviation and finite-existence theorems | support arguments can work without expected utility; finite scope is explicit |
+| Conditional kernels, averaging and a.e. comparisons | existing native Bayesian machinery plus `InterimAtoms` | null-type beliefs are extra data; arbitrary law preference does not inherit expectation-based recovery |
+| Ordinal representation and calibrated aggregation | existing preferences/choice; order reflection and native weighted welfare | pure ordinal choice, expected utility, welfare and monetary units require different invariance assumptions |
+
+The witness operation is optional shared mathematics. It does not make all
+domains use one equilibrium, choice, stability or incentive predicate. The
+guarded-optimality replacement remains a working comparison branch with genuine
+cross-area reuse; its larger footprint is a measured cost, not a proof against
+its usefulness.
+
 ## What actually changed
 
 The experiment fast-forwarded the local fork and `origin/main` to upstream
@@ -98,8 +123,9 @@ or hypothetical encodings as successful reuse.
   actual blocking pair from the original block. A complementary market refutes
   singleton sufficiency without substitutes. Coalition transport reuses a
   context-dependent witness operation, retaining exact update provenance;
-  coordination refutes its converse. The generic operation remains a prototype
-  until further independent uses justify its public ownership.
+  coordination refutes its converse. Subsequent law-support and simulation uses
+  justify a small optional common witness owner, now consumed by native matching
+  adapters as well.
 - **Changing choice sets:** native positive-price budgets admit feasible-point
   recovery even at zero wealth. The demand graph theorem compiles against the
   actual canonical GameTheory parametric-optimality theorem on a separate shared
@@ -138,15 +164,28 @@ or hypothetical encodings as successful reuse.
   allowing Boolean scoring. An ex-ante possibility equilibrium can still fail
   conditional optimality at a positive-mass type, so the expected-utility
   information theorem cannot be generalized by replacing its comparison alone.
+- **Witness composition:** the optional operation retains an actual intermediate
+  obstruction, source context and provenance. Matching reads its original
+  membership and singleton block; coalitions keep exact updates; mixed failures
+  keep supported actions. Converting a composite simulation preserves a sound
+  endpoint bound but can admit witnesses that cannot pass through the specified
+  middle stage. The proved relation is strict inclusion, with compatible verdict
+  transport. Richer proof data therefore earns a role independently of shorter
+  clients; no category or universal equilibrium owner is required.
 
 ## What remains informative
 
-Further variations of the same logical packaging have diminishing returns.
-The changing-budget path has now been tested. Conditional information, welfare
-calibration, law preferences and certificate-conversion provenance are the next
-discriminating paths; their reserved experiments preserve explicit kill
-conditions. A new abstraction must improve those consumers rather than merely
-rename a condition.
+All six supplied experiment directions now have compiled evidence, including
+the useful law-preference replacement for the original nondiscriminating
+criterion. The resumed demand path and the additional supporting-form, blocking,
+information, calibration and certificate-conversion paths test interactions
+between the components, with both successful consumers and proved boundaries.
+
+Further logical repackaging has diminishing returns on this workload. The next
+productive step is theorem delivery using these operations, reopening a
+foundation when an actual consumer needs a missing operation or refutes a
+stated law. This is evidence for a coherent collection, not a claim that finite
+experiments exhaust mathematical economics or identify a uniquely best design.
 
 The outcome-law experiment now supplies named finite theorems and a failed
 conditioning generalization. Its original prediction about still needing a
@@ -154,20 +193,30 @@ value carrier could not discriminate between designs: the current carrier can
 already be an outcome law. No infinite-mixture or general conditional-consistency
 theorem follows from the finite results.
 
-These limits keep the general field-level conclusions provisional while making
-the next experiment concrete. Foundational alternatives remain available for
-local replacement whenever a new consumer can discriminate between them.
+Remaining pressure points have explicit scope: restricted mixed-deviation menus
+need admissibility of extracted pure witnesses; countable mixtures and infinite
+paths need their own closure and measurability evidence; conditional consistency
+of other law preferences needs substantive hypotheses. The shared mathematics
+package boundary is still a separate ownership decision. No approximate-only
+existence theorem follows from the exact revelation example, and no executable
+algorithm follows from the real-valued finite-law proofs.
+
+Foundational alternatives remain available for local replacement when a new
+consumer discriminates between them. Additional theorem families by themselves
+are not another architecture experiment.
 
 ## Verification
 
-The first collection passes the complete build and an explicit build of
-all 255 authored modules (9,305 jobs). The project-wide compiled audit checks
-5,870 declarations with only standard axioms; the source-token scan finds no
-holes. Individual experiment gates cover source elaboration, including
-discarded examples. Header/import checks and the 21 integrity, 28 warning-report
-and 11 import-helper harness tests pass. Existing upstream warnings remain
-visible. The later reduced-incentive, obstruction and budget collection also
-passes full builds; the shared-demand branch covers 267 modules and 5,988
-declarations before its separately checked final boundary control. Newer focused
-gates and pending integration checks are recorded in the ledger; do not read the
-earlier counts as coverage of later unbuilt drafts.
+The final native collection passes complete and explicit builds of all 283
+authored modules (9,333 jobs). The project-wide kernel audit checks 6,224
+declarations with only standard axioms. The source-token scan covers every
+authored file with zero violations. Changed sources were re-elaborated at each
+slice, including all nine current files in the final slice, with zero violations;
+unchanged sources were not all re-elaborated by the source audit at the final gate.
+
+New files pass strict warning/line-length checks. Header and generated-import
+checks and native BIC exact-arithmetic checks pass. The unchanged audit/helper
+harnesses passed 21 integrity, 28 warning-report and 11 import-helper tests at
+the earlier gate. Existing upstream warnings remain visible. The separate shared-
+demand branch also passed its full build and 267-module kernel gate before its
+separately checked final boundary control. The ledger records exact scope.

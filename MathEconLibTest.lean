@@ -21,7 +21,6 @@ import MathEconLibTest.Competition.Cournot
 import MathEconLibTest.ForMathlib.Order.Refinement
 import MathEconLibTest.GameTheory.ActionMaps
 import MathEconLibTest.GameTheory.BayesianRevelation
-import MathEconLibTest.GameTheory.BlockingWitness
 import MathEconLibTest.GameTheory.BlockingWitnessConsumer
 import MathEconLibTest.GameTheory.CandidateValidity
 import MathEconLibTest.GameTheory.ChainedReductions
@@ -47,6 +46,7 @@ import MathEconLibTest.GameTheory.ReducedIncentiveConsumer
 import MathEconLibTest.GameTheory.ReductionChains
 import MathEconLibTest.GameTheory.ReductionSupport
 import MathEconLibTest.GameTheory.RevelationConsumer
+import MathEconLibTest.GameTheory.SimulationWitnessCoherence
 import MathEconLibTest.GameTheory.StateOutcomeEvaluation
 import MathEconLibTest.GameTheory.Strategic
 import MathEconLibTest.GameTheory.StrategicTransport
