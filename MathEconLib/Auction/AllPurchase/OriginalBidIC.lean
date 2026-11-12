@@ -11,11 +11,12 @@ public import MathEconLib.Auction.AllPurchase.QuadraticIncentives
 public import MathEconLib.Auction.AllocationBounds
 
 /-!
-# Interior strategy regularity and original-bid incentives
+# Continuous all-purchase strategies and original-bid incentives
 
-The interior all-pay formula supplies strategy continuity and the
-cost-minimizing lowest bid. Highest-bid allocation controls deviations
-outside the report-generated bid interval.
+A continuous increasing strategy with a cost-minimizing lowest bid covers all
+original real bids. Highest-bid allocation controls deviations outside the
+report-generated bid interval. The interior all-pay formula supplies continuity
+and the lowest-bid identity when an interior certificate is available.
 -/
 
 @[expose] public section
@@ -30,6 +31,55 @@ variable {Ω : Type} [MeasureSpace Ω] [IsProbabilityMeasure (ℙ : Measure Ω)]
 variable [n.AtLeastTwo] (A : LinearScarcityAuction Ω n)
 variable [A.HasIdenticalTypes] [A.HasIndependentTypes]
 variable [A.HasBoundedTypes] [A.HasAtomlessTypes]
+
+/-- Continuous report coverage and a cost-minimizing lowest bid reject every original real bid.
+The conditions apply independently of the sign of marginal net cost at zero. -/
+theorem hasUniversalIC_of_continuous_strategy
+    (β : ℝ → ℝ) (measurable : Measurable β)
+    (strictMonoOn : StrictMonoOn β (Icc A.lowestType A.highestType))
+    (continuous : ContinuousOn β (Icc A.lowestType A.highestType))
+    (lowestBid : β A.lowestType = -(A.K_linear β) / (2 * A.α_coeff))
+    (i : Fin n)
+    (reportIC : BidderProblem.HasTypeDeviationIC
+      (A.toBidderProblem A.spec.isUnitIntervalAllocation β i)) :
+    BidderProblem.HasUniversalIC
+      (A.toBidderProblem A.spec.isUnitIntervalAllocation β i) Set.univ := by
+  have integrable (j : Fin n) : Integrable (fun sample => β (A.θ j sample)) ℙ :=
+    A.toAuction.integrable_comp_type_of_monotoneOn β measurable strictMonoOn.monotoneOn j
+  let P := A.toQuadraticCostProblem β measurable integrable i
+  let : BidderProblem.HasTypeDeviationIC P.toBidderProblem := reportIC
+  have lowEqual : P.lowestType = A.lowestType := A.θmin_eq_lowestType i
+  have highEqual : P.highestType = A.highestType := A.θmax_eq_highestType i
+  have intervalEqual : P.typeInterval = Icc A.lowestType A.highestType := by
+    change Icc P.lowestType P.highestType = _
+    rw [lowEqual, highEqual]
+  apply P.hasUniversalIC_of_continuous_strategy
+  · rw [lowEqual, highEqual]
+    exact A.toAuction.lowestType_le_highestType
+  · rw [intervalEqual]
+    exact strictMonoOn.monotoneOn
+  · rw [intervalEqual]
+    exact continuous
+  · rw [lowEqual]
+    exact lowestBid
+  · rw [lowEqual]
+    exact A.toAuction.q_strat_eq_zero_of_le_lowest A.spec.usesStrictHighestBidAllocation
+      strictMonoOn.monotoneOn i le_rfl
+  · rw [highEqual]
+    change A.q_strat β i (β A.highestType) = 1
+    have member : A.highestType ∈ Icc A.lowestType A.highestType :=
+      ⟨A.toAuction.lowestType_le_highestType, le_rfl⟩
+    simpa only [Auction.commonCDF_highestType, one_pow] using
+      A.toAuction.q_strat_at_strictMono_eq A.spec.usesStrictHighestBidAllocation
+        strictMonoOn measurable i member
+  · intro bid below
+    rw [lowEqual] at below
+    exact A.toAuction.q_strat_eq_zero_of_le_lowest A.spec.usesStrictHighestBidAllocation
+      strictMonoOn.monotoneOn i below.le
+  · intro bid above
+    rw [highEqual] at above
+    exact A.toAuction.q_strat_eq_one_of_highest_lt A.spec.usesStrictHighestBidAllocation
+      strictMonoOn.monotoneOn i above
 
 /-- The native interior formula makes the prescribed strategy continuous on its type interval. -/
 theorem IsInteriorRegimeStrategy.continuousOn {β : ℝ → ℝ} {i : Fin n}
@@ -76,35 +126,9 @@ existing interior assumptions rather than additional hypotheses. -/
 theorem IsInteriorRegimeStrategy.hasUniversalIC {β : ℝ → ℝ} {i : Fin n}
     (h : A.IsInteriorRegimeStrategy β i) :
     BidderProblem.HasUniversalIC
-      (A.toBidderProblem A.spec.isUnitIntervalAllocation β i) Set.univ := by
-  let P := A.toQuadraticCostProblem β h.measurable h.integrable i
-  let : BidderProblem.HasTypeDeviationIC P.toBidderProblem := h.typeDeviationIC
-  have lowEqual : P.lowestType = A.lowestType := A.θmin_eq_lowestType i
-  have highEqual : P.highestType = A.highestType := A.θmax_eq_highestType i
-  have intervalEqual : P.typeInterval = Icc A.lowestType A.highestType := by
-    change Icc P.lowestType P.highestType = _
-    rw [lowEqual, highEqual]
-  apply P.hasUniversalIC_of_continuous_strategy
-  · rw [lowEqual, highEqual]
-    exact A.toAuction.lowestType_le_highestType
-  · rw [intervalEqual]
-    exact h.strictMonoOn.monotoneOn
-  · rw [intervalEqual]
-    exact h.continuousOn A
-  · rw [lowEqual]
-    exact h.lowestType_eq_vertex A
-  · rw [lowEqual]
-    exact h.q_strat_lowestType A
-  · rw [highEqual]
-    exact h.q_strat_highestType A
-  · intro bid below
-    rw [lowEqual] at below
-    exact A.toAuction.q_strat_eq_zero_of_le_lowest A.spec.usesStrictHighestBidAllocation
-      h.strictMonoOn.monotoneOn i below.le
-  · intro bid above
-    rw [highEqual] at above
-    exact A.toAuction.q_strat_eq_one_of_highest_lt A.spec.usesStrictHighestBidAllocation
-      h.strictMonoOn.monotoneOn i above
+      (A.toBidderProblem A.spec.isUnitIntervalAllocation β i) Set.univ :=
+  A.hasUniversalIC_of_continuous_strategy β h.measurable h.strictMonoOn
+    (h.continuousOn A) (h.lowestType_eq_vertex A) i h.typeDeviationIC
 
 /-- Identical independent bidders face the same interim allocation and quadratic cost. -/
 theorem interimPayoff_eq (β : ℝ → ℝ)

@@ -9,6 +9,8 @@ public import MathEconLibExamples.AllPurchase.UniformTwoBidder
 public import MathEconLibExamples.AllPurchase.UniformTwoBidderBayesianPayoff
 public import MathEconLibExamples.AllPurchase.UniformPriceFamily
 public import MathEconLibExamples.AllPurchase.UniformPriceFamilyProfit
+public import MathEconLibExamples.AllPurchase.UniformBoundaryEquilibrium
+public import MathEconLibExamples.AllPurchase.UniformBoundaryProfit
 
 public import MathEconLibExamples.AllPurchase.Welfare
 public import MathEconLibExamples.Choice.SubstituteEnvelope
@@ -35,6 +37,8 @@ Concrete economic models illustrate the library's definitions and results.
   unilateral strategy deviation has expected utility at most `13/36`.
 * Repriced uniform auctions have certified equilibria throughout `(0, 5/2)`;
   price `2` uniquely maximizes actual seller profit in this zero-cost family.
+* At cost one, the zero-baseline endpoint equilibrium at price `5/2` earns
+  strictly more than every constructed interior-family equilibrium.
 * A Becker-inspired crime-choice model gives a threshold rule and deterrence results
   for individuals and aggregate crime under a fixed type distribution.
 * A two-couple marriage market has distinct stable outcomes whose lattice join,

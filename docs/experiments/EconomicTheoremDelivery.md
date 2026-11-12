@@ -154,12 +154,56 @@ does not justify skipping those obligations for type-dependent deviations.
   primitives. Boundary regimes and other equilibrium families remain outside
   this delivery's conclusions.
 
+## Delivery 04: the zero-baseline endpoint equilibrium
+
+- **Baseline:** `11feabe`; child
+  `codex/economic-delivery-04-boundary-equilibrium`.
+- **Target:** actual native BNE at price `5/2`, with purchases `v/2`, zero
+  lowest-type utility and `K=0`. Prove that this strategy does not satisfy the
+  strict interior certificate, and compare its actual seller profit at cost
+  one with every constructed interior-family member.
+- **Reuse:** factor the existing original-action coverage proof into an auction
+  operation taking continuity and the cost-minimizing lowest bid explicitly.
+  Derive those premises from interior certificates for existing clients; supply
+  them directly at the endpoint. Keep native equilibrium and integrability
+  semantics and the actual repriced mechanism.
+- **Scope:** a single boundary endpoint and its comparison with the constructed
+  interior family. A global boundary-regime existence theorem is separate.
+- **Focused result:** the generic auction coverage operation and the existing
+  interior specialization pass strictly (9,094 jobs). The actual repriced
+  endpoint supplies native boundary utility, all-real-bid IC and BNE, and proves
+  `not_interior` for every bidder. Its strict target passes (9,112 jobs).
+- **Economic consumer:** the endpoint's actual aggregate quantity is one and
+  its actual profit at production cost one is `3/2`. Every constructed interior
+  family member earns strictly less at that cost, with exact gap
+  `(2/3)(p-5/2)^2`. The scalar optimum is connected to the independently
+  evaluated endpoint, without an interior certificate there. The focused
+  strict profit target passes (9,115 jobs). The interior family's quantity also
+  gives its explicit profit formula at every production cost; the old zero-cost
+  result is a specialization.
+- **Complete validation:** complete and explicit builds of all 300 authored
+  modules pass (9,350 jobs). The kernel audit checks 6,367 declarations using
+  only standard axioms. All-source forbidden-token scanning and re-elaboration
+  of all five changed Lean files report zero violations; no discarded
+  declarations occur in the source pass. Changed implementation/example targets
+  pass strict warning and line-length checks. Header, generated-import and
+  native BIC arithmetic checks pass. Existing unrelated upstream diagnostics
+  remain visible. A fresh upstream fetch retains `4afb0d5`; dependency pins
+  and toolchain remain unchanged.
+- **Status:** complete. The actual endpoint is native Bayesian Nash and lacks
+  the strict interior certificate. Its profit at cost one strictly dominates
+  every constructed interior-family equilibrium at that same cost. The result
+  concerns this equilibrium selection and does not classify other prices,
+  strategies or boundary regimes.
+
 ## Next economic dependency
 
-The endpoint price `5/2` has candidate strategy `v/2`, zero baseline and `K=0`.
-It fails the strict interior certificate. A thin endpoint equilibrium proof,
-using native original-action IC and the generic Bayesian bridge directly,
-would test whether those operations support a different regime without
-introducing a hierarchy. At production cost one, the common algebraic optimum
-is exactly this endpoint. Establish that actual equilibrium before extending
-the family or making a comparison across regimes.
+A zero-baseline candidate with positive `K` would discriminate between original
+real bids and a nonnegative purchase restriction. The native carrier permits
+negative purchases. Test the resulting deviation explicitly before extending
+boundary-existence claims. A failure of pointwise IC only at a null lowest type
+would not by itself refute ex-ante BNE; an ex-ante control needs a deviation
+profitable on a set of positive probability or an integrated payoff comparison.
+An atom at the lowest type is a proposed minimal control. Compare actual
+nonnegative actions, restricted by the existing action-comap operation, with
+the original real-action game while retaining the same prior and transfers.

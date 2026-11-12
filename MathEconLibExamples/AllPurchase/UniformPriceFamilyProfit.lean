@@ -13,10 +13,9 @@ public import MathEconLib.Auction.AllPurchase.EquilibriumPriceComparison
 
 The price-indexed mechanisms retain the original value law and scarcity rule.
 Their already certified interior equilibria have aggregate quantity
-`2 * (4 - p) / 3` and actual seller profit `2 * p * (4 - p) / 3` at zero cost.
+`2 * (4 - p) / 3` and actual seller profit `2 * (p - c) * (4 - p) / 3` at cost `c`.
 The native two-auction comparison identifies price two as the unique optimum
-within this family, with square profit gap `2/3 * (p - 2)^2`.
-No claim is made about another equilibrium regime or production cost.
+within the zero-cost family, with square profit gap `2/3 * (p - 2)^2`.
 -/
 
 @[expose] public noncomputable section
@@ -40,16 +39,19 @@ theorem expectedAggregateBid_eq (price : Price) :
   norm_num [MathEconLib.AllPurchase.interiorMeanQuantity]
   ring
 
+/-- Native bundled profit at an arbitrary production cost, using the actual family quantity. -/
+theorem bundledProfit_eq_cost (price : Price) (cost : ℝ) :
+    (model price).bundledProfit (model price).spec (strategy price) cost =
+      2 * (price.val - cost) * (4 - price.val) / 3 := by
+  change (price.val - cost) * (model price).expectedAggregateBid (strategy price) = _
+  rw [expectedAggregateBid_eq]
+  ring
+
 /-- Native bundled profit evaluated at the equilibrium of the repriced mechanism. -/
 theorem bundledProfit_eq (price : Price) :
     (model price).bundledProfit (model price).spec (strategy price) 0 =
       2 * price.val * (4 - price.val) / 3 := by
-  rw [(model price).bundledProfit_eq_sellerProfitInterior
-    (strategy price) (interior_strategy price) 0, expectedSqrtAllPayBid_eq]
-  change MathEconLib.AllPurchase.sellerProfitInterior 3 1 0 (1 / 2) 2 price.val = _
-  norm_num [MathEconLib.AllPurchase.sellerProfitInterior,
-    MathEconLib.AllPurchase.interiorMeanQuantity]
-  ring
+  simpa only [sub_zero] using bundledProfit_eq_cost price 0
 
 /-- The profit-maximizing member of the constructed zero-cost interior family. -/
 def optimalPrice : Price := ⟨2, by norm_num⟩
