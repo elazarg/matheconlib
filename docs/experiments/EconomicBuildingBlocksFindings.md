@@ -16,6 +16,10 @@ earns a shared owner through actual consumers.
 native applications. Its first path upgrades the existing interior-strategy
 report certificate to all original real bids, using explicit payoff coverage
 and derived regularity, with the uniform auction as an independent consumer.
+The next path packages those incentives as native Bayesian equilibrium under
+the actual type law, reusing conditional averaging and bounded-factor
+integrability. The uniform consumer computes actual expected utility `13/36`
+and bounds all admitted measurable unilateral strategy deviations by it.
 
 | Building block | Concrete reuse and owner | Boundary established |
 | --- | --- | --- |

@@ -100,7 +100,23 @@ does not justify skipping those obligations for type-dependent deviations.
   unilateral strategy profile by that value. It uses native interim averaging,
   the actual marginal pushforward and the existing uniform second moment. Its
   focused strict target passes (9,109 jobs).
-- **Status:** native and numerical paths pass; full integration gates follow.
-  The general result assumes a supplied interior certificate; the concrete
-  uniform model supplies one. No arbitrary-price existence claim or change
-  in equilibrium semantics is introduced.
+- **Complete validation:** complete and explicit builds of all 293 authored
+  modules pass (9,343 jobs). The project-wide kernel audit checks 6,261
+  declarations using only standard axioms; all-source token scanning and
+  re-elaboration of all 10 changed Lean files report zero violations. Changed
+  implementation/example files pass strict warning/line-length checks. Header,
+  generated-import and native BIC arithmetic checks pass. Dependency pins,
+  toolchain and the standard deviation-integrability convention are unchanged.
+- **Status:** complete. The general result assumes a supplied interior
+  certificate; the concrete uniform model supplies one and its actual native
+  BNE payoff is computed. No arbitrary-price existence claim or change in
+  equilibrium semantics is introduced.
+
+## Next economic dependency
+
+A comparison of actual equilibria at different posted prices needs a
+price-indexed auction/strategy family on an explicitly admissible regime.
+Construct those equilibria before interpreting a price optimizer as a seller's
+choice across auctions. The existing single-auction profit envelope and the
+new BNE certification supply the proof components; they do not provide such
+a family by themselves.

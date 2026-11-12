@@ -72,3 +72,10 @@ Stop a direction after representative consumers use established operations or
 a counterexample narrows the proposal. Finite experiments cannot prove that no
 better abstractions exist; they can support a coherent, tested collection and
 expose remaining gaps.
+
+The subsequent [theorem deliveries](EconomicTheoremDelivery.md) test the selected
+operations on actual native consumers. Report coverage now supplies all original
+bid incentives, and existing conditional averaging supplies native Bayesian
+equilibrium. Essential boundedness is reused by both the old first-moment API
+and the new realized-payment product guards. These extensions add useful proof
+depth without another equilibrium definition or inference hierarchy.
