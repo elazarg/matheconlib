@@ -768,3 +768,14 @@ remain evidence, but line-count increases alone do not reject a component.
   guarded composition that retains that proof; advertise exactly its stronger
   provenance contract. Keep the original prototype on its evidence commits,
   and do not replace native verdict predicates or impose a hierarchy.
+- **Baseline result:** conversion of a simulation to a bad-deviation lift is
+  sound for failed weak comparisons, including incomparable values. Sequential
+  converted provenance implies the converted-composite endpoint bound. The
+  three-stage natural-number control proves strict inclusion: source witness
+  one satisfies the composite bound but cannot pass through the middle's only
+  admitted witness two. Witness two still covers the target obstruction. The
+  invalid source endpoint remains an admitted bad deviation; incumbent validity
+  was not silently applied to proposals.
+- **Baseline command:** `lake --iofail build
+  MathEconLibTest.GameTheory.SimulationWitnessCoherence` passes (415 jobs).
+  Preserve this implementation before testing the stronger public composition.
