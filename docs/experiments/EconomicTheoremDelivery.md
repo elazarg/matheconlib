@@ -139,7 +139,20 @@ does not justify skipping those obligations for type-dependent deviations.
   existence at the maximizing price is supplied by the family, rather than
   assumed from a polynomial optimum. Price two recovers the original auction
   and strategy. The focused strict consumer target passes (9,113 jobs).
-- **Status:** in progress.
+- **Complete validation:** complete and explicit builds of all 298 authored
+  modules pass (9,348 jobs). The kernel audit checks 6,335 declarations with
+  only standard axioms. All-source forbidden-token scanning and re-elaboration
+  of all eight changed Lean files report zero violations; the source pass
+  finds no discarded declarations. Changed implementation/example files pass
+  strict warning and line-length checks. Header, generated-import and native
+  BIC arithmetic checks pass. Existing unrelated upstream diagnostics remain
+  visible. A fresh upstream fetch retains `4afb0d5`; dependency pins and
+  toolchain remain unchanged.
+- **Status:** complete. Actual equilibria and the unique zero-cost profit
+  maximizer are constructed within the specified interior-price family.
+  Two supplied interior auctions can also be compared from their common
+  primitives. Boundary regimes and other equilibrium families remain outside
+  this delivery's conclusions.
 
 ## Next economic dependency
 
