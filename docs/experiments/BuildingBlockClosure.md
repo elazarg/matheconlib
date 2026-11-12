@@ -8,7 +8,7 @@ supplied hypotheses and representative native consumers.
 
 | Experiment | Discriminating question | Status |
 | --- | --- | --- |
-| MEC-015 | Does a typed action restriction preserve the model while changing equilibrium? | Reserved |
+| MEC-015 | Does a typed action restriction preserve the model while changing equilibrium? | Complete: native opposite BNE verdicts |
 | MEC-016 | Does support extraction preserve admissibility under a mean-budget menu? | Reserved |
 | MEC-017 | Does positive-atom provenance survive countable and nonatomic mixing? | Reserved |
 

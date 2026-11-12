@@ -831,7 +831,7 @@ remain evidence, but line-count increases alone do not reject a component.
 
 ## MEC-015: action domains at positive marginal cost
 
-- **Date / status:** 2026-11-12; reserved before implementation.
+- **Date / status:** 2026-11-12; complete, including full and source gates.
 - **Question:** Can the existing action-comap operation express the economically
   material difference between real bids and nonnegative purchases, without
   changing equilibrium semantics or generalizing every auction carrier?
@@ -864,6 +864,13 @@ remain evidence, but line-count increases alone do not reject a component.
   generalized, and their entire analysis is not automatically transported.
   The consumer needs no new equilibrium or probability class. Full and source
   gates run before collection.
+- **Gate / outcome:** complete and explicit builds pass 9,351 jobs across all
+  301 authored modules. The kernel audit checks 6,408 declarations with only
+  standard axioms; all-source token scanning and re-elaboration of both changed
+  Lean files report zero violations and no discarded declarations. Header,
+  generated-import and native BIC arithmetic checks pass. Dependency pins are
+  unchanged. Existing typed action comaps suffice for this consumer; changing
+  admissible actions is a semantic change that cannot be hidden in prose.
 
 ## MEC-016: admissibility of extracted pure witnesses
 
