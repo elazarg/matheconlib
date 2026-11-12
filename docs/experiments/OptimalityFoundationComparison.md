@@ -64,8 +64,16 @@ Guarded coverage is expressible without game imports and really is reused in
 two areas, with unchanged hypotheses. That part of the operations hypothesis
 survives. Requiring it to own these native definitions does not earn a reduction
 in proof work: these consumers mostly reconstruct or discard guards that their
-existing menus already enforce. The smaller native control is the better
-implementation on this workload.
+existing menus already enforce. The initial cost-based selection favored the
+smaller native control on this workload.
+
+Under the user's later expressiveness-first criteria in
+`ComponentEvaluation.md`, this is a cost observation, not a decisive rejection.
+Shared coverage succeeds; the comparison has not demonstrated a new model or
+theorem that needs all native judgments to use this exact representation.
+Independent ownership remains available when another consumer needs it. The
+later witness-operation selection illustrates how richer retained evidence can
+justify a component even with extra code.
 
 This does not refute a mathematical operation with another demonstrated
 consumer, nor establish a universal equilibrium record. The revelation map

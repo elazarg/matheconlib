@@ -62,11 +62,11 @@ maps and deviation witnesses.
 | Reduced incentive views | supporting utility/allocation slopes, payment theory, multi-unit quantities | MEC-007 and MEC-010 integrated; shared potential cycles also serve Afriat |
 | Blocking proposals and coalitions | contracts, classical matching, strong Nash with exact scope | MEC-008; MEC-014 extracts optional witness operation and native adapters |
 | Parametric choice | changing budgets, zero wealth, closed demand graph | MEC-009 shared branch; native geometry collected |
-| Separate states and outcomes | typed blocking proposals without fabricated rewards | MEC-008; rooted provenance needed |
-| Preferences over laws | non-expected-utility pure-deviation sufficiency | MEC-013 focused pass; finite existence and conditional-recovery counterexample |
+| Separate states and outcomes | typed blocking proposals without fabricated rewards | MEC-008/014; context-dependent public witness relation |
+| Preferences over laws | non-expected-utility pure-deviation sufficiency | MEC-013 integrated; finite existence and conditional-recovery counterexample |
 | Information transformations | interim/ex-ante comparison with null-signal control | MEC-011 integrated; MEC-013 refutes arbitrary-law atomic recovery |
 | Scales and identification | welfare, monetary comparisons and ordinal/EU boundary | MEC-012 passes; weights and order reflection suffice |
-| Certificate conversion | converting a composite certificate versus composing conversions | MEC-014 focused pass: strict provenance inclusion; guarded witness composition |
+| Certificate conversion | converting a composite certificate versus composing conversions | MEC-014 integrated: strict provenance inclusion; guarded witness composition |
 
 Stop a direction after representative consumers use established operations or
 a counterexample narrows the proposal. Finite experiments cannot prove that no

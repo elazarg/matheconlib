@@ -139,7 +139,7 @@ remain evidence, but line-count increases alone do not reject a component.
   `f61ec82` over upstream `b0c6f35`; committed reproduction templates and
   commands will accompany the result. The GameTheory mathematical owner remains
   canonical during the experiment; no package ownership is frozen here.
-- **Outcome:** not run. A native recovery draft is retained locally, but no
+- **Outcome at deferral:** not run. A native recovery draft is retained locally, but no
   build, measurement or conclusion is claimed. The user's revised
   `Experiments.md` makes the record-versus-operations comparison the first
   priority. Preserve this reservation and return only if extraction becomes
@@ -244,6 +244,12 @@ remain evidence, but line-count increases alone do not reject a component.
   boundary and expressiveness of the current record. It does not demonstrate
   a certificate-size reduction; paired E1/E3 measurements must still test that
   hypothesis without changing the accepted deviations or candidate guards.
+- **Later assessment:** E1/E3 supplied the paired proof-cost comparisons, while
+  the user's expressiveness-first criteria supersede cost as an adoption test.
+  No certificate-size reduction was demonstrated. The semantic evaluation
+  boundary is settled for this slice; the unproved compression prediction is
+  retained as such and does not require more guard repackaging without a useful
+  new consumer. MEC-013 separately supplies actual law-preference theorems.
 
 ## MEC-004 / source E1: Bayesian revelation through records and direct lifts
 
@@ -306,7 +312,7 @@ remain evidence, but line-count increases alone do not reject a component.
 
 ## MEC-005 / source E3: who owns optimality proofs?
 
-- **Date / status:** 2026-11-12; reserved, in progress.
+- **Date / status:** 2026-11-12; complete, native and guarded replacements both validated.
 - **Question:** Does a Mathlib-only guarded optimality operation earn ownership
   of reusable proofs across equilibrium and attained choice, against the best
   native direct/record baseline?
@@ -368,6 +374,13 @@ remain evidence, but line-count increases alone do not reject a component.
   canonicalization for collection. This is evidence against forcing this
   guarded representation on these consumers, not against every independently
   useful mathematical operation or future foundational change.
+- **Later assessment under revised criteria:** the preceding cost-based
+  selection is historical evidence, not a rule rejecting longer components.
+  Guarded coverage establishes genuine cross-area reuse. No additional model or
+  theorem in this comparison requires every native judgment to use its exact
+  representation. MEC-007 through MEC-014 select other shared operations through
+  useful native consumers, including a richer witness certificate despite its
+  extra proof data and implementation.
 
 ## MEC-006 / source E5: chained dominated-action reductions
 
@@ -747,7 +760,7 @@ remain evidence, but line-count increases alone do not reject a component.
 
 ## MEC-014: certificate conversion and retained provenance
 
-- **Date / status:** 2026-11-12; reserved, independent draft preparation.
+- **Date / status:** 2026-11-12; complete, including project-wide coverage and source checks.
 - **Question:** Does converting a composite simulation preserve the same witness
   relation as composing the converted obstruction lifts?
 - **Alternatives:** equality of retained provenance; one-way inclusion with
@@ -798,3 +811,20 @@ remain evidence, but line-count increases alone do not reject a component.
   CoalitionWitnessConsumer, PossibilityInformationBoundary and
   SimulationWitnessCoherence passes (3,073 jobs). Full project, explicit module
   coverage, strict-file and source/kernel audits run before collection.
+- **Final gate:** all seven changed implementation/consumer files pass warning-
+  as-error and line-length checks. Complete and explicit all-source builds pass
+  9,333 jobs. Discovery covers every authored module, including orphan sources:
+  283 modules and 6,224 declarations, with only `propext`, `Classical.choice`
+  and `Quot.sound`; the full source-token scan has zero violations. All nine
+  changed current Lean files re-elaborate with zero violations and no discarded
+  examples. Header and generated-import checks and the native BIC exact-
+  arithmetic regression script pass. Existing upstream warnings remain visible.
+  Semantic review confirms the stronger provenance and strict conversion bound.
+- **Outcome / stopping point:** select the optional witness operation and native
+  adapters. Every supplied direction and the additional component interactions
+  now has compiled evidence. No remaining proposed foundation change predicts a
+  new discriminating result on these consumers. Further work is theorem delivery
+  or a specifically motivated new competition; countable laws, restricted mixed
+  menus, general conditional consistency and package ownership retain their
+  stated limits. This is empirical diminishing returns, not a completeness
+  theorem about all possible economic abstractions.

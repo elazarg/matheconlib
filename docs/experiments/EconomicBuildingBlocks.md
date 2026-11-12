@@ -5,6 +5,22 @@ This is a fork-local design experiment, collecting on
 branch; successful evidence is merged into the collecting branch. No new
 worktree is created and existing sibling checkouts are left alone.
 
+## Current result
+
+The supplied comparisons and the follow-up supporting-form, blocking, demand,
+information, calibration, law-preference and provenance paths have completed
+their gates. The final native collection covers 283 authored modules and 6,224
+kernel-audited declarations. Useful expressiveness and actual reuse governed
+selection; increased proof length was treated as a cost rather than a veto.
+
+The [findings and component map](EconomicBuildingBlocksFindings.md) describe
+what was selected, the proved limits and the empirical stopping point. The
+[evaluation criteria](ComponentEvaluation.md) cite the design guidance used.
+The [log](EconomicBuildingBlocksLog.md) preserves original questions and failed,
+narrowed and supporting observations. The working guarded-foundation and shared-
+demand alternatives remain on named evidence branches. Basic abstractions remain
+replaceable when another concrete consumer discriminates between designs.
+
 ## Starting point
 
 On 2026-11-12 the local fork and its `origin/main` were fast-forwarded to
@@ -37,7 +53,7 @@ including open design choices, as extensively as useful. Existing APIs are a
 comparison baseline, not a veto. Evidence selects what to retain or recommend;
 semantic differences must be stated rather than counted as free simplification.
 
-## Experiment order after the revised inputs
+## Initial experiment order after the revised inputs
 
 1. **E4: strong Nash and local comparability.** Generalize the theorem on a
    real core branch, retain a linear-order specialization, and test vector
@@ -55,18 +71,18 @@ semantic differences must be stated rather than counted as free simplification.
    question remains unresolved. The simulations branch is a separate pinned
    source, never silently substituted for main.
 
-The initial demand probe was reserved before the revised files arrived. It is
-deferred before compilation because it tests extraction more directly than
-the central record-versus-operations question. Its original hypothesis and
-kill conditions remain in the log; deferral is not a refutation.
+The initial demand probe was reserved before the revised files arrived and
+deferred before compilation while comparing the record routes. It was later
+resumed and completed as MEC-009. Its original hypothesis and kill conditions
+remain in the log; the initial deferral was not a refutation.
 
-## Deferred extraction consumer
+## Resumed extraction consumer
 
 Test regularity of demand on changing price/wealth budgets through the existing
 `RevealedPreference.utilityChoice`. Upstream's representation and observed
 attainment results do not establish a closed graph for changing feasible menus.
 
-A later item could connect native nonnegative bundles and expenditure to
+The later item connects native nonnegative bundles and expenditure to
 budget lower hemicontinuity and closed feasible-maximizer graphs. Include zero
 wealth under strictly positive prices, which is admitted by the current
 dataset model. Test tied demand and the zero-price/zero-wealth failure. Keep
