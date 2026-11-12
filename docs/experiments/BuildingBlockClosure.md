@@ -4,19 +4,22 @@ The user requested exhaustion of the building-block experiments, rather than
 indefinite theorem delivery. The evidence and scope remain those of the
 supplied hypotheses and representative native consumers.
 
+**Status: closed.** The identified competition queue is exhausted on this
+workload; all final integration and integrity gates pass.
+
 ## Final competition queue
 
 | Experiment | Discriminating question | Status |
 | --- | --- | --- |
 | MEC-015 | Does a typed action restriction preserve the model while changing equilibrium? | Complete: native opposite BNE verdicts |
 | MEC-016 | Does support extraction preserve admissibility under a mean-budget menu? | Complete: counterexample and guarded repair |
-| MEC-017 | Does positive-atom provenance survive countable and nonatomic mixing? | Focused passes; final gate pending |
+| MEC-017 | Does positive-atom provenance survive countable and nonatomic mixing? | Complete: infinite discrete consumer and nonatomic counterexample |
 
 Each entry is reserved with alternatives and kill conditions in the experiment
 log. Integrate and compile one item at a time on its named child branch. The
-queue is complete when every prediction has a compiled hostile consumer and a
-positive repair or explicit refutation, and the project/source/kernel gates
-pass. Add an item only when a result exposes another concrete discriminator.
+queue is now complete: every queued prediction has a compiled hostile consumer
+and a positive repair or explicit refutation, and the project/source/kernel
+gates pass. Add an item only when a result exposes another concrete discriminator.
 
 ## Competitions already resolved on this workload
 
@@ -87,3 +90,14 @@ The guarded-core rival compiled, shared actual proofs and remains a working
 alternative; its larger footprint alone did not refute it. The common-math
 demand branch likewise demonstrates actual canonical reuse without selecting
 a permanent package owner.
+
+## Final verification
+
+Complete and explicit builds pass 9,354 jobs across all 304 authored modules.
+The kernel audit checks 6,478 declarations with only standard axioms. Every
+authored source passes the forbidden-token scan. All six Lean files changed
+by the final three experiments re-elaborate with zero violations and no
+discarded declarations, and pass strict warning/line-length checks with the
+generated Lake module setups. Header, generated-import and native BIC checks
+pass. Existing unrelated upstream diagnostics remain visible; dependency pins,
+toolchain and user-owned input files are unchanged.
