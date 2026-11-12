@@ -874,7 +874,7 @@ remain evidence, but line-count increases alone do not reject a component.
 
 ## MEC-016: admissibility of extracted pure witnesses
 
-- **Date / status:** 2026-11-12; reserved before implementation.
+- **Date / status:** 2026-11-12; complete, including full and source gates.
 - **Question:** Does extracting a supported pure improvement from an admitted
   mixture preserve admissibility under a mixed-action menu?
 - **Alternatives:** unrestricted pure-deviation sufficiency; explicit support-
@@ -914,6 +914,14 @@ remain evidence, but line-count increases alone do not reject a component.
   The support module and the fixture both pass strict source checks. This is
   ordinary completion of the existing probability operation, not another
   carrier or class competition.
+- **Gate / outcome:** the final explicit all-source build passes 9,352 jobs
+  across all 302 authored modules. The kernel audit checks 6,435 declarations
+  with standard axioms only; all-source token scanning and re-elaboration of
+  all three changed Lean files report zero violations and no discarded
+  declarations. Header, generated-import and native BIC checks pass. Select
+  admissible witness coverage as the transport contract, with support-heredity
+  as a sufficient constructor. The mean-budget counterexample refutes the
+  unrestricted pure-sufficiency extension; no universal menu class is needed.
 
 ## MEC-017: atomic and nonatomic mixture provenance
 
