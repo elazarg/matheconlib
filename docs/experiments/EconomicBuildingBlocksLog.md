@@ -30,6 +30,51 @@ remain evidence, but line-count increases alone do not reject a component.
   `codex/experiment-economic-item-07-reduced-incentives`. Search Mathlib before
   introducing a supporting-slope predicate; public ownership remains open
   until consumers compile.
+- **Result:** `ForMathlib/SupportingSlopes.lean` and its optional `Convexity`
+  module prove monotonicity, convexity and canonical report-payoff bounds with
+  no quantity bound, continuity, action carrier or interval assumptions.
+  Native `HasEnvelopeIC` now transparently wraps this mathematical condition;
+  native `q_monotoneOn` reuses it. `SingleParameter/ConvexUtility.lean` adds
+  convex indirect utility. The reverse envelope/report IC implication is
+  proved explicitly; only the original instance direction is installed, so
+  typeclass search has no implication cycle.
+- **Useful expressiveness / reuse:** the same operation validates truthful
+  quadratic payments for `q(v)=2v`, with quantities unbounded on nonnegative
+  types. This rule cannot be represented by the native globally unit-bounded
+  quantity function. This does not prohibit representation on a restricted
+  small interval and does not fault the native single-object scope. The
+  supporting condition also feeds the unchanged native analytic payment
+  identity. An unused subsidy action gives reduced universal/report IC while
+  refuting original universal IC, preserving the representation boundary.
+- **Validation / selection:** `lake --iofail build` on the native payment,
+  convexity and consumer targets passes 2,732 jobs without diagnostics.
+  Compiled integrity checks cover 82 declarations across seven modules with
+  standard axioms only. Retain the component for its broader truthful model
+  and actual mathematical reuse, rather than for a line-count reduction.
+  Umbrellas are regenerated; whole-project integration is a later batch gate.
+
+## MEC-008: blocking witnesses and typed proposal reductions
+
+- **Date / status:** 2026-11-12; reserved, in progress.
+- **Question:** Which reusable operation belongs beneath coalition/contract
+  stability when proposals differ from states? Does preserving positive
+  blocking witnesses earn more reuse than merely packaging stable predicates?
+- **Alternatives:** native witness theorems and direct composition; an optional
+  state/proposal blocking interface with witness-lifting reductions. No reward
+  carrier or artificial order encoding is required in either route.
+- **Representative slice:** extract the stronger theorem that every member of
+  a blocking contract set supplies a singleton block under substitutability;
+  reuse it in native stability and in extracting an actual marriage blocking
+  pair belonging to the original contract proposal. Compose typed witness
+  reductions and preserve individual rationality separately.
+- **Kill conditions:** preserve nonempty/new-contract requirements and explicit
+  marriage IR. Do not add finiteness, IRC or a global order. A complementary
+  contract market must block jointly without any blocking singleton, refuting
+  an unconditional witness reduction. Consent is not inferred from all changed
+  outcome coordinates. Strong-Nash strict-gain bridges retain comparability.
+- **Baseline / branch:** the selected MEC-007 implementation; planned child
+  `codex/experiment-economic-item-08-blocking-witnesses`. Public ownership of a
+  new interface is conditional on actual witness reuse, not expressibility.
 
 ## MEC-001: native demand regularity and a shared maximizer operation
 

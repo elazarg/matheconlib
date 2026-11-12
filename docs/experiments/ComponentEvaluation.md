@@ -59,8 +59,8 @@ maps and deviation witnesses.
 
 | Direction | Discriminating consumer | Status |
 | --- | --- | --- |
-| Reduced incentive views | supporting utility/allocation slopes, payment theory, multi-unit quantities | MEC-007 starts here |
-| Blocking proposals and coalitions | contracts, classical matching, strong Nash with exact scope | queued |
+| Reduced incentive views | supporting utility/allocation slopes, payment theory, multi-unit quantities | MEC-007 focused gates pass |
+| Blocking proposals and coalitions | contracts, classical matching, strong Nash with exact scope | MEC-008 reserved |
 | Parametric choice | changing budgets, zero wealth, closed demand graph | MEC-001 to resume |
 | Separate states and outcomes | typed blocking proposals without fabricated rewards | paired with blocking |
 | Preferences over laws | non-expected-utility pure-deviation sufficiency | needs a named theorem |
