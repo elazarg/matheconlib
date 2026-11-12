@@ -95,7 +95,12 @@ does not justify skipping those obligations for type-dependent deviations.
   two-bidder example now proves `strategy_isBNE` (9,108 jobs). Semantic review
   confirms the actual prior, simultaneous interval comparisons, arbitrary
   admitted type-dependent deviations and all integrability guards.
-- **Status:** focused delivery complete; numerical consumer and full integration
-  gates follow. The general result assumes a supplied interior certificate; the
-  concrete uniform model supplies one. No arbitrary-price existence claim or
-  change in equilibrium semantics is introduced.
+- **Numerical consumer:** `UniformTwoBidderBayesianPayoff` computes each bidder's
+  actual ex-ante utility as `13/36` and bounds every admitted measurable
+  unilateral strategy profile by that value. It uses native interim averaging,
+  the actual marginal pushforward and the existing uniform second moment. Its
+  focused strict target passes (9,109 jobs).
+- **Status:** native and numerical paths pass; full integration gates follow.
+  The general result assumes a supplied interior certificate; the concrete
+  uniform model supplies one. No arbitrary-price existence claim or change
+  in equilibrium semantics is introduced.
