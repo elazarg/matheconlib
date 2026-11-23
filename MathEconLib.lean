@@ -83,6 +83,7 @@ public import MathEconLib.GameTheory.Strategic.Existence
 public import MathEconLib.GameTheory.Strategic.Mixed
 public import MathEconLib.GameTheory.Strategic.Mixed.Finite
 public import MathEconLib.GameTheory.Strategic.Outcome
+public import MathEconLib.GameTheory.Strategic.Reduction
 public import MathEconLib.Matching
 public import MathEconLib.Matching.Classical.Marriage
 public import MathEconLib.Matching.Classical.Marriage.Basic
