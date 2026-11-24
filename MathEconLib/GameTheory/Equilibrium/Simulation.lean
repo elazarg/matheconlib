@@ -24,6 +24,10 @@ Additive errors require a separate compatibility bound for the value maps;
 monotonicity alone does not preserve a numerical error. Reflection requires
 an independent contract; preservation alone does not imply it.
 
+Equilibrium preservation does not imply that a simulation exists. A simulation constrains every
+state, not only equilibria, and uses one value map per deviator at every state. Per incumbent,
+`EquilibriumProblem.isOptimalWith_imp_iff_deviation_comparisons` is the converse that does hold.
+
 ## Main definitions
 
 * `GameSimulation`: A validity-preserving state translation whose target deviations are each
@@ -31,6 +35,8 @@ an independent contract; preservation alone does not imply it.
 * `GameSimulation.id` and `GameSimulation.comp`: Identity and composition.
 * `GameSimulation.ofExactLifts`: Simulations from exact deviation lifts and value recodings.
 * `GameMorphism.toSimulation`: Reward-preserving morphisms as simulations.
+* `GameSimulation.ofMapValues`, `GameSimulation.ofRefine`, `GameSimulation.ofDeviationSubset`:
+  Monotone value recoding, strengthening validity of the source, and removing target deviations.
 
 ## Main statements
 
@@ -201,6 +207,26 @@ def ofExactLifts (f : S → T) (g : J → I) (φ : J → V →o W)
     obtain ⟨s', hs', rfl⟩ := hlift j s t ht
     exact ⟨s', hs', (hvalue j s').le⟩
   valid_preserves := hvalid
+
+/-- A monotone change of value coordinates is a simulation into the recoded problem. -/
+def ofMapValues (P : EquilibriumProblem S I V) (φ : I → V →o W) :
+    GameSimulation P (P.mapValues fun i ↦ φ i) :=
+  .ofExactLifts _root_.id _root_.id φ (fun _ _ ↦ rfl) (fun _ _ t ht ↦ ⟨t, ht, rfl⟩)
+    (fun _ h ↦ h)
+
+/-- Strengthening candidate validity of the source gives a simulation into the original problem. -/
+def ofRefine (P : EquilibriumProblem S I V) (condition : S → Prop) :
+    GameSimulation (P.refine condition) P :=
+  .ofExactLifts _root_.id _root_.id (fun _ ↦ OrderHom.id) (fun _ _ ↦ rfl)
+    (fun _ _ t ht ↦ ⟨t, ht, rfl⟩) (fun _ h ↦ h.1)
+
+/-- Removing target deviations, with equal values and preserved validity, gives a simulation along
+the identity. Its transport is `EquilibriumProblem.IsEquilibrium.of_deviation_subset`. -/
+def ofDeviationSubset {P Q : EquilibriumProblem S I V}
+    (hd : ∀ i s t, Q.deviation i s t → P.deviation i s t) (hv : Q.value = P.value)
+    (hvalid : ∀ s, P.valid s → Q.valid s) : GameSimulation P Q :=
+  .ofExactLifts _root_.id _root_.id (fun _ ↦ OrderHom.id) (fun _ _ ↦ by rw [hv]; rfl)
+    (fun i s t ht ↦ ⟨t, hd i s t ht, rfl⟩) hvalid
 
 /-- A simulation gives an iff at an incumbent if validity and source deviation comparisons
 reflect there. This allows different value spaces and requires no numerical value equality. -/

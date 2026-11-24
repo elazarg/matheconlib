@@ -6,6 +6,7 @@ Authors: Daniel Lyng, Bo Cowgill, Elazar Gershuni
 module
 
 public import Mathlib.Order.Defs.LinearOrder
+public import Mathlib.Order.Monotone.Defs
 
 /-!
 # Equilibrium under admissible deviations
@@ -25,6 +26,13 @@ admitted directly by the supplied relation. A concept that compares endpoints of
 uses a relation closed under those moves, such as the transitive closure. Product action spaces and
 other game-specific structure belong to the games that define these problems.
 
+Comparison transport matches each target deviation with a legal source deviation whose comparison
+implies the target comparison. This needs only comparison relations, even between different value
+spaces and state spaces. The matching is no stronger than what it proves: when the source deviator
+has some admissible deviation, it is equivalent to transporting that deviator's optimality at the
+two incumbents. For the same states and deviations, preserving every admissible comparison at an
+incumbent is equivalent to preserving optimality under every restriction of the deviations.
+
 ## Main definitions
 
 * `EquilibriumProblem`: Admissible deviations, rewards, and candidate validity over states.
@@ -35,6 +43,8 @@ other game-specific structure belong to the games that define these problems.
 * `EquilibriumProblem.IsEquilibriumWith`: Valid candidates satisfying those explicit comparisons.
 * `EquilibriumProblem.ofDeviation`: An equilibrium problem with every candidate valid.
 * `EquilibriumProblem.refine`: The same problem with an additional condition on candidates.
+* `EquilibriumProblem.mapValues`: Playerwise changes of value coordinates, keeping deviations and
+  candidate validity.
 * `GameMorphism`: Reward-preserving maps that lift target deviations and preserve validity.
 * `GameComorphism`: Reward-preserving maps that send source deviations to target deviations and
   reflect validity.
@@ -56,6 +66,14 @@ other game-specific structure belong to the games that define these problems.
   `EquilibriumProblem.IsEquilibrium.of_deviation_comparisons` transport equilibrium between
   problems on different states, deviators, and consequence carriers by matching each target
   deviation with a source deviation whose comparison implies the target comparison.
+* `EquilibriumProblem.isOptimalWith_imp_iff_deviation_comparisons`: The matching is equivalent to
+  transporting one deviator's optimality when the source deviator has an admissible deviation.
+* `EquilibriumProblem.isDeviationOptimalWith_imp_iff_exists_deviation_comparisons`: Joint
+  transport is equivalent to a matching along some deviator map, which is then uninformative.
+* `EquilibriumProblem.preserves_comparisons_iff_forall_deviation_subsets`: Preserving admissible
+  comparisons is equivalent to preserving optimality under every restriction of deviations.
+* `EquilibriumProblem.IsEquilibrium.mapValues` and `isEquilibrium_mapValues_iff`: Monotone value
+  changes preserve equilibrium; changes that also reflect comparisons give an iff.
 * `GameMorphism.transportWith` and `GameComorphism.pullbackWith` transport explicit-comparison
   equilibria with the same candidate-validity requirements as their ordered counterparts.
 
@@ -209,6 +227,23 @@ def ofDeviation (deviation : I → S → S → Prop) (value : I → S → V) :
   simp only [ofDeviation_valid, isDeviationOptimal_iff, ofDeviation_deviation,
     ofDeviation_value, true_and]
 
+/-- Preserving every admissible nonimprovement comparison at an incumbent is equivalent to
+preserving its optimality under every restriction of the deviation relation. Preservation for one
+fixed relation alone does not constrain comparisons between suboptimal alternatives. -/
+theorem preserves_comparisons_iff_forall_deviation_subsets {W : Type*} [LE V] [LE W]
+    (P : EquilibriumProblem S I V) (value : I → S → W) (s : S) :
+    (∀ i t, P.deviation i s t → P.value i t ≤ P.value i s → value i t ≤ value i s) ↔
+      ∀ D : I → S → S → Prop, (∀ i a b, D i a b → P.deviation i a b) →
+        (ofDeviation D P.value).IsDeviationOptimal s →
+          (ofDeviation D value).IsDeviationOptimal s := by
+  constructor
+  · intro h D hD hopt i t ht
+    exact h i t (hD i s t ht) (hopt i t ht)
+  · intro h i t ht hle
+    exact h (fun j a b ↦ j = i ∧ a = s ∧ b = t)
+      (by rintro _ _ _ ⟨rfl, rfl, rfl⟩; exact ht)
+      (by rintro _ _ ⟨rfl, _, rfl⟩; exact hle) i t ⟨rfl, rfl, rfl⟩
+
 /-- Add a condition on incumbent candidates while retaining the same deviations and rewards. -/
 def refine (P : EquilibriumProblem S I V) (condition : S → Prop) :
     EquilibriumProblem S I V where
@@ -237,6 +272,47 @@ def refine (P : EquilibriumProblem S I V) (condition : S → Prop) :
     exact ⟨⟨h.valid.1, h.deviation_le⟩, h.valid.2⟩
   · rintro ⟨h, hc⟩
     exact ⟨⟨h.valid, hc⟩, h.deviation_le⟩
+
+/-- Change each player's value coordinates, keeping deviations and candidate validity.
+For expected-value problems this acts after evaluation, not on utilities before integration. -/
+@[simps] def mapValues {W : Type*} (P : EquilibriumProblem S I V) (φ : I → V → W) :
+    EquilibriumProblem S I W where
+  deviation := P.deviation
+  value i s := φ i (P.value i s)
+  valid := P.valid
+
+@[simp] lemma mapValues_id (P : EquilibriumProblem S I V) : P.mapValues (fun _ ↦ id) = P := rfl
+
+@[simp] lemma mapValues_comp {W X : Type*} (P : EquilibriumProblem S I V)
+    (φ : I → V → W) (ψ : I → W → X) :
+    (P.mapValues φ).mapValues ψ = P.mapValues (fun i ↦ ψ i ∘ φ i) := rfl
+
+/-- Monotone changes of value coordinates preserve optimality. -/
+theorem IsDeviationOptimal.mapValues {W : Type*} [Preorder V] [Preorder W]
+    {s : S} (h : P.IsDeviationOptimal s) {φ : I → V → W} (hφ : ∀ i, Monotone (φ i)) :
+    (P.mapValues φ).IsDeviationOptimal s :=
+  fun i s' hs' ↦ hφ i (h i s' hs')
+
+/-- Monotone changes of value coordinates preserve equilibrium. -/
+theorem IsEquilibrium.mapValues {W : Type*} [Preorder V] [Preorder W]
+    {s : S} (h : P.IsEquilibrium s) {φ : I → V → W} (hφ : ∀ i, Monotone (φ i)) :
+    (P.mapValues φ).IsEquilibrium s :=
+  ⟨h.valid, h.deviation_le.mapValues hφ⟩
+
+/-- Preserving and reflecting value comparisons leaves optimality unchanged.
+Order embeddings supply this hypothesis without requiring surjectivity. -/
+lemma isDeviationOptimal_mapValues_iff {W : Type*} [LE V] [LE W]
+    (P : EquilibriumProblem S I V) (φ : I → V → W)
+    (hφ : ∀ i x y, φ i x ≤ φ i y ↔ x ≤ y) (s : S) :
+    (P.mapValues φ).IsDeviationOptimal s ↔ P.IsDeviationOptimal s := by
+  simp only [isDeviationOptimal_iff, mapValues_deviation, mapValues_value, hφ]
+
+/-- Preserving and reflecting value comparisons leaves equilibrium unchanged. -/
+lemma isEquilibrium_mapValues_iff {W : Type*} [LE V] [LE W]
+    (P : EquilibriumProblem S I V) (φ : I → V → W)
+    (hφ : ∀ i x y, φ i x ≤ φ i y ↔ x ≤ y) (s : S) :
+    (P.mapValues φ).IsEquilibrium s ↔ P.IsEquilibrium s := by
+  simp only [isEquilibrium_iff, mapValues_valid, isDeviationOptimal_mapValues_iff P φ hφ]
 
 /-- The explicit order comparison recovers the existing equilibrium predicate exactly. -/
 @[simp] theorem isEquilibriumWith_le_iff [LE V] (P : EquilibriumProblem S I V) (s : S) :
@@ -359,6 +435,71 @@ theorem IsEquilibrium.of_deviation_comparisons {W : Type r'} {T : Type w} {J : T
       (P.value (g j) s' ≤ P.value (g j) s → Q.value j t' ≤ Q.value j t)) :
     Q.IsEquilibrium t :=
   ⟨hvalid, h.deviation_le.of_deviation_comparisons g hdev⟩
+
+/-- The matching hypothesis of `IsOptimalWith.of_deviation_comparisons` is necessary for the
+transport it proves, provided the source deviator has an admissible deviation at `s`. If `s` is
+optimal, any source deviation matches, since every target deviation is then nonimproving;
+otherwise an improving source deviation matches vacuously.
+
+Without an admissible source deviation the converse fails: a source deviator with no deviations
+is optimal, and a matching would require a source witness for each target deviation. -/
+theorem exists_deviation_comparison_of_imp {W : Type r'} {T : Type w} {J : Type x}
+    {Q : EquilibriumProblem T J W} {R : I → V → V → Prop} {R' : J → W → W → Prop}
+    {i : I} {j : J} {s : S} {t : T} (hne : ∃ s', P.deviation i s s')
+    (h : P.IsOptimalWith R i s → Q.IsOptimalWith R' j t) :
+    ∀ t', Q.deviation j t t' → ∃ s', P.deviation i s s' ∧
+      (R i (P.value i s') (P.value i s) → R' j (Q.value j t') (Q.value j t)) := by
+  classical
+  intro t' ht'
+  by_cases hopt : P.IsOptimalWith R i s
+  · obtain ⟨s', hs'⟩ := hne
+    exact ⟨s', hs', fun _ ↦ h hopt t' ht'⟩
+  · obtain ⟨s', hs', hnot⟩ : ∃ s', P.deviation i s s' ∧ ¬ R i (P.value i s') (P.value i s) := by
+      by_contra hall
+      exact hopt fun s' hs' ↦ by_contra fun hr ↦ hall ⟨s', hs', hr⟩
+    exact ⟨s', hs', fun hr ↦ (hnot hr).elim⟩
+
+/-- Comparison matching is exactly per-deviator optimality transport at the two incumbents, when
+the source deviator has an admissible deviation. Thus `of_deviation_comparisons` is as general as
+a pointwise transport theorem can be; its matching is a convenient form to prove, not additional
+structure. Strategic games satisfy the side condition, since keeping one's action is admissible.
+
+For the ordered predicates take `R` and `R'` to be `(· ≤ ·)`. For a fixed deviator map, transport
+of joint deviation optimality is weaker than this per-deviator implication; see
+`isDeviationOptimalWith_imp_iff_exists_deviation_comparisons`. -/
+theorem isOptimalWith_imp_iff_deviation_comparisons {W : Type r'} {T : Type w} {J : Type x}
+    {Q : EquilibriumProblem T J W} {R : I → V → V → Prop} {R' : J → W → W → Prop}
+    {i : I} {j : J} {s : S} {t : T} (hne : ∃ s', P.deviation i s s') :
+    (P.IsOptimalWith R i s → Q.IsOptimalWith R' j t) ↔
+      ∀ t', Q.deviation j t t' → ∃ s', P.deviation i s s' ∧
+        (R i (P.value i s') (P.value i s) → R' j (Q.value j t') (Q.value j t)) :=
+  ⟨exists_deviation_comparison_of_imp hne, fun hdev h ↦ h.of_deviation_comparisons hdev⟩
+
+/-- Transport of joint deviation optimality is equivalent to a matching along *some* deviator
+map, when every source deviator has an admissible deviation. The map carries no information: if the
+source incumbent is not optimal, sending every target deviator to one nonoptimal source deviator
+matches vacuously. A matching is informative only along a deviator map fixed in advance, as in
+`GameMorphism` and `GameSimulation`. -/
+theorem isDeviationOptimalWith_imp_iff_exists_deviation_comparisons [Nonempty I]
+    {W : Type r'} {T : Type w} {J : Type x} {Q : EquilibriumProblem T J W}
+    {R : I → V → V → Prop} {R' : J → W → W → Prop} {s : S} {t : T}
+    (hne : ∀ i, ∃ s', P.deviation i s s') :
+    (P.IsDeviationOptimalWith R s → Q.IsDeviationOptimalWith R' t) ↔
+      ∃ g : J → I, ∀ j t', Q.deviation j t t' → ∃ s', P.deviation (g j) s s' ∧
+        (R (g j) (P.value (g j) s') (P.value (g j) s) → R' j (Q.value j t') (Q.value j t)) := by
+  classical
+  constructor
+  · intro h
+    by_cases hP : P.IsDeviationOptimalWith R s
+    · exact ⟨fun _ ↦ Classical.arbitrary I, fun j ↦
+        exists_deviation_comparison_of_imp (hne _) fun _ ↦ h hP j⟩
+    · obtain ⟨i₀, hi₀⟩ : ∃ i, ¬ P.IsOptimalWith R i s := by
+        by_contra hall
+        exact hP fun i ↦ by_contra fun hi ↦ hall ⟨i, hi⟩
+      exact ⟨fun _ ↦ i₀, fun _ ↦
+        exists_deviation_comparison_of_imp (hne i₀) fun ho ↦ (hi₀ ho).elim⟩
+  · rintro ⟨g, hg⟩ h
+    exact h.of_deviation_comparisons g hg
 
 /-- Weak optimality excludes a deviation strictly preferred in the asymmetric part of `R`. -/
 theorem IsOptimalWith.not_strictImprovement {R : I → V → V → Prop} {i : I} {s t : S}
@@ -515,10 +656,10 @@ theorem pullback_isDeviationOptimalWith (f : GameComorphism P Q) (C : I → V �
     (D : J → V → V → Prop)
     (hcmp : ∀ i s t, P.deviation i s t →
       D (f.deviatorMap i) (P.value i t) (P.value i s) → C i (P.value i t) (P.value i s))
-    {s : S} (h : Q.IsDeviationOptimalWith D (f.toFun s)) : P.IsDeviationOptimalWith C s := by
-  intro i t ht
-  apply hcmp i s t ht
-  simpa only [f.value_eq] using h (f.deviatorMap i) (f.toFun t) (f.deviation_maps i s t ht)
+    {s : S} (h : Q.IsDeviationOptimalWith D (f.toFun s)) : P.IsDeviationOptimalWith C s :=
+  h.of_deviation_comparisons f.deviatorMap fun i t ht ↦
+    ⟨f.toFun t, f.deviation_maps i s t ht,
+      fun hd ↦ hcmp i s t ht (by simpa only [f.value_eq] using hd)⟩
 
 /-- A deviation-preserving map pulls full equilibrium back, including reflected validity. -/
 theorem pullbackWith (f : GameComorphism P Q) (C : I → V → V → Prop)
@@ -530,9 +671,9 @@ theorem pullbackWith (f : GameComorphism P Q) (C : I → V → V → Prop)
 
 /-- Deviation optimality pulls back along a deviation-preserving map. -/
 theorem pullback_isDeviationOptimal [LE V] (f : GameComorphism P Q) {s : S}
-    (h : Q.IsDeviationOptimal (f.toFun s)) : P.IsDeviationOptimal s := by
-  intro i s' hs'
-  simpa only [f.value_eq] using h (f.deviatorMap i) (f.toFun s') (f.deviation_maps i s s' hs')
+    (h : Q.IsDeviationOptimal (f.toFun s)) : P.IsDeviationOptimal s :=
+  h.of_deviation_comparisons f.deviatorMap fun i s' hs' ↦
+    ⟨f.toFun s', f.deviation_maps i s s' hs', fun hle ↦ by simpa only [f.value_eq] using hle⟩
 
 /-- Equilibrium pulls back along a deviation-preserving map. -/
 theorem pullback [LE V] (f : GameComorphism P Q) {s : S}

@@ -27,6 +27,11 @@ simulation preserving values and validity still does not reflect equilibrium. Ch
 errors are transported one step at a time, because the step premises need not imply the
 composite's premise once the first step raises the incumbent.
 
+The converse checks show that comparison matching is recovered from per-deviator transport only
+when a source deviation exists, that joint transport admits an uninformative matching along a
+constant deviator map, and that equilibrium preservation at every state does not give a
+simulation.
+
 Signature pins for this layer live in `MathEconLibTest.GameTheory.SimulationApi`.
 -/
 
@@ -330,7 +335,92 @@ theorem forgetDeviations_not_reflect :
       ¬ improvingDeviation.IsEquilibrium true :=
   ⟨⟨rfl, fun _ _ h ↦ h.elim⟩, rfl, Iff.rfl, improving_invalid_target_not_isEquilibrium⟩
 
+/-- Refining validity of the source is a simulation into the original problem. -/
+example : descendingTarget.IsEquilibrium 2 :=
+  (GameSimulation.ofRefine descendingTarget (fun s ↦ 2 ≤ s)).transport stricterTarget_isEquilibrium
+
 end CandidateValidity
+
+/-! ## Converses and their limits -/
+
+section Converses
+
+open MathEconLibTest.GameTheory.CandidateValidity
+
+/-- Transport of one deviator's optimality recovers a comparison matching. -/
+example : ∀ t', target.deviation () (inclusion true) t' → ∃ s', source.deviation () true s' ∧
+    (source.value () s' ≤ source.value () true →
+      target.value () t' ≤ target.value () (inclusion true)) :=
+  EquilibriumProblem.exists_deviation_comparison_of_imp (R := fun _ x y ↦ x ≤ y)
+    (R' := fun _ x y ↦ x ≤ y) ⟨true, trivial⟩ fun _ ↦ target_equilibrium.deviation_le ()
+
+/-- The converse needs a source deviation. `noDeviations` is optimal and `source` is optimal at
+`true`, so optimality transports, but `source`'s deviation to `true` has no source match. -/
+theorem converse_needs_source_deviation :
+    (noDeviations.IsOptimalWith (fun _ x y ↦ x ≤ y) () true →
+      source.IsOptimalWith (fun _ x y ↦ x ≤ y) () true) ∧
+    ¬ ∀ t', source.deviation () true t' → ∃ s', noDeviations.deviation () true s' ∧
+      (noDeviations.value () s' ≤ noDeviations.value () true →
+        source.value () t' ≤ source.value () true) := by
+  refine ⟨fun _ t _ ↦ ?_, fun h ↦ ?_⟩
+  · cases t <;> norm_num [source, EquilibriumProblem.ofDeviation]
+  · obtain ⟨_, h', _⟩ := h true trivial
+    exact h'
+
+/-- Deviator `false` never gains; deviator `true` gains by moving to state `true`. -/
+def twoDeviators : EquilibriumProblem Bool Bool ℝ :=
+  .ofDeviation (fun _ _ _ ↦ True) (fun i s ↦ if i && s then 1 else 0)
+
+/-- The roles are swapped: deviator `false` gains by moving to state `true`. -/
+def swappedDeviators : EquilibriumProblem Bool Bool ℝ :=
+  .ofDeviation (fun _ _ _ ↦ True) (fun i s ↦ if !i && s then 1 else 0)
+
+/-- Joint transport at `false` holds vacuously, since the source is not optimal there. Along the
+identity deviator map there is no matching, but sending both deviators to the nonoptimal source
+deviator `true` matches vacuously. -/
+theorem joint_transport_uninformative :
+    (twoDeviators.IsDeviationOptimal false → swappedDeviators.IsDeviationOptimal false) ∧
+    ¬ (∀ j t', swappedDeviators.deviation j false t' → ∃ s', twoDeviators.deviation j false s' ∧
+      (twoDeviators.value j s' ≤ twoDeviators.value j false →
+        swappedDeviators.value j t' ≤ swappedDeviators.value j false)) ∧
+    (∀ j t', swappedDeviators.deviation j false t' → ∃ s',
+      twoDeviators.deviation true false s' ∧
+      (twoDeviators.value true s' ≤ twoDeviators.value true false →
+        swappedDeviators.value j t' ≤ swappedDeviators.value j false)) := by
+  refine ⟨fun h ↦ ?_, fun h ↦ ?_, fun _ _ _ ↦ ⟨true, trivial, fun hle ↦ ?_⟩⟩
+  · have := h true true trivial
+    norm_num [twoDeviators, EquilibriumProblem.ofDeviation] at this
+  · obtain ⟨s', _, hc⟩ := h false true trivial
+    have := hc (by cases s' <;> norm_num [twoDeviators, EquilibriumProblem.ofDeviation])
+    norm_num [swappedDeviators, EquilibriumProblem.ofDeviation] at this
+  · norm_num [twoDeviators, EquilibriumProblem.ofDeviation] at hle
+
+/-- Equilibrium is preserved along the identity at every state (`contextual_transport`), yet no
+simulation uses that state map, for any monotone value map: the incumbent bounds force the value
+map to at most one on the source values, while the deviation to `(true, true)` is worth eleven. -/
+theorem no_contextual_simulation :
+    ¬ ∃ f : GameSimulation contextualSource contextualTarget, f.toFun = id := by
+  rintro ⟨f, hf⟩
+  have h0 := f.incumbent_value_le () (false, false)
+  have h1 := f.incumbent_value_le () (true, false)
+  obtain ⟨s', _, hb⟩ := f.deviation_dominated () (true, true) (true, true) (by rw [hf]; rfl)
+  rw [hf] at h0 h1
+  obtain ⟨a, b⟩ := s'
+  cases a <;> norm_num [contextualSource, contextualTarget, EquilibriumProblem.ofDeviation]
+    at h0 h1 hb <;> linarith
+
+/-- A monotone recoding of values is a simulation into the recoded problem. -/
+example : (source.mapValues fun _ ↦ affineRecoding).IsEquilibrium true :=
+  (GameSimulation.ofMapValues source fun _ ↦ affineRecoding).transport source_equilibrium
+
+/-- Restricting `source` to deviations toward `false` is a simulation along the identity. -/
+example : (EquilibriumProblem.ofDeviation (fun _ _ t ↦ t = false) source.value).IsEquilibrium
+    true :=
+  (GameSimulation.ofDeviationSubset (P := source)
+    (Q := .ofDeviation (fun _ _ t ↦ t = false) source.value)
+    (fun _ _ _ _ ↦ trivial) rfl (fun _ _ ↦ trivial)).transport source_equilibrium
+
+end Converses
 
 /-! ## Chained additive errors -/
 

@@ -14,7 +14,8 @@ Each `example` restates the full type of a public declaration of the simulation 
 it by the declaration itself, as in `ApiStability.lean`. The only project import is the public
 root `MathEconLib`, so these checks also cover the export boundary.
 
-The pins cover the comparison core, the `GameSimulation` record and its constructor fields,
+The pins cover the comparison core and its converses, value recoding, the `GameSimulation`
+record and its constructor fields, its constructors from problem operations,
 identity, composition, exact-lift construction, conversion from `GameMorphism`, transport,
 additive errors, both reflection entry points, and the dominated-strategy reductions.
 -/
@@ -63,6 +64,50 @@ example : ∀ {V : Type uV} {W : Type uW} [Preorder V] [Preorder W] {S : Type uS
       Q.IsDeviationOptimal t :=
   @EquilibriumProblem.IsDeviationOptimal.of_dominated_deviations
 
+-- The matching is necessary for per-deviator transport, given an admissible source deviation.
+example : ∀ {V : Type uV} {S : Type uS} {I : Type uI} {P : EquilibriumProblem S I V}
+    {W : Type uW} {T : Type uT} {J : Type uJ} {Q : EquilibriumProblem T J W}
+    {R : I → V → V → Prop} {R' : J → W → W → Prop} {i : I} {j : J} {s : S} {t : T},
+    (∃ s', P.deviation i s s') →
+    ((P.IsOptimalWith R i s → Q.IsOptimalWith R' j t) ↔
+      ∀ t', Q.deviation j t t' → ∃ s', P.deviation i s s' ∧
+        (R i (P.value i s') (P.value i s) → R' j (Q.value j t') (Q.value j t))) :=
+  @EquilibriumProblem.isOptimalWith_imp_iff_deviation_comparisons
+
+example : ∀ {V : Type uV} {S : Type uS} {I : Type uI} {P : EquilibriumProblem S I V}
+    [Nonempty I] {W : Type uW} {T : Type uT} {J : Type uJ} {Q : EquilibriumProblem T J W}
+    {R : I → V → V → Prop} {R' : J → W → W → Prop} {s : S} {t : T},
+    (∀ i, ∃ s', P.deviation i s s') →
+    ((P.IsDeviationOptimalWith R s → Q.IsDeviationOptimalWith R' t) ↔
+      ∃ g : J → I, ∀ j t', Q.deviation j t t' → ∃ s', P.deviation (g j) s s' ∧
+        (R (g j) (P.value (g j) s') (P.value (g j) s) → R' j (Q.value j t') (Q.value j t))) :=
+  @EquilibriumProblem.isDeviationOptimalWith_imp_iff_exists_deviation_comparisons
+
+example : ∀ {V : Type uV} {S : Type uS} {I : Type uI} {W : Type uW} [LE V] [LE W]
+    (P : EquilibriumProblem S I V) (value : I → S → W) (s : S),
+    (∀ i t, P.deviation i s t → P.value i t ≤ P.value i s → value i t ≤ value i s) ↔
+      ∀ D : I → S → S → Prop, (∀ i a b, D i a b → P.deviation i a b) →
+        (EquilibriumProblem.ofDeviation D P.value).IsDeviationOptimal s →
+          (EquilibriumProblem.ofDeviation D value).IsDeviationOptimal s :=
+  @EquilibriumProblem.preserves_comparisons_iff_forall_deviation_subsets
+
+/-! ## Value recoding -/
+
+example : ∀ {V : Type uV} {S : Type uS} {I : Type uI} {W : Type uW},
+    EquilibriumProblem S I V → (I → V → W) → EquilibriumProblem S I W :=
+  @EquilibriumProblem.mapValues
+
+example : ∀ {V : Type uV} {S : Type uS} {I : Type uI} {P : EquilibriumProblem S I V}
+    {W : Type uW} [Preorder V] [Preorder W] {s : S},
+    P.IsEquilibrium s → ∀ {φ : I → V → W}, (∀ i, Monotone (φ i)) →
+      (P.mapValues φ).IsEquilibrium s :=
+  @EquilibriumProblem.IsEquilibrium.mapValues
+
+example : ∀ {V : Type uV} {S : Type uS} {I : Type uI} {W : Type uW} [LE V] [LE W]
+    (P : EquilibriumProblem S I V) (φ : I → V → W), (∀ i x y, φ i x ≤ φ i y ↔ x ≤ y) →
+    ∀ s, ((P.mapValues φ).IsEquilibrium s ↔ P.IsEquilibrium s) :=
+  @EquilibriumProblem.isEquilibrium_mapValues_iff
+
 /-! ## The simulation record -/
 
 -- The constructor fixes the field names, their order, and each field's contract.
@@ -101,6 +146,22 @@ example : ∀ {V : Type uV} [Preorder V] {S : Type uS} {I : Type uI} {T : Type u
     {P : EquilibriumProblem S I V} {Q : EquilibriumProblem T J V},
     GameMorphism P Q → GameSimulation P Q :=
   @GameMorphism.toSimulation
+
+example : ∀ {V : Type uV} {W : Type uW} [Preorder V] [Preorder W] {S : Type uS} {I : Type uI}
+    (P : EquilibriumProblem S I V) (φ : I → V →o W),
+    GameSimulation P (P.mapValues fun i ↦ φ i) :=
+  @GameSimulation.ofMapValues
+
+example : ∀ {V : Type uV} [Preorder V] {S : Type uS} {I : Type uI}
+    (P : EquilibriumProblem S I V) (condition : S → Prop),
+    GameSimulation (P.refine condition) P :=
+  @GameSimulation.ofRefine
+
+example : ∀ {V : Type uV} [Preorder V] {S : Type uS} {I : Type uI}
+    {P Q : EquilibriumProblem S I V},
+    (∀ i s t, Q.deviation i s t → P.deviation i s t) → Q.value = P.value →
+    (∀ s, P.valid s → Q.valid s) → GameSimulation P Q :=
+  @GameSimulation.ofDeviationSubset
 
 /-! ## Transport and reflection -/
 
