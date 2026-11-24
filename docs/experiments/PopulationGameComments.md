@@ -1,6 +1,6 @@
-# Comments on matheconlib/matheconlib#277: population games
+# Comments on [matheconlib/matheconlib#277](https://github.com/matheconlib/matheconlib/issues/277): population games
 
-_This note was drafted with Claude Code from a discussion comparing this issue with abstraction experiments I ran in my GameTheory and matheconlib forks. I've checked each point. They are ordered from most to least confident, and links are pinned to commits._
+_This note was drafted with Claude Code from a discussion comparing that issue with abstraction experiments I ran in my GameTheory and matheconlib forks. I've checked each point. They are ordered from most to least confident, and links are pinned to commits._
 
 ## 1. Mass caps don't need a more general `EquilibriumProblem`, but they do change the characterizations
 
@@ -25,7 +25,7 @@ The safe direction is already on main: an unrestricted equilibrium remains one u
 
 ## 2. `choiceProblem` needs a `valid` field
 
-Since #252, `EquilibriumProblem` has a [`valid`](https://github.com/matheconlib/matheconlib/blob/ad8b79a9c11a3dd3d4a23f1d74c0bad2285ba89b/MathEconLib/GameTheory/Equilibrium/Problem.lean#L79) field. The sketch here, and the version in #274, predate it, so they no longer build on main. `valid _ := True` is the minimal fix.
+Since [#252](https://github.com/matheconlib/matheconlib/issues/252), `EquilibriumProblem` has a [`valid`](https://github.com/matheconlib/matheconlib/blob/ad8b79a9c11a3dd3d4a23f1d74c0bad2285ba89b/MathEconLib/GameTheory/Equilibrium/Problem.lean#L79) field. The sketch here, and the version in [#274](https://github.com/matheconlib/matheconlib/issues/274), predate it, so they no longer build on main. `valid _ := True` is the minimal fix.
 
 An option, with lower confidence: `valid a := 0 < x.val i a` puts the occupancy guard inside the choice problem. Then `IsSubpopulationEquilibrium x i` reads "every valid action is an equilibrium", and anything stated generically over `EquilibriumProblem` sees the guard. Validity carries information that deviation optimality can't. With no deviators, an invalid incumbent is vacuously optimal but still not an equilibrium ([`noJudges`](https://github.com/elazarg/matheconlib/blob/26e086f9dd766bea2f31b4a8c4fd878d5088bfbc/MathEconLibTest/GameTheory/CandidateValidity.lean#L56), [`noJudges_not_equilibrium`](https://github.com/elazarg/matheconlib/blob/26e086f9dd766bea2f31b4a8c4fd878d5088bfbc/MathEconLibTest/GameTheory/CandidateValidity.lean#L63)). The same holds with no admitted deviations ([`invalid_isDeviationOptimal`](https://github.com/elazarg/matheconlib/blob/26e086f9dd766bea2f31b4a8c4fd878d5088bfbc/MathEconLibTest/GameTheory/CandidateValidity.lean#L72)). I don't yet have a theorem this option unlocks, so either choice seems fine to me.
 
@@ -62,4 +62,4 @@ I haven't compiled this instantiation, and using it would raise the question of 
 
 ## 7. Price of anarchy — an observation, no action needed
 
-GameTheory proves the atomic affine `5/2` bound through a smoothness theorem ([`IsSmooth.nash_bound`](https://github.com/elazarg/GameTheory/blob/8aab006efb7d7242bf1920856443fdfca25f1f43/GameTheory/Core/Welfare.lean#L110), applied in [`AffinePoA.lean`](https://github.com/elazarg/GameTheory/blob/8aab006efb7d7242bf1920856443fdfca25f1f43/GameTheory/Congestion/AffinePoA.lean#L186)). #274's Pigou-bound step `(1 − β) · C(f) ≤ C(g)` is the nonatomic version of the same argument. The theorems differ, but if PoA results keep accumulating, the smoothness statement is the natural shared form.
+GameTheory proves the atomic affine `5/2` bound through a smoothness theorem ([`IsSmooth.nash_bound`](https://github.com/elazarg/GameTheory/blob/8aab006efb7d7242bf1920856443fdfca25f1f43/GameTheory/Core/Welfare.lean#L110), applied in [`AffinePoA.lean`](https://github.com/elazarg/GameTheory/blob/8aab006efb7d7242bf1920856443fdfca25f1f43/GameTheory/Congestion/AffinePoA.lean#L186)). [#274](https://github.com/matheconlib/matheconlib/issues/274)'s Pigou-bound step `(1 − β) · C(f) ≤ C(g)` is the nonatomic version of the same argument. The theorems differ, but if PoA results keep accumulating, the smoothness statement is the natural shared form.
