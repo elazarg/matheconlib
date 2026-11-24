@@ -1,13 +1,14 @@
 /-
-Copyright (c) 2026 Ben Eltschig. All rights reserved.
+Copyright (c) 2026 Ben Eltschig, Elazar Gershuni. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Ben Eltschig
+Authors: Ben Eltschig, Elazar Gershuni
 -/
 module
 
 public import MathEconLib.ForMathlib.MeasureTheory
 public import Mathlib.MeasureTheory.Measure.FiniteMeasurePi
 public import Mathlib.Probability.Notation
+public import Mathlib.Probability.Kernel.Basic
 
 import Mathlib.MeasureTheory.Measure.Prokhorov
 
@@ -29,6 +30,18 @@ lemma ProbabilityMeasure.measurableEmbedding_toMeasure {α : Type*}
 lemma ProbabilityMeasure.measurable_toMeasure {α : Type*}
     [MeasurableSpace α] : Measurable (toMeasure (Ω := α)) :=
   measurableEmbedding_toMeasure.measurable
+
+/-- A measurable family of probability measures is a Markov kernel. -/
+@[simps] def ProbabilityMeasure.toKernel {α β : Type*} [MeasurableSpace α]
+    [MeasurableSpace β] (μ : α → ProbabilityMeasure β) (hμ : Measurable μ) :
+    ProbabilityTheory.Kernel α β where
+  toFun a := μ a
+  measurable' := measurable_toMeasure.comp hμ
+
+instance {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]
+    (μ : α → ProbabilityMeasure β) (hμ : Measurable μ) :
+    ProbabilityTheory.IsMarkovKernel (ProbabilityMeasure.toKernel μ hμ) :=
+  ⟨fun a ↦ (μ a).property⟩
 
 lemma ProbabilityMeasure.measurable_map {α β : Type*} [MeasurableSpace α]
     [MeasurableSpace β] {f : α → β} (hf : Measurable f) :

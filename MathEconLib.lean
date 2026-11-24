@@ -66,6 +66,7 @@ public import MathEconLib.ForMathlib.ProbabilityMeasure
 public import MathEconLib.ForMathlib.Quasiconvex
 public import MathEconLib.ForMathlib.Schauder
 public import MathEconLib.ForMathlib.StochasticOrder
+public import MathEconLib.GameTheory.Equilibrium.Expected
 public import MathEconLib.GameTheory.Equilibrium.Problem
 public import MathEconLib.GameTheory.Equilibrium.Simulation
 public import MathEconLib.GameTheory.Strategic.Basic

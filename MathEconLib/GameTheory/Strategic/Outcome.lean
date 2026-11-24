@@ -1,12 +1,13 @@
 /-
-Copyright (c) 2026 Ben Eltschig, Daniel Lyng, Bo Cowgill. All rights reserved.
+Copyright (c) 2026 Ben Eltschig, Daniel Lyng, Bo Cowgill, Elazar Gershuni. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Ben Eltschig, Daniel Lyng, Bo Cowgill
+Authors: Ben Eltschig, Daniel Lyng, Bo Cowgill, Elazar Gershuni
 -/
 module
 
 public import MathEconLib.ForMathlib.ProbabilityMeasure
 public import MathEconLib.GameTheory.Strategic.Basic
+public import MathEconLib.GameTheory.Equilibrium.Expected
 
 /-!
 # Outcomes and expected payoffs
@@ -22,10 +23,13 @@ be flattened by integration.
 
 * `OutcomeGame`: Outcomes determined by action profiles.
 * `PayoffStructure`: Players' utilities over outcomes.
+* `PayoffStructure.reindex`: Utilities pulled back along a player map.
 * `StrategicGame.ofOutcome`: Strategic payoffs obtained by evaluating outcomes.
 * `OutcomeGame.mixed`: Outcome distributions induced by independent mixed actions.
 * `OutcomeGame.mixedFlattened`: Mixed actions with stochastic outcomes.
 * `PayoffStructure.expected`: Expected utilities over outcome distributions.
+* `OutcomeGame.toKernel`: Measurable stochastic outcomes as a Markov kernel.
+* `OutcomeGame.expectedNashProblem`: Expected Nash with integrability in admissibility.
 
 ## Main statements
 
@@ -69,6 +73,16 @@ def atState {S : Type*} (P : PayoffStructure ι (S × O) V) (s : S) :
     (s : S) (i : ι) (x : O) : (P.atState s).payoff i x = P.payoff i (s, x) :=
   rfl
 
+/-- Pull back utilities along a map from new players to the original players. -/
+@[simps] def reindex {J : Type*} (P : PayoffStructure ι O V) (f : J → ι) :
+    PayoffStructure J O V where
+  payoff := P.payoff ∘ f
+
+@[simp] lemma reindex_id (P : PayoffStructure ι O V) : P.reindex id = P := rfl
+
+@[simp] lemma reindex_comp {J K : Type*} (P : PayoffStructure ι O V)
+    (f : J → ι) (g : K → J) : (P.reindex f).reindex g = P.reindex (f ∘ g) := rfl
+
 end PayoffStructure
 
 /-- The strategic payoffs of an outcome game evaluated by the players' utilities. -/
@@ -89,6 +103,16 @@ open scoped ProbabilityTheory
 
 variable [∀ i, MeasurableSpace (A i)] [MeasurableSpace O]
 
+/-- The `IsUnilateralDeviation` relation from `Strategic.Basic` has measurable
+fibers for countably many players with measurable action singletons.
+Utility integrability is a separate condition. -/
+lemma measurableSet_isUnilateralDeviation [DecidableEq ι] [Countable ι]
+    [∀ i, MeasurableSingletonClass (A i)] (i : ι) (a : ∀ i, A i) :
+    MeasurableSet {b | IsUnilateralDeviation i a b} := by
+  simp only [isUnilateralDeviation_iff, Set.ofPred_forall]
+  exact MeasurableSet.iInter fun j ↦ .iInter fun _ ↦
+    (measurableSet_singleton (a j)).preimage (measurable_pi_apply j)
+
 namespace OutcomeGame
 
 /-- An outcome game is measurable when its outcome function is measurable. -/
@@ -97,6 +121,19 @@ protected class Measurable (G : OutcomeGame ι A O) where
   measurable_outcome : Measurable G.outcome
 
 export Measurable (measurable_outcome)
+
+/-- A measurable stochastic outcome game determines a Markov kernel on profiles. -/
+def toKernel (G : OutcomeGame ι A (ProbabilityMeasure O)) [G.Measurable] :
+    ProbabilityTheory.Kernel (∀ i, A i) O :=
+  ProbabilityMeasure.toKernel G.outcome G.measurable_outcome
+
+/-- The profile's outcome law is the kernel's value. -/
+@[simp] lemma toKernel_apply (G : OutcomeGame ι A (ProbabilityMeasure O)) [G.Measurable]
+    (a : ∀ i, A i) : G.toKernel a = (G.outcome a : Measure O) := rfl
+
+instance (G : OutcomeGame ι A (ProbabilityMeasure O)) [G.Measurable] :
+    ProbabilityTheory.IsMarkovKernel G.toKernel := inferInstanceAs
+      (ProbabilityTheory.IsMarkovKernel (ProbabilityMeasure.toKernel _ _))
 
 /-- The outcome distribution induced by independent mixed actions.
 
@@ -142,6 +179,12 @@ export PayoffStructure.Measurable (measurable_payoff)
 
 export PayoffStructure.Bounded (isBounded_payoff_range)
 
+instance {J : Type*} [MeasurableSpace V] (P : PayoffStructure ι O V) [P.Measurable]
+    (f : J → ι) : (P.reindex f).Measurable := ⟨fun j ↦ P.measurable_payoff (f j)⟩
+
+instance {J : Type*} [Bornology V] (P : PayoffStructure ι O V) [P.Bounded]
+    (f : J → ι) : (P.reindex f).Bounded := ⟨fun j ↦ P.isBounded_payoff_range (f j)⟩
+
 /-- The payoff structure obtained by integrating utilities over outcome distributions.
 
 For real-valued payoffs, using this construction to evaluate lotteries adopts the expected-utility
@@ -154,6 +197,11 @@ utilities. -/
 noncomputable def expected [NormedAddCommGroup V] [NormedSpace ℝ V] [CompleteSpace V]
     (P : PayoffStructure ι O V) : PayoffStructure ι (ProbabilityMeasure O) V where
   payoff i μ := μ[P.payoff i]
+
+/-- Expected utility commutes with player reindexing. -/
+@[simp] lemma expected_reindex {J : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+    [CompleteSpace V] (P : PayoffStructure ι O V) (f : J → ι) :
+    (P.reindex f).expected = P.expected.reindex f := rfl
 
 /-- Real expected utility is measurable for bounded measurable utilities. -/
 instance (P : PayoffStructure ι O ℝ) [P.Measurable] [P.Bounded] : P.expected.Measurable where
@@ -174,6 +222,28 @@ instance [NormedAddCommGroup V] [NormedSpace ℝ V] [CompleteSpace V]
 end PayoffStructure
 
 end Measurable
+
+namespace OutcomeGame
+
+open MeasureTheory
+
+variable [MeasurableSpace O]
+
+/-- The expected-utility Nash problem of a stochastic outcome game. Incumbents
+and unilateral deviations satisfy the usual payoff integrability conditions. -/
+noncomputable def expectedNashProblem [DecidableEq ι] [NormedAddCommGroup V]
+    [NormedSpace ℝ V] [CompleteSpace V] (G : OutcomeGame ι A (ProbabilityMeasure O))
+    (P : PayoffStructure ι O V) : EquilibriumProblem (∀ i, A i) ι V :=
+  .ofExpectedValue IsUnilateralDeviation (fun a ↦ (G.outcome a : Measure O)) P.payoff
+
+/-- The expected Nash problem evaluates the expected payoff structure `P.expected`. -/
+@[simp] lemma expectedNashProblem_value [DecidableEq ι] [NormedAddCommGroup V]
+    [NormedSpace ℝ V] [CompleteSpace V]
+    (G : OutcomeGame ι A (ProbabilityMeasure O))
+    (P : PayoffStructure ι O V) (i : ι) (a : ∀ i, A i) :
+    (G.expectedNashProblem P).value i a = (StrategicGame.ofOutcome G P.expected).payoff i a := rfl
+
+end OutcomeGame
 
 section Continuous
 
@@ -214,6 +284,9 @@ protected class Continuous [TopologicalSpace V] (P : PayoffStructure ι O V) whe
   continuous_payoff i : Continuous (P.payoff i)
 
 export Continuous (continuous_payoff)
+
+instance {J : Type*} [TopologicalSpace V] (P : PayoffStructure ι O V) [P.Continuous]
+    (f : J → ι) : (P.reindex f).Continuous := ⟨fun j ↦ P.continuous_payoff (f j)⟩
 
 /-- Continuous utilities into a Borel value space are measurable when open sets in the outcome
 space are measurable. -/

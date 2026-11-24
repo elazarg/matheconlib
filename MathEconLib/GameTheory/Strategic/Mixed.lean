@@ -1,11 +1,12 @@
 /-
-Copyright (c) 2026 Daniel Lyng. All rights reserved.
+Copyright (c) 2026 Daniel Lyng, Elazar Gershuni. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Daniel Lyng
+Authors: Daniel Lyng, Elazar Gershuni
 -/
 module
 
 public import MathEconLib.GameTheory.Strategic.Outcome
+public import MathEconLib.GameTheory.Equilibrium.Expected
 
 /-!
 # Independent mixed strategies
@@ -31,6 +32,8 @@ predicate expresses mixed Nash equilibrium.
 ## Main statements
 
 * `StrategicGame.mixedNashProblem_valid_iff` characterizes candidate validity by integrability.
+* `StrategicGame.mixedNashProblem_eq_expectedNashProblem` identifies mixed Nash with
+  expected-utility Nash in the mixed outcome game, so expected-utility transport applies to it.
 * `StrategicGame.IsMixedNash.integrable` gives integrability of incumbent payoffs.
 * `StrategicGame.isMixedNash_iff` gives integrability and the admissible payoff inequalities.
 * `StrategicGame.isMixedNash_iff_isNash_of_integrable` identifies mixed equilibrium with Nash
@@ -149,6 +152,15 @@ def mixedNashProblem [NormedAddCommGroup V] [NormedSpace ℝ V] [CompleteSpace V
     Integrable (G.payoff i) (Measure.pi (fun j ↦ (σ' j : Measure (A j))))
   value := G.mixedExtension.payoff
   valid := G.MixedPayoffsIntegrable
+
+/-- Mixed Nash is expected-utility Nash in the mixed outcome game `G.outcomeGame.mixed`,
+including incumbent and deviation integrability. -/
+lemma mixedNashProblem_eq_expectedNashProblem [NormedAddCommGroup V] [NormedSpace ℝ V]
+    [CompleteSpace V] [Fintype I] [DecidableEq I] (G : StrategicGame I A V) :
+    G.mixedNashProblem = G.outcomeGame.mixed.expectedNashProblem G.payoffStructure := by
+  simp [mixedNashProblem, OutcomeGame.expectedNashProblem, EquilibriumProblem.ofExpectedValue,
+    IsUnilateralDeviation, OutcomeGame.mixed, outcomeGame, payoffStructure, mixedExtension]
+  rfl
 
 /-- Admissible mixed deviations change one player's law and give that player an integrable
 payoff. -/

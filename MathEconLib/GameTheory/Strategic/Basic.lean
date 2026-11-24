@@ -1,7 +1,7 @@
 /-
-Copyright (c) 2026 Ben Eltschig, Daniel Lyng. All rights reserved.
+Copyright (c) 2026 Ben Eltschig, Daniel Lyng, Elazar Gershuni. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Ben Eltschig, Daniel Lyng
+Authors: Ben Eltschig, Daniel Lyng, Elazar Gershuni
 -/
 module
 
@@ -29,6 +29,7 @@ the translated game whenever its image is a Nash equilibrium in the original gam
 
 ## Main definitions
 
+* `IsUnilateralDeviation`: The shared relation replacing one player's action.
 * `StrategicGame`, `StrategicGame.nashProblem`, and `StrategicGame.IsNash`: Strategic games and
   Nash equilibrium with every action profile admitted as a candidate.
 * `StrategicGame.comapActions`: The game obtained by translating each player's action.
@@ -70,6 +71,15 @@ structure StrategicGame (I : Type*) (A : I → Type*) (V : Type*) where
 
 variable {ι : Type*} {A : ι → Type*} {V : Type*}
 
+/-- A unilateral deviation replaces only the deviating player's action. -/
+def IsUnilateralDeviation [DecidableEq ι] (i : ι) (a b : ∀ i, A i) : Prop :=
+  ∃ s, b = Function.update a i s
+
+/-- Unilateral deviations leave every other player's action unchanged. -/
+lemma isUnilateralDeviation_iff [DecidableEq ι] (i : ι) (a b : ∀ i, A i) :
+    IsUnilateralDeviation i a b ↔ ∀ j ≠ i, b j = a j := by
+  simp [IsUnilateralDeviation, Function.eq_update_iff]
+
 namespace StrategicGame
 
 /-- The strategic game in which each player's action is translated by `κ` before the original
@@ -91,7 +101,7 @@ lemma comapActions_comp {B : ι → Type*} {C : ι → Type*} (G : StrategicGame
 only their own action. -/
 def nashProblem [DecidableEq ι] (G : StrategicGame ι A V) :
     EquilibriumProblem ((i : ι) → A i) ι V :=
-  .ofDeviation (fun i a a' ↦ ∃ s, a' = Function.update a i s) G.payoff
+  .ofDeviation IsUnilateralDeviation G.payoff
 
 /-- Action translation maps unilateral deviations to unilateral deviations and preserves each
 player's payoff. -/
