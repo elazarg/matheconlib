@@ -1,6 +1,6 @@
 # Comments on [matheconlib/matheconlib#277](https://github.com/matheconlib/matheconlib/issues/277): population games
 
-_This note was drafted with Claude Code from a discussion comparing that issue with abstraction experiments I ran in my GameTheory and matheconlib forks. I've checked each point. They are ordered from most to least confident, and links are pinned to commits._
+_This note was drafted with Claude Code from a discussion comparing that issue with abstraction experiments I ran in my GameTheory and matheconlib forks. They are ordered from most to least confident, and links are pinned to commits._
 
 ## 1. Mass caps don't need a more general `EquilibriumProblem`, but they do change the characterizations
 
